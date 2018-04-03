@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_done_new_product"
+        android:iconTint="@color/colorTitleToolBar"
+        android:orderInCategory="100"
+        android:title="@string/action_new_manufacturer"
+        android:tooltipText="Done"
+        app:showAsAction="ifRoom" />
+
+</menu>

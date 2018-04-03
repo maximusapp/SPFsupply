@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    tools:showIn="@layout/activity_orders"
+    >
+
+    <SearchView
+        android:id="@+id/search_orders"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="60dp"
+        android:focusable="false"
+        android:theme="@style/MyCustomSearchStyle"
+        android:gravity="center"
+        android:outlineProvider="none"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search"
+        android:queryBackground="@drawable/search_background"
+        android:searchIcon="@null"
+        >
+
+    </SearchView>
+
+    <ListView
+        android:id="@+id/listView_orders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginEnd="9dp"
+        >
+
+    </ListView>
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>

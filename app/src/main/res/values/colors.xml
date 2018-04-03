@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorStatusBar">#14000000</color>
+    <color name="colorTitleToolBar">#f7941d</color>
+    <color name="colorDrawerFullScreen">#f7941d</color>
+
+    <color name="colorOrang">#fff7941d</color>
+    <color name="colorOrangLight">#96f7941d</color>
+
+    <color name="colorUnActiveTabColorText">#d5d5d5</color>
+
+    <color name="colorContactButtonOrangLight">#9df7941d</color>
+
+    <color name="colorToolBar">#ffffff</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorSearch">#e8e7e7</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#3b3b3b</color>
+    <color name="colorGrayLight">#81a3a3a3</color>
+    <color name="colorGrayLightLight">#56c4c4c4</color>
+
+    <color name="colorCheck_out_bottom_color">#41dfdfdf</color>
+
+    <color name="colorEnterCompanyName">#e2e2e2</color>
+    <color name="colorDivider">#e2e2e2</color>
+    <color name="colorDividerHome">#50e2e2e2</color>
+
+
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_to_card_details"
+        android:iconTint="@color/colorTitleToolBar"
+        android:orderInCategory="100"
+        android:title="@string/action_details"
+        android:tooltipText="Add to card"
+        app:showAsAction="ifRoom" />
+
+</menu>

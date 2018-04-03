@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.maximus09.spfsupply.ProfileActivity">
+
+    <include
+        android:id="@+id/includeInformation"
+        layout="@layout/app_bar"
+        android:layout_width="362dp"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-2dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        app:tabIndicatorHeight="0dp"
+        app:tabTextColor="@color/colorUnActiveTabColorText"
+        app:tabTextAppearance="@style/MyCustomTextAppearanceTabLayout"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/conteiner"
+        android:layout_marginTop="110dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </android.support.v4.view.ViewPager>
+
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">SPFsupply</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="manufactures">Manufacturers</string>
+    <string name="buyers">Buyers</string>
+    <string name="orders">Orders</string>
+    <string name="messages">Messages</string>
+    <string name="new_manufacturer">New Manufacturer</string>
+    <string name="information">Information</string>
+    <string name="newproduct">New Product</string>
+    <string name="profile">Profile</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="additional">Additional information</string>
+    <string name="payment">Payment Method</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="order_number1234">Order#1234</string>
+    <string name="company_name">CompanyName</string>
+    <string name="password_reset">Password Reset</string>
+    <string name="send_invite">Send Invite</string>
+
+    <string name="home">Home</string>
+    <string name="profile_home">Profile</string>
+    <string name="orders_home">Orders</string>
+    <string name="check_out_home">Check-out</string>
+    <string name="messages_home">Messages</string>
+    <string name="orders_number_home">Order#1234</string>
+    <string name="orders_number_chat_home">Order#</string>
+    <string name="details_home">Details</string>
+
+
+    <string name="new_manuf_company_name">COMPANY NAME</string>
+    <string name="enter_manuf_company_name">Enter Company Name</string>
+    <string name="enter_new_product_title">Enter Product Title</string>
+    <string name="enter_new_product_price">12345</string>
+
+    <string name="location_manuf">LOCATION</string>
+    <string name="website_manuf">WEBSITE</string>
+    <string name="add_website_manuf">Add company website</string>
+
+    <string name="text_of_location">3290 Hermosillo Place Washington, DC 20521-3290</string>
+    <string name="delivery_address_check_out">3290 Honey Creek Dr. New York, NY 10028 </string>
+    <string name="reset_password_text">To reset your password, enter the email address you use to sign in to SPFsupply</string>
+
+    <string name="invoice_order_home_text"><u> Invoice order#1234 </u> </string>
+
+
+    <string name="merchant_id_text">MERCHANT ID</string>
+    <string name="add_merchant_id">Add Merchant ID</string>
+
+
+    <string name="action_settings">Settings</string>
+    <string name="action_mail_buyers">Mail</string>
+    <string name="action_new_manufacturer">Done</string>
+    <string name="action_details">Add to Card</string>
+    <string name="action_send_invite"><u> Invite with SMS </u> </string>
+    <string name="order_number_text_underline"> <u> Invoice order#1234 </u> </string>
+
+    <string name="buyer_information">Buyer Information</string>
+    <string name="welcome_to_spf_supply">Welcome to SPFsupply</string>
+
+    <string name="button_sign_in">Sign In</string>
+    <string name="not_a_member_yet">Not a member yet?</string>
+    <string name="contact_button">Contact</string>
+    <string name="sign_up_button">Sign Up</string>
+
+    <string name="loren_ipsum">Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do ei. </string>
+
+    <string name="google_maps_api_key">AIzaSyAPE7hm_slNLDgf8ACeno10p_ts4UB6sR8</string>
+
+</resources>
