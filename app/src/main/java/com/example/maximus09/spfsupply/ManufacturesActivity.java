@@ -68,12 +68,14 @@ public class ManufacturesActivity extends AppCompatActivity {
         ItemsDrawer itemsBueyrs = new ItemsDrawer("Buyers", "1");
         ItemsDrawer itemsOrders = new ItemsDrawer("Orders", "1");
         ItemsDrawer itemsMessages = new ItemsDrawer("Messages", "1");
+        ItemsDrawer itemsSlider = new ItemsDrawer("Slider", "1");
 
         final ArrayList<ItemsDrawer> itemsDrawer = new ArrayList<>();
         itemsDrawer.add(itemsManufacturers);
         itemsDrawer.add(itemsBueyrs);
         itemsDrawer.add(itemsOrders);
         itemsDrawer.add(itemsMessages);
+        itemsDrawer.add(itemsSlider);
 
         final ItemListAdapter itemListAdapter = new ItemListAdapter(this, R.layout.custom_drawer_menu_item, itemsDrawer);
         listView.setAdapter(itemListAdapter);
@@ -103,6 +105,12 @@ public class ManufacturesActivity extends AppCompatActivity {
                 if (position == 3) {
                     Intent intentMessages = new Intent(view.getContext(), MessagesActivity.class);
                     startActivity(intentMessages);
+                    finish();
+                }
+
+                if (position == 4) {
+                    Intent intentSlider = new Intent(view.getContext(), SliderActivity.class);
+                    startActivity(intentSlider);
                     finish();
                 }
 

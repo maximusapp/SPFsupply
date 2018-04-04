@@ -3,14 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.maximus09.spfsupply">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.ACCOUNT_MANAGER"
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission
+        android:name="android.permission.ACCOUNT_MANAGER"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -20,11 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAPE7hm_slNLDgf8ACeno10p_ts4UB6sR8"/>
-
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAPE7hm_slNLDgf8ACeno10p_ts4UB6sR8" />
 
         <activity
             android:name=".SplashSpf"
@@ -102,11 +99,7 @@
             android:name=".ContactUsActivity"
             android:label="@string/contact_us"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-
-
-
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OrderNumberActivity"
             android:label="@string/order_number1234"
@@ -161,12 +154,19 @@
             android:name=".PasswordResetActivity"
             android:label="@string/password_reset"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SendInviteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SendInviteActivity"
             android:label="@string/send_invite"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".SliderActivity"
+            android:label="@string/slider"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

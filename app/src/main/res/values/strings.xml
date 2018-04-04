@@ -20,6 +20,7 @@
     <string name="company_name">CompanyName</string>
     <string name="password_reset">Password Reset</string>
     <string name="send_invite">Send Invite</string>
+    <string name="slider">Slider</string>
 
     <string name="home">Home</string>
     <string name="profile_home">Profile</string>
