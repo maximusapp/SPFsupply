@@ -67,10 +67,12 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
 
     <EditText
-        android:id="@+id/edit_text_signin"
+        android:id="@+id/edit_email_signin"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
@@ -91,7 +93,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.574"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/text_location_password"
@@ -110,10 +114,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.68"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
 
     <EditText
-        android:id="@+id/password_signin"
+        android:id="@+id/edit_password_signin"
         android:layout_width="200dp"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
@@ -133,7 +139,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.75"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
 
     <Button
         android:id="@+id/button_sign_in"
