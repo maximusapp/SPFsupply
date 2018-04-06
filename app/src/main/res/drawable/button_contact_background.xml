@@ -6,7 +6,7 @@
     <corners
         android:radius="10dp"/>
 
-    <solid android:color="@color/colorContactButtonOrangLight"/>
+    <solid android:color="@color/color_button_contact"/>
 
     <size
         android:width="145dp"

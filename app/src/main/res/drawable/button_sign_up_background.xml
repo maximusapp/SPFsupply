@@ -7,7 +7,7 @@
     <corners
         android:radius="10dp"/>
 
-    <solid android:color="@color/color_button_sign_in"/>
+    <solid android:color="@color/color_button_sign_up"/>
 
     <size
         android:width="145dp"
