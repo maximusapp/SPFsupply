@@ -1,5 +1,6 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -11,21 +12,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.maximus09.spfsupply.data.model.Post;
+import com.example.maximus09.spfsupply.data.model.ResponseFromServer;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+import okhttp3.Cache;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -45,8 +45,8 @@ public class SignInActivity extends AppCompatActivity {
 
     TextView textResetPassword;
 
-    EditText editEmail;
-    EditText editPass;
+    static  EditText editEmail;
+    static EditText editPass;
 
     Button signIn;
 
@@ -83,9 +83,10 @@ public class SignInActivity extends AppCompatActivity {
                     editPass.setHint("Enter password");
                     editPass.setHintTextColor(getResources().getColor(R.color.colorAccent));
                 }
+                    TaskLogin taskLogin = new TaskLogin();
+                    taskLogin.execute();
 
-                TaskLogin taskLogin = new TaskLogin();
-                taskLogin.execute();
+
 
 //                Gson gson = new Gson();
 //                Post strPostLogin = new Post("admin@gmail.com", "Pass1234");
@@ -172,7 +173,8 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-    static class TaskLogin extends AsyncTask<String, String, Void> {
+    @SuppressLint("StaticFieldLeak")
+    private class TaskLogin extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
@@ -180,13 +182,15 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Void doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
             OkHttpClient okHttpClient = new OkHttpClient();
             Gson gson = new Gson();
-                Post strPostLogin = new Post("user@gmail.com", "Pass1234");
 
+            String mail = editEmail.getText().toString().trim();
+            String pass = editPass.getText().toString().trim();
+
+            Post strPostLogin = new Post(mail, pass);
                // String url = LOGIN_URL + "Login";
-
                 try {
                     RequestBody body = RequestBody.create(MediaType.parse("application/json"), gson.toJson(strPostLogin));
 
@@ -195,7 +199,6 @@ public class SignInActivity extends AppCompatActivity {
                             .post(body)
                             .addHeader("Content-Type", "application/json")
                             .build();
-
 
                     okhttp3.Response response = okHttpClient.newCall(request).execute();
                    // Response response = client.newCall(request).execute();
@@ -211,12 +214,25 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            Gson gson = new Gson();
+            ResponseFromServer responseFromServer = gson.fromJson(result, ResponseFromServer.class);
+
+            if (responseFromServer != null && responseFromServer.getAccountType() != null) {
+                if (responseFromServer.getAccountType().equalsIgnoreCase("admin")) {
+                    Intent intentAdmin = new Intent(SignInActivity.this, HomeActivity.class);
+                    startActivity(intentAdmin);
+                } else
+                    if (responseFromServer.getAccountType().equalsIgnoreCase("user")) {
+                    Intent intentUser = new Intent(SignInActivity.this, ManufacturesActivity.class);
+                    startActivity(intentUser);
+                    }
+            }
+
         }
 
-
     }
-
 
 }
