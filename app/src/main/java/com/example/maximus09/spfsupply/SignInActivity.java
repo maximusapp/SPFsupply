@@ -17,11 +17,13 @@ import android.widget.Toast;
 import com.example.maximus09.spfsupply.data.model.Post;
 import com.example.maximus09.spfsupply.data.model.ResponseFromServer;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,6 @@ public class SignInActivity extends AppCompatActivity {
 
     public final String TAG = ".SignInActivity";
     public static final String LOGIN_URL = "http://spf.yobibyte.in.ua/api/sign_in/";
-
 
 
     TextView textResetPassword;
@@ -86,77 +87,6 @@ public class SignInActivity extends AppCompatActivity {
                     TaskLogin taskLogin = new TaskLogin();
                     taskLogin.execute();
 
-
-
-//                Gson gson = new Gson();
-//                Post strPostLogin = new Post("admin@gmail.com", "Pass1234");
-//
-//                String url = LOGIN_URL + "Login";
-//                try {
-//                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), gson.toJson(strPostLogin));
-//
-//                    Request request = new Request.Builder()
-//                            .url(url)
-//                            .post(body)
-//                            .addHeader("Content-Type", "application/json")
-//                            //.addHeader("Authkey", "9f8cb60cd52f9dd20f8eae4260fa7228")
-//                            .build();
-//
-//
-//                    okhttp3.Response response = client.newCall(request).execute();
-//                   // Response response = client.newCall(request).execute();
-//                    int responseCode = response.code();
-//                    @SuppressWarnings("ConstantConditions") String responseBody = response.body().string();
-//                    Log.i("DEBUG", responseBody);
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-
-//======================================================================
-
-//                Retrofit retrofit = new Retrofit.Builder()
-//                        .baseUrl(LOGIN_URL)
-//                        .addConverterFactory(GsonConverterFactory.create())
-//                        .build();
-//
-//                SpfAPI spfAPI = retrofit.create(SpfAPI.class);
-//
-//                HashMap<String, String> headerMap = new HashMap<>();
-//                headerMap.put("Content-Type", "application/json");
-//
-//                Call<ResponseBody> call = spfAPI.signin(headerMap, mail, pass);
-//
-//                call.enqueue(new Callback<ResponseBody>() {
-//                    @Override
-//                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-//                        Log.d(TAG, "onResponse: Okey: " + response.toString());
-
-//                        try {
-//                            String responseBody = response.body().string();
-//                            Log.i("DEBUG", responseBody);
-//
-//                            Log.d(TAG, "onResponse: json: " + responseBody);
-//                            JSONObject data = null;
-//                            data = new JSONObject(responseBody);
-//                            Log.d(TAG, "onResponse: data: " + data);
-//                        }catch (JSONException e){
-//                            Log.e(TAG, "onResponse: JsonException: " + e.getMessage());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                        Log.e(TAG, "onFailure: Something went wrong: " + t.getMessage() );
-//                        Toast.makeText(SignInActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-//                Intent intent = new Intent(SignInActivity.this, ManufacturesActivity.class);
-//                startActivity(intent);
             }
         });
 
@@ -174,7 +104,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class TaskLogin extends AsyncTask<String, String, String> {
+    private class TaskLogin extends AsyncTask<String, String, ResponseFromServer> {
 
         @Override
         protected void onPreExecute() {
@@ -182,7 +112,8 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected ResponseFromServer doInBackground(String... strings) {
+
             OkHttpClient okHttpClient = new OkHttpClient();
             Gson gson = new Gson();
 
@@ -190,7 +121,7 @@ public class SignInActivity extends AppCompatActivity {
             String pass = editPass.getText().toString().trim();
 
             Post strPostLogin = new Post(mail, pass);
-               // String url = LOGIN_URL + "Login";
+
                 try {
                     RequestBody body = RequestBody.create(MediaType.parse("application/json"), gson.toJson(strPostLogin));
 
@@ -203,36 +134,45 @@ public class SignInActivity extends AppCompatActivity {
                     okhttp3.Response response = okHttpClient.newCall(request).execute();
                    // Response response = client.newCall(request).execute();
                   //  int responseCode = response.code();
-                    @SuppressWarnings("ConstantConditions") String responseBody = response.body().string();
+
+                    @SuppressWarnings("ConstantConditions")
+                    String responseBody = response.body().string();
                     Log.i("DEBUG", responseBody);
+
+
+                    Gson gsonFromServer = new Gson();
+                    ResponseFromServer responseFromServer = gsonFromServer.fromJson(responseBody, ResponseFromServer.class);
+
+                    if (responseFromServer != null && "admin".equalsIgnoreCase(responseFromServer.getAccount_type())){
+                        Intent intentAdmin = new Intent(SignInActivity.this, HomeActivity.class);
+                        startActivity(intentAdmin);
+                    } else
+                        if (responseFromServer != null && "user".equalsIgnoreCase(responseFromServer.getAccount_type())) {
+                            Intent intentUser = new Intent(SignInActivity.this, ManufacturesActivity.class);
+                            startActivity(intentUser);
+                        }
+
+
+                    // added
+                    int responseCode = response.code();
+                    if(responseCode == 200 && responseBody.length() != 0) {
+                        return responseFromServer;
+                    }
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-            return null;
+           return null;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(ResponseFromServer result) {
             super.onPostExecute(result);
 
-            Gson gson = new Gson();
-            ResponseFromServer responseFromServer = gson.fromJson(result, ResponseFromServer.class);
-
-            if (responseFromServer != null && responseFromServer.getAccountType() != null) {
-                if (responseFromServer.getAccountType().equalsIgnoreCase("admin")) {
-                    Intent intentAdmin = new Intent(SignInActivity.this, HomeActivity.class);
-                    startActivity(intentAdmin);
-                } else
-                    if (responseFromServer.getAccountType().equalsIgnoreCase("user")) {
-                    Intent intentUser = new Intent(SignInActivity.this, ManufacturesActivity.class);
-                    startActivity(intentUser);
-                    }
-            }
+          }
 
         }
 
     }
-
-}
