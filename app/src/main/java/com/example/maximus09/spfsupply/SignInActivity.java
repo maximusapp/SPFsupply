@@ -40,9 +40,7 @@ public class SignInActivity extends AppCompatActivity {
         return true;
     }
 
-    public final String TAG = ".SignInActivity";
     public static final String LOGIN_URL = "http://spf.yobibyte.in.ua/api/sign_in/";
-
 
     TextView textResetPassword;
 
@@ -67,7 +65,6 @@ public class SignInActivity extends AppCompatActivity {
         editEmail = (EditText)findViewById(R.id.edit_email_signin);
         editPass = (EditText)findViewById(R.id.edit_password_signin);
 
-
         signIn = (Button)findViewById(R.id.button_sign_in);
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +86,6 @@ public class SignInActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         textResetPassword = (TextView)findViewById(R.id.text_reset_password);
         textResetPassword.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +146,6 @@ public class SignInActivity extends AppCompatActivity {
                             Intent intentUser = new Intent(SignInActivity.this, ManufacturesActivity.class);
                             startActivity(intentUser);
                         }
-
 
                     // added
                     int responseCode = response.code();
