@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorStatusBar">#14000000</color>
-    <color name="colorTitleToolBar">#f7941d</color>
+    <color name="colorTitleToolBar">#6f6f6f</color>
     <color name="colorDrawerFullScreen">#f7941d</color>
 
     <color name="colorOrang">#fff7941d</color>
