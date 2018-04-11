@@ -5,9 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorStatusBar">#14000000</color>
     <color name="colorTitleToolBar">#6f6f6f</color>
-    <color name="colorDrawerFullScreen">#f7941d</color>
+    <color name="colorDrawerFullScreen">#2196f3</color>
 
-    <color name="colorOrang">#fff7941d</color>
+    <color name="colorOrang">#2196f3</color>
     <color name="colorOrangLight">#96f7941d</color>
 
     <color name="color_button_sign_in">#2196f3</color>

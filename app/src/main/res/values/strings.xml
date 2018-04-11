@@ -21,6 +21,28 @@
     <string name="password_reset">Password Reset</string>
     <string name="send_invite">Send Invite</string>
     <string name="slider">Slider</string>
+    
+    //Sign Up text
+    <string name="company_name_title">COMPANY NAME</string>
+    <string name="company_name_edit_text">MyCompany</string>
+    <string name="title_email_sign_up">YOUR EMAIL</string>
+    <string name="hint_text_edit_email_sign_up">name@domain.com</string>
+    <string name="owner_title_sign_up">OWNER/MANAGER NAME</string>
+    <string name="edit_text_owner_sign_up">yourusername</string>
+    <string name="create_pass_title">CREATE PASSWORD</string>
+    <string name="create_pass_hint">Min 8 symbols</string>
+    <string name="confirm_pass">CONFIRM PASSWORD</string>
+    <string name="confirm_pass_hint">Min 8 symbols</string>
+    <string name="proceed_button_text">Proceed</string>
+
+    //Additional informational text
+    <string name="company_logo_title">COMPANY LOGO (OPTIONAL)</string>
+    <string name="your_phone_hint">YOUR PHONE</string>
+    <string name="business_address_title">BUSINESS ADDRESS</string>
+    <string name="business_address_edit_text">business address</string>
+    <string name="delivery_address_title">DELIVERY ADDRESS</string>
+    <string name="delivery_address_edit_text">your address</string>
+    <string name="button_text">Proceed</string>
 
     <string name="home">Home</string>
     <string name="profile_home">Profile</string>
@@ -41,7 +63,7 @@
     <string name="website_manuf">WEBSITE</string>
     <string name="add_website_manuf">Add company website</string>
 
-    <string name="text_of_location">3290 Hermosillo Place Washington, DC 20521-3290</string>
+    <string name="text_of_location">3290 Hermosillo Place Washington, DC 20521–3290</string>
     <string name="delivery_address_check_out">3290 Honey Creek Dr. New York, NY 10028 </string>
     <string name="reset_password_text">To reset your password, enter the email address you use to sign in to SPFsupply</string>
 

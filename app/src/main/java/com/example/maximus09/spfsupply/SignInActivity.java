@@ -45,7 +45,7 @@ public class SignInActivity extends AppCompatActivity {
     TextView textResetPassword;
 
     static  EditText editEmail;
-    static EditText editPass;
+    static  EditText editPass;
 
     Button signIn;
 
@@ -134,7 +134,6 @@ public class SignInActivity extends AppCompatActivity {
                     String responseBody = response.body().string();
                     Log.i("DEBUG", responseBody);
 
-
                     Gson gsonFromServer = new Gson();
                     ResponseFromServer responseFromServer = gsonFromServer.fromJson(responseBody, ResponseFromServer.class);
 
@@ -146,13 +145,11 @@ public class SignInActivity extends AppCompatActivity {
                             Intent intentUser = new Intent(SignInActivity.this, ManufacturesActivity.class);
                             startActivity(intentUser);
                         }
-
                     // added
                     int responseCode = response.code();
                     if(responseCode == 200 && responseBody.length() != 0) {
                         return responseFromServer;
                     }
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
