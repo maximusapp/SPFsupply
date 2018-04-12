@@ -21,6 +21,9 @@ public class PaymentMethodActivity extends AppCompatActivity {
     TextView textSignInNow;
     Button signUpButton;
 
+//    TextView textView_test;
+//    TextView textView_test2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,20 @@ public class PaymentMethodActivity extends AppCompatActivity {
         TextView tv=(TextView) toolbar.getChildAt(0);
         Typeface typefaceActionBar = Typeface.createFromAsset(this.getAssets(), "fonts/latoregular.ttf");
         tv.setTypeface(typefaceActionBar);
+
+        // Get data from 1-t and 2-d Activities
+        //========== it is work ===========
+        Intent intentExtras = getIntent();
+        // From 1-t act
+        String com_name = intentExtras.getStringExtra("com_name");
+        String mailta = intentExtras.getStringExtra("mailta");
+        String owners = intentExtras.getStringExtra("owners");
+        String pass = intentExtras.getStringExtra("pass");
+        String conf_pass = intentExtras.getStringExtra("conf");
+        // From 2-d act
+        String phone = intentExtras.getStringExtra("phone");
+        String business_adr = intentExtras.getStringExtra("address");
+        String delivery_address = intentExtras.getStringExtra("delivery_address");
 
 
         textSignInNow = (TextView)findViewById(R.id.text_sign_in_payment_method);
