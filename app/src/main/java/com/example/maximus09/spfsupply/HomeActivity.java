@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity {
 
     ListView listView;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,15 @@ public class HomeActivity extends AppCompatActivity {
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        imageView = (ImageView)findViewById(R.id.image_company_home);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, InformationHomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         listView = (ListView)findViewById(R.id.drawer_menu_home_list);
         ItemsDrawer itemsHome = new ItemsDrawer("Home", "1");

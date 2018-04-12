@@ -21,7 +21,8 @@
     <string name="password_reset">Password Reset</string>
     <string name="send_invite">Send Invite</string>
     <string name="slider">Slider</string>
-    
+    <string name="information_home">Information</string>
+
     //Sign Up text
     <string name="company_name_title">COMPANY NAME</string>
     <string name="company_name_edit_text">MyCompany</string>
