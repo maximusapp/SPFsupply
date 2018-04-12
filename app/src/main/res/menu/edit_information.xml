@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_edit_information"
-        android:icon="@drawable/ic_action_edit"
+        android:icon="@mipmap/icon_action_edit24dp"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:title="" />

@@ -175,12 +175,12 @@
 
             <ImageView
                 android:id="@+id/imageView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="112dp"
-                android:background="@drawable/check_circle_outline"
+                android:background="@drawable/check_blue"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.861"
@@ -229,7 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="27dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/colorOrangLight"
+                android:background="@color/check_out_gray_background"
                 android:fontFamily="@font/latoregular"
                 android:paddingLeft="20dp"
                 android:paddingStart="20dp"
@@ -330,7 +330,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/minus_circle_outline" />
+                app:srcCompat="@drawable/minus_circle_outline"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
 
             <ImageView
                 android:id="@+id/imageView14"
@@ -346,7 +348,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.37"
-                app:srcCompat="@drawable/plus_circle_outline" />
+                app:srcCompat="@drawable/plus_blue"
+                tools:ignore="VectorDrawableCompat" />
 
             <TextView
                 android:id="@+id/remove1_check"
@@ -481,7 +484,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.53"
-                app:srcCompat="@drawable/plus_circle_outline" />
+                app:srcCompat="@drawable/plus_blue"
+                tools:ignore="VectorDrawableCompat" />
 
             <TextView
                 android:id="@+id/remove2_check"
@@ -499,7 +503,9 @@
                 app:layout_constraintHorizontal_bias="0.34"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.59000003" />
+                app:layout_constraintVertical_bias="0.59000003"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
 
             <View
                 android:layout_width="300dp"
@@ -517,7 +523,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="27dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/colorOrangLight"
+                android:background="@color/check_out_gray_background"
                 android:fontFamily="@font/latoregular"
                 android:paddingLeft="20dp"
                 android:paddingStart="20dp"
@@ -636,7 +642,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.73"
-                app:srcCompat="@drawable/plus_circle_outline" />
+                app:srcCompat="@drawable/plus_blue"
+                tools:ignore="VectorDrawableCompat" />
 
             <TextView
                 android:id="@+id/remove3_check"
@@ -654,7 +661,9 @@
                 app:layout_constraintHorizontal_bias="0.34"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.78" />
+                app:layout_constraintVertical_bias="0.78"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
 
             <View
                 android:layout_width="300dp"

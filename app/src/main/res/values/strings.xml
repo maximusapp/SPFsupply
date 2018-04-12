@@ -43,6 +43,7 @@
     <string name="delivery_address_title">DELIVERY ADDRESS</string>
     <string name="delivery_address_edit_text">your address</string>
     <string name="button_text">Proceed</string>
+    <string name="phone_number_hint">320-697-8644</string>
 
     <string name="home">Home</string>
     <string name="profile_home">Profile</string>
@@ -52,6 +53,9 @@
     <string name="orders_number_home">Order#1234</string>
     <string name="orders_number_chat_home">Order#</string>
     <string name="details_home">Details</string>
+
+    //Welcome Back page
+    <string name="reset_text"> <u>Reset</u> </string>
 
 
     <string name="new_manuf_company_name">COMPANY NAME</string>

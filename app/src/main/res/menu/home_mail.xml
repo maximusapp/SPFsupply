@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/action_mail_home"
-        android:icon="@mipmap/ic_mail_home_24dp"
+        android:icon="@mipmap/icon_mail_gray24dp"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="always"

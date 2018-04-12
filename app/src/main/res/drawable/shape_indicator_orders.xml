@@ -6,7 +6,7 @@
     <corners
         android:radius="100dp"/>
 
-    <solid android:color="@color/colorOrang"/>
+    <solid android:color="@color/indicator_red"/>
 
     <size
         android:width="10dp"

@@ -189,7 +189,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/latoregular"
-        android:text="Reset"
+        android:text="@string/reset_text"
         android:textColor="@color/colorOrang"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"

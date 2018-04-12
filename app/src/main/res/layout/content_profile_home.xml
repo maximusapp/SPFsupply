@@ -74,14 +74,16 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/latoregular"
                 android:text="Change password"
-                android:textColor="@color/colorOrang"
+                android:textColor="@color/colorGray"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.35"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.06999999" />
+                app:layout_constraintVertical_bias="0.06999999"
+                android:layout_marginRight="6dp"
+                android:layout_marginLeft="8dp" />
 
 
 
@@ -309,10 +311,9 @@
                 app:layout_constraintVertical_bias="0.813" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
                 android:layout_marginBottom="8dp"
-
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="424dp"
@@ -322,7 +323,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.71000004"
-                app:srcCompat="@drawable/add_payment_method_icon" />
+                app:srcCompat="@drawable/icon_add_blue_admin"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="15dp" />
 
             <TextView
                 android:id="@+id/add_payment_method_text_profile"
@@ -340,7 +343,9 @@
                 app:layout_constraintHorizontal_bias="0.468"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.871" />
+                app:layout_constraintVertical_bias="0.871"
+                android:layout_marginRight="6dp"
+                android:layout_marginLeft="15dp" />
 
 
         </android.support.constraint.ConstraintLayout>
