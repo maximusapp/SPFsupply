@@ -8,13 +8,15 @@ import android.widget.Button;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    private static final String WELCOMEPAGE_IMAGE_URL = "http://spf.yobibyte.in.ua/api/slider/get_manufacturers_logos/";
+
     KKViewPager mPager;
 
     Button signIn;
     Button signUp;
     Button contactWelcome;
 
-    String n[] = {"https://www.frameweb.com/img/loading.jpg", "https://www.frameweb.com/img/loading.jpg", "https://www.frameweb.com/img/loading.jpg"};
+    String n[] = {"http://spf.yobibyte.in.ua/public/manufacturers_logo/Hu2W0yzSM31xxLC6V4NJ8DqiJmdihhnN_1523007140.png", "https://www.frameweb.com/img/loading.jpg", "https://www.frameweb.com/img/loading.jpg"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         mPager = (KKViewPager) findViewById(R.id.kk_pager);
-       // mPager.setAdapter(new TestFragmentAdapter(getSupportFragmentManager(),WelcomeActivity.this));
 
         TestFragmentAdapter testFragmentAdapter = new TestFragmentAdapter(getSupportFragmentManager(), this, n );
 
@@ -55,8 +56,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(intentContact);
             }
         });
-
-
 
     }
 

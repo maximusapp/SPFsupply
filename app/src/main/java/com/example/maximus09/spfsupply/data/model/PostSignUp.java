@@ -10,10 +10,14 @@ public class PostSignUp {
     private String password;
     private String company_logo;
     private String phone_number;
-    private String business_name;
+    private String business_address;
     private String delivery_address;
+    private String card_number;
+    private String exp_month;
+    private String exp_year;
+    private String cvc;
 
-    public PostSignUp(String token, String company_name, String email, String manager_name, String password, String company_logo, String phone_number, String business_name, String delivery_address) {
+    public PostSignUp(String token, String company_name, String email, String manager_name, String password, String company_logo, String phone_number, String business_address, String delivery_address, String card_number, String exp_month, String exp_year, String cvc) {
         this.token = token;
         this.company_name = company_name;
         this.email = email;
@@ -21,8 +25,12 @@ public class PostSignUp {
         this.password = password;
         this.company_logo = company_logo;
         this.phone_number = phone_number;
-        this.business_name = business_name;
+        this.business_address = business_address;
         this.delivery_address = delivery_address;
+        this.card_number = card_number;
+        this.exp_month = exp_month;
+        this.exp_year = exp_year;
+        this.cvc = cvc;
     }
 
     public String getToken() {
@@ -81,12 +89,12 @@ public class PostSignUp {
         this.phone_number = phone_number;
     }
 
-    public String getBusiness_name() {
-        return business_name;
+    public String getBusiness_address() {
+        return business_address;
     }
 
-    public void setBusiness_name(String business_name) {
-        this.business_name = business_name;
+    public void setBusiness_address(String business_address) {
+        this.business_address = business_address;
     }
 
     public String getDelivery_address() {
@@ -95,5 +103,37 @@ public class PostSignUp {
 
     public void setDelivery_address(String delivery_address) {
         this.delivery_address = delivery_address;
+    }
+
+    public String getCard_number() {
+        return card_number;
+    }
+
+    public void setCard_number(String card_number) {
+        this.card_number = card_number;
+    }
+
+    public String getExp_month() {
+        return exp_month;
+    }
+
+    public void setExp_month(String exp_month) {
+        this.exp_month = exp_month;
+    }
+
+    public String getExp_year() {
+        return exp_year;
+    }
+
+    public void setExp_year(String exp_year) {
+        this.exp_year = exp_year;
+    }
+
+    public String getCvc() {
+        return cvc;
+    }
+
+    public void setCvc(String cvc) {
+        this.cvc = cvc;
     }
 }

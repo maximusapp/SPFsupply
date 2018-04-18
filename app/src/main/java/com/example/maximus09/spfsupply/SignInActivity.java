@@ -44,8 +44,8 @@ public class SignInActivity extends AppCompatActivity {
 
     TextView textResetPassword;
 
-    static  EditText editEmail;
-    static  EditText editPass;
+    private EditText editEmail;
+    private EditText editPass;
 
     Button signIn;
 
@@ -138,13 +138,14 @@ public class SignInActivity extends AppCompatActivity {
                     ResponseFromServer responseFromServer = gsonFromServer.fromJson(responseBody, ResponseFromServer.class);
 
                     if (responseFromServer != null && "admin".equalsIgnoreCase(responseFromServer.getAccount_type())){
-                        Intent intentAdmin = new Intent(SignInActivity.this, HomeActivity.class);
+                        Intent intentAdmin = new Intent(SignInActivity.this, ManufacturesActivity.class);
                         startActivity(intentAdmin);
                     } else
                         if (responseFromServer != null && "user".equalsIgnoreCase(responseFromServer.getAccount_type())) {
-                            Intent intentUser = new Intent(SignInActivity.this, ManufacturesActivity.class);
+                            Intent intentUser = new Intent(SignInActivity.this, HomeActivity.class);
                             startActivity(intentUser);
                         }
+
                     // added
                     int responseCode = response.code();
                     if(responseCode == 200 && responseBody.length() != 0) {

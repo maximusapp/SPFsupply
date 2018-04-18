@@ -9,39 +9,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-
-import okhttp3.FormBody;
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class AdditionalInformationActivity extends AppCompatActivity {
 
@@ -81,12 +66,6 @@ public class AdditionalInformationActivity extends AppCompatActivity {
         TextView tv=(TextView) toolbar.getChildAt(0);
         Typeface typefaceActionBar = Typeface.createFromAsset(this.getAssets(), "fonts/latoregular.ttf");
         tv.setTypeface(typefaceActionBar);
-
-
-
-
-
-
 
         editText_phone = (EditText)findViewById(R.id.phon_edit_text_signup);
         editText_business_address = (EditText)findViewById(R.id.business_address_edit_signup);
@@ -131,6 +110,8 @@ public class AdditionalInformationActivity extends AppCompatActivity {
                     intentProceed.putExtra("address", address);
                     intentProceed.putExtra("delivery_address", delivery);
 
+                    // If we not select image, send null on server
+                    if (file_path != null)
                     intentProceed.putExtra("image_link", file_path.getAbsolutePath());
 
                     // Get data from first activity
@@ -184,12 +165,11 @@ public class AdditionalInformationActivity extends AppCompatActivity {
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 imageView.setImageBitmap(selectedImage);
 
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(AdditionalInformationActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
-        }else {
-            Toast.makeText(AdditionalInformationActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -248,7 +228,6 @@ public class AdditionalInformationActivity extends AppCompatActivity {
 //            return null;
 //        }
 //    }
-
 
 
 }
