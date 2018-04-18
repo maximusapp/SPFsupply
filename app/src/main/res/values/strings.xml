@@ -46,6 +46,12 @@
     <string name="button_text">Proceed</string>
     <string name="phone_number_hint">320-697-8644</string>
 
+    //Payment method text
+    <string name="card_number">Enter your card number</string>
+    <string name="exp_month">Exp. month</string>
+    <string name="exp_year">Exp. year</string>
+    <string name="cvc">Cvc</string>
+
     <string name="home">Home</string>
     <string name="profile_home">Profile</string>
     <string name="orders_home">Orders</string>
