@@ -3,22 +3,34 @@ package com.example.maximus09.spfsupply.data.model;
 
 public class PostSignUp {
 
+    private String token;
     private String company_name;
     private String email;
     private String manager_name;
     private String password;
+    private String company_logo;
     private String phone_number;
     private String business_name;
     private String delivery_address;
 
-    public PostSignUp(String company_name, String email, String manager_name, String password, String phone_number, String business_name, String delivery_address) {
+    public PostSignUp(String token, String company_name, String email, String manager_name, String password, String company_logo, String phone_number, String business_name, String delivery_address) {
+        this.token = token;
         this.company_name = company_name;
         this.email = email;
         this.manager_name = manager_name;
         this.password = password;
+        this.company_logo = company_logo;
         this.phone_number = phone_number;
         this.business_name = business_name;
         this.delivery_address = delivery_address;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getCompany_name() {
@@ -51,6 +63,14 @@ public class PostSignUp {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCompany_logo() {
+        return company_logo;
+    }
+
+    public void setCompany_logo(String company_logo) {
+        this.company_logo = company_logo;
     }
 
     public String getPhone_number() {

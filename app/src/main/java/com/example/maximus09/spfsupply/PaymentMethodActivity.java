@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PaymentMethodActivity extends AppCompatActivity {
@@ -20,9 +21,6 @@ public class PaymentMethodActivity extends AppCompatActivity {
 
     TextView textSignInNow;
     Button signUpButton;
-
-//    TextView textView_test;
-//    TextView textView_test2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +45,16 @@ public class PaymentMethodActivity extends AppCompatActivity {
         // Get data from 1-t and 2-d Activities
         //========== it is work ===========
         Intent intentExtras = getIntent();
+
         // From 1-t act
         String com_name = intentExtras.getStringExtra("com_name");
         String mailta = intentExtras.getStringExtra("mailta");
         String owners = intentExtras.getStringExtra("owners");
         String pass = intentExtras.getStringExtra("pass");
         String conf_pass = intentExtras.getStringExtra("conf");
+
         // From 2-d act
+        String image_link = intentExtras.getStringExtra("image_link");
         String phone = intentExtras.getStringExtra("phone");
         String business_adr = intentExtras.getStringExtra("address");
         String delivery_address = intentExtras.getStringExtra("delivery_address");

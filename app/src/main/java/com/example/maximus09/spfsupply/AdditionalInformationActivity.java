@@ -1,16 +1,47 @@
 package com.example.maximus09.spfsupply;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+
+import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class AdditionalInformationActivity extends AppCompatActivity {
 
@@ -19,11 +50,17 @@ public class AdditionalInformationActivity extends AppCompatActivity {
         return true;
     }
 
+    private int GALLERY_REQUEST = 1;
+
     public EditText editText_phone;
     public EditText editText_business_address;
     public EditText editText_delivery_address;
 
     Button buttonProceed;
+
+    ImageView imageView;
+
+   public File file_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +82,28 @@ public class AdditionalInformationActivity extends AppCompatActivity {
         Typeface typefaceActionBar = Typeface.createFromAsset(this.getAssets(), "fonts/latoregular.ttf");
         tv.setTypeface(typefaceActionBar);
 
+
+
+
+
+
+
         editText_phone = (EditText)findViewById(R.id.phon_edit_text_signup);
         editText_business_address = (EditText)findViewById(R.id.business_address_edit_signup);
         editText_delivery_address = (EditText)findViewById(R.id.edit_delivery_adress);
+
+        // Handle add company logo button
+        imageView = (ImageView)findViewById(R.id.add_company_logo);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+
+            }
+        });
 
         buttonProceed = (Button)findViewById(R.id.button_proceed_additional);
         buttonProceed.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +131,8 @@ public class AdditionalInformationActivity extends AppCompatActivity {
                     intentProceed.putExtra("address", address);
                     intentProceed.putExtra("delivery_address", delivery);
 
+                    intentProceed.putExtra("image_link", file_path.getAbsolutePath());
+
                     // Get data from first activity
                     String company_name = getIntent().getStringExtra("companyName");
                     String email = getIntent().getStringExtra("email");
@@ -90,6 +148,10 @@ public class AdditionalInformationActivity extends AppCompatActivity {
                     intentProceed.putExtra("conf", conf_pass);
 
                     startActivity(intentProceed);
+
+//                   PostMulti postMulti = new PostMulti();
+//                   postMulti.execute(file_path.getAbsolutePath());
+
                 }
 
             }
@@ -97,4 +159,96 @@ public class AdditionalInformationActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected final void onActivityResult(int requestCode, int resultCode, final Intent data) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission
+                    .READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                return;
+            }
+        }
+
+        if(resultCode == RESULT_OK && requestCode == GALLERY_REQUEST) {
+
+            try {
+                final Uri imageUri = data.getData();
+                final File file = new File(getRealPathFromURI(this, imageUri));
+                file_path = file;
+
+                Log.d("URI OF IMAGE ", getRealPathFromURI(this, imageUri));
+
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                imageView.setImageBitmap(selectedImage);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(AdditionalInformationActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+        }else {
+            Toast.makeText(AdditionalInformationActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    // We get correct URI path of image in storage of phone
+    public static String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            @SuppressWarnings("ConstantConditions")
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
+//    public static class PostMulti extends AsyncTask<String, String, Void> {
+//
+//        @Override
+//        protected Void doInBackground(String... strings) {
+//
+//           final MediaType MEDIA_TYPE = MediaType.parse("image/*");
+//           final OkHttpClient okHttpClient = new OkHttpClient();
+//
+//            RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+//                   .addPart(
+//                           Headers.of("Content-Disposition", "form-data; name=\"company_logo\""),
+//                           RequestBody.create(MEDIA_TYPE, new File(strings[0]))
+//                   )
+//                   .build();
+//
+//            Request request = new Request.Builder()
+//                    .url("http://spf.yobibyte.in.ua/api/sign_up")
+//                    .post(requestBody)
+//                    .build();
+//
+//            try {
+//                Response response = okHttpClient.newCall(request).execute();
+//
+//                if (!response.isSuccessful()) {
+//                    throw new IOException("Error : " + request);
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//            return null;
+//        }
+//    }
+
+
+
 }
