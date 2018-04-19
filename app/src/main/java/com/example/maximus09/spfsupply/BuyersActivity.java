@@ -3,6 +3,7 @@ package com.example.maximus09.spfsupply;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,11 +25,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maximus09.spfsupply.data.model.PostAllBuyers;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class BuyersActivity extends AppCompatActivity {
 
     private static final String GET_ALL_BUYERS_URL = "http://spf.yobibyte.in.ua/api/buyers/admin/get_all/";
+
+    SharedPreferences sharedPreferences;
 
     ListView listViewBuyers;
     ListView listBuyersCompany;
@@ -57,6 +71,9 @@ public class BuyersActivity extends AppCompatActivity {
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        GetAllBuyers getAllBuyers = new GetAllBuyers();
+        getAllBuyers.execute();
 
         listBuyersCompany = (ListView)findViewById(R.id.listView_buyerss);
 
@@ -146,7 +163,7 @@ public class BuyersActivity extends AppCompatActivity {
 
 
     @SuppressLint("StaticFieldLeak")
-    private class GetAllBuyers extends AsyncTask<String, String, String> {
+    private class GetAllBuyers extends AsyncTask<String, String, PostAllBuyers> {
 
         @Override
         protected void onPreExecute() {
@@ -154,8 +171,41 @@ public class BuyersActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected PostAllBuyers doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+
+            Preference preference = new Preference(getApplicationContext());
+
+            PostAllBuyers postAllBuyers = new PostAllBuyers(preference.getToken());
+
+            try{
+                RequestBody body = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postAllBuyers));
+
+                Request request = new Request.Builder()
+                        .url(GET_ALL_BUYERS_URL)
+                        .post(body)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                okhttp3.Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_BUYERS", responseBody);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(PostAllBuyers postAllBuyers) {
+            super.onPostExecute(postAllBuyers);
         }
     }
 

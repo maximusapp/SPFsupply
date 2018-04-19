@@ -2,6 +2,7 @@ package com.example.maximus09.spfsupply;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.maximus09.spfsupply.data.model.Post;
 import com.example.maximus09.spfsupply.data.model.ResponseFromServer;
+import com.example.maximus09.spfsupply.util.Preference;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -41,6 +43,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public static final String LOGIN_URL = "http://spf.yobibyte.in.ua/api/sign_in/";
+
+    SharedPreferences sharedPreferences;
 
     TextView textResetPassword;
 
@@ -145,6 +149,12 @@ public class SignInActivity extends AppCompatActivity {
 //                            Intent intentUser = new Intent(SignInActivity.this, HomeActivity.class);
 //                            startActivity(intentUser);
 //                        }
+
+                    Preference preference = new Preference(getApplicationContext());
+                    preference.setToken(responseFromServer.getToken());
+
+//                    String get_saved_token = sharedPreferences.getString("SIGN_IN_TOKEN", "");
+//                    Log.d("SAVED TOKEN", get_saved_token);
 
                     // added
                     int responseCode = response.code();
