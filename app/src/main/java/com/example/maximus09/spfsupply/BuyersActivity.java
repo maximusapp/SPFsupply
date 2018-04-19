@@ -1,8 +1,10 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -25,8 +27,9 @@ import java.util.ArrayList;
 
 public class BuyersActivity extends AppCompatActivity {
 
-    ListView listViewBuyers;
+    private static final String GET_ALL_BUYERS_URL = "http://spf.yobibyte.in.ua/api/buyers/admin/get_all/";
 
+    ListView listViewBuyers;
     ListView listBuyersCompany;
 
     @Override
@@ -140,6 +143,26 @@ public class BuyersActivity extends AppCompatActivity {
 
 
     }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetAllBuyers extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
+    }
+
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

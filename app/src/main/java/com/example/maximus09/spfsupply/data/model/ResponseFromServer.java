@@ -5,10 +5,12 @@ public class ResponseFromServer {
 
     private Boolean success;
     private String account_type;
+    private String token;
 
-    public ResponseFromServer(Boolean success, String account_type) {
+    public ResponseFromServer(Boolean success, String account_type, String token) {
         this.success = success;
         this.account_type = account_type;
+        this.token = token;
     }
 
     public Boolean getSuccess() {
@@ -27,20 +29,30 @@ public class ResponseFromServer {
         this.account_type = account_type;
     }
 
-    public class AccountType {
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public class AccountData {
 
         private String id;
         private String email;
         private String type_acc;
         private String created_at;
         private String updated_at;
+        private String token;
 
-        public AccountType(String id, String email, String type_acc, String created_at, String updated_at) {
+        public AccountData(String id, String email, String type_acc, String created_at, String updated_at, String token) {
             this.id = id;
             this.email = email;
             this.type_acc = type_acc;
             this.created_at = created_at;
             this.updated_at = updated_at;
+            this.token = token;
         }
 
         public String getId() {
@@ -81,6 +93,14 @@ public class ResponseFromServer {
 
         public void setUpdated_at(String updated_at) {
             this.updated_at = updated_at;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
         }
     }
 

@@ -57,4 +57,8 @@ public class TestFragmentAdapter extends FragmentStatePagerAdapter {
         return content[position];
     }
 
+    public void update(String[] sd0){
+        this.content = sd0;
+        notifyDataSetChanged();
+    }
 }

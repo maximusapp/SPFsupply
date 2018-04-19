@@ -137,14 +137,14 @@ public class SignInActivity extends AppCompatActivity {
                     Gson gsonFromServer = new Gson();
                     ResponseFromServer responseFromServer = gsonFromServer.fromJson(responseBody, ResponseFromServer.class);
 
-                    if (responseFromServer != null && "admin".equalsIgnoreCase(responseFromServer.getAccount_type())){
-                        Intent intentAdmin = new Intent(SignInActivity.this, ManufacturesActivity.class);
-                        startActivity(intentAdmin);
-                    } else
-                        if (responseFromServer != null && "user".equalsIgnoreCase(responseFromServer.getAccount_type())) {
-                            Intent intentUser = new Intent(SignInActivity.this, HomeActivity.class);
-                            startActivity(intentUser);
-                        }
+//                    if (responseFromServer != null && "admin".equalsIgnoreCase(responseFromServer.getAccount_type())){
+//                        Intent intentAdmin = new Intent(SignInActivity.this, ManufacturesActivity.class);
+//                        startActivity(intentAdmin);
+//                    } else
+//                        if (responseFromServer != null && "user".equalsIgnoreCase(responseFromServer.getAccount_type())) {
+//                            Intent intentUser = new Intent(SignInActivity.this, HomeActivity.class);
+//                            startActivity(intentUser);
+//                        }
 
                     // added
                     int responseCode = response.code();
@@ -162,6 +162,16 @@ public class SignInActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ResponseFromServer result) {
             super.onPostExecute(result);
+
+            if (result != null && "admin".equalsIgnoreCase(result.getAccount_type())){
+                Intent intentAdmin = new Intent(SignInActivity.this, ManufacturesActivity.class);
+                startActivity(intentAdmin);
+            } else
+            if (result != null && "user".equalsIgnoreCase(result.getAccount_type())) {
+                Intent intentUser = new Intent(SignInActivity.this, HomeActivity.class);
+                startActivity(intentUser);
+            }
+
 
           }
 
