@@ -148,8 +148,6 @@ public class ManufacturesActivity extends AppCompatActivity {
        recyclerView_manufacturers.setLayoutManager(new LinearLayoutManager(this));
        itemListManufacturersAdapter = new ItemListManufacturersAdapter(null, this);
        recyclerView_manufacturers.setAdapter(itemListManufacturersAdapter);
-
-
     }
 
 

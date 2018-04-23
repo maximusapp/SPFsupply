@@ -1,8 +1,6 @@
 package com.example.maximus09.spfsupply;
 
-/**
- * Created by maximus09 on 23.03.2018.
- */
+
 
 public class ItemsOrders {
 

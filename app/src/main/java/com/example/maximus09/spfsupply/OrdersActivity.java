@@ -1,25 +1,45 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.maximus09.spfsupply.data.model.PostAllOrders;
+import com.example.maximus09.spfsupply.data.model.ResponseAllOrders;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class OrdersActivity extends AppCompatActivity {
 
+    private static final String GET_ALL_ORDERS = "http://spf.yobibyte.in.ua/api/admin/orders/get/";
+
     ListView listViewOrders;
 
-    ListView listOfOrdersCompany;
+    RecyclerView recyclerView_list_orders;
+    ItemListOrdersAdapter itemListOrdersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,33 +112,13 @@ public class OrdersActivity extends AppCompatActivity {
             }
         });
 
-        listOfOrdersCompany = (ListView)findViewById(R.id.listView_orders);
+        GetAllOrdersResponse getAllOrdersResponse = new GetAllOrdersResponse();
+        getAllOrdersResponse.execute();
 
-        ItemsOrders itemsOrders1 = new ItemsOrders("CompanyName", "Order#", "$1232", "Date");
-        ItemsOrders itemsOrders2 = new ItemsOrders("CompanyName", "Order#", "$1232", "04/02/2018");
-        ItemsOrders itemsOrders3 = new ItemsOrders("CompanyName", "Order#", "$1232", "04/02/2018");
-        ItemsOrders itemsOrders4 = new ItemsOrders("CompanyName", "Order#", "$1232", "04/02/2018");
-
-        final ArrayList<ItemsOrders> orders = new ArrayList<>();
-        orders.add(itemsOrders1);
-        orders.add(itemsOrders2);
-        orders.add(itemsOrders3);
-        orders.add(itemsOrders4);
-
-        final ItemListOrdersAdapter ordersItemListAdapter = new ItemListOrdersAdapter(this, R.layout.custom_orders_item_list, orders);
-        listOfOrdersCompany.setAdapter(ordersItemListAdapter);
-
-        listOfOrdersCompany.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (i == 0) {
-                    Intent intentOrderNumber = new Intent(OrdersActivity.this, OrderNumberActivity.class);
-                    startActivity(intentOrderNumber);
-                }
-
-            }
-        });
+        recyclerView_list_orders = (RecyclerView)findViewById(R.id.recycler_orders);
+        recyclerView_list_orders.setLayoutManager(new LinearLayoutManager(this));
+        itemListOrdersAdapter = new ItemListOrdersAdapter(null, this);
+        recyclerView_list_orders.setAdapter(itemListOrdersAdapter);
 
     }
 
@@ -130,5 +130,63 @@ public class OrdersActivity extends AppCompatActivity {
         }
 
     }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetAllOrdersResponse extends AsyncTask<String, String, ResponseAllOrders> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseAllOrders doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostAllOrders postAllOrders = new PostAllOrders(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postAllOrders));
+
+                Request request = new Request.Builder()
+                        .url(GET_ALL_ORDERS)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_ORDERS", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAllOrders responseAllOrders = gsonFromServer.fromJson(responseBody, ResponseAllOrders.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllOrders;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseAllOrders responseAllOrders) {
+            super.onPostExecute(responseAllOrders);
+            itemListOrdersAdapter.updateListOrders(responseAllOrders.getOrders_data());
+        }
+    }
+
+
 
 }

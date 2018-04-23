@@ -1,25 +1,46 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.maximus09.spfsupply.data.model.PostAllMessagesAdmin;
+import com.example.maximus09.spfsupply.data.model.PostAllOrders;
+import com.example.maximus09.spfsupply.data.model.ResponseAllMessagesAdmin;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MessagesActivity extends AppCompatActivity {
 
+    private static final String GET_CHAT_ADMIN_URL = "http://spf.yobibyte.in.ua/api/chat/admin/get/";
+
     ListView listViewMessages;
 
-    ListView listViewMessagesCompany;
+    RecyclerView recyclerView_messages;
+    ItemListMessageAdminAdapter itemListMessageAdminAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,32 +114,13 @@ public class MessagesActivity extends AppCompatActivity {
         });
 
 
-        listViewMessagesCompany = (ListView)findViewById(R.id.listView_messages);
+        GetAllMessagesAdminResponse getAllMessagesAdminResponse = new GetAllMessagesAdminResponse();
+        getAllMessagesAdminResponse.execute();
 
-        ItemMessages itemMessages = new ItemMessages("CompanyName", "Order#");
-        ItemMessages itemMessages1 = new ItemMessages("CompanyName", "Order#");
-        ItemMessages itemMessages2 = new ItemMessages("CompanyName", "Order#");
-        ItemMessages itemMessages3 = new ItemMessages("CompanyName", "Order#");
-
-        final ArrayList<ItemMessages> messages = new ArrayList<>();
-        messages.add(itemMessages);
-        messages.add(itemMessages1);
-        messages.add(itemMessages2);
-        messages.add(itemMessages3);
-
-        final ItemListMessageAdapter itemListMessageAdapter = new ItemListMessageAdapter(this, R.layout.custom_message_item_list, messages);
-        listViewMessagesCompany.setAdapter(itemListMessageAdapter);
-
-
-        listViewMessagesCompany.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    Intent intentMessages = new Intent(MessagesActivity.this, CompanyNameActivity.class);
-                    startActivity(intentMessages);
-                }
-            }
-        });
+        recyclerView_messages = (RecyclerView)findViewById(R.id.recycler_messages_admin);
+        recyclerView_messages.setLayoutManager(new LinearLayoutManager(this));
+        itemListMessageAdminAdapter = new ItemListMessageAdminAdapter(null, this);
+        recyclerView_messages.setAdapter(itemListMessageAdminAdapter);
 
 
     }
@@ -132,4 +134,59 @@ public class MessagesActivity extends AppCompatActivity {
 
     }
 
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetAllMessagesAdminResponse extends AsyncTask<String, String, ResponseAllMessagesAdmin> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseAllMessagesAdmin doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostAllMessagesAdmin postAllMessagesAdmin = new PostAllMessagesAdmin(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postAllMessagesAdmin));
+
+                Request request = new Request.Builder()
+                        .url(GET_CHAT_ADMIN_URL)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_ORDERS", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAllMessagesAdmin responseAllMessagesAdmin = gsonFromServer.fromJson(responseBody, ResponseAllMessagesAdmin.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllMessagesAdmin;
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseAllMessagesAdmin responseAllMessagesAdmin) {
+            super.onPostExecute(responseAllMessagesAdmin);
+            itemListMessageAdminAdapter.updateListMessagesAdmin(responseAllMessagesAdmin.getChats_data());
+        }
+    }
 }

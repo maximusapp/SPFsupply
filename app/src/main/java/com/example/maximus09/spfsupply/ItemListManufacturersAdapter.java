@@ -1,7 +1,6 @@
 package com.example.maximus09.spfsupply;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,6 +37,10 @@ public class ItemListManufacturersAdapter extends RecyclerView.Adapter<ItemListM
     public void onBindViewHolder(@NonNull ItemListManufacturersAdapter.ViewHolder holder, int position) {
         holder.manufacturer_name.setText(items.get(position).getCompany_name());
         Glide.with(context).load(items.get(position).getLogo()).into(holder.manufacturer_logo);
+
+        if (items.get(position).getLogo() == null) {
+            Glide.with(context).load(R.drawable.add_order_number).into(holder.manufacturer_logo);
+        }
 
     }
 
