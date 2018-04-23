@@ -46,14 +46,9 @@ public class BuyersActivity extends AppCompatActivity {
 
     private static final String GET_ALL_BUYERS_URL = "http://spf.yobibyte.in.ua/api/buyers/admin/get_all/";
 
-    ImageView image_indicator;
-    ImageView logo;
-    TextView company_name;
-
     ListView listViewBuyers;
 
     ItemListBuyersAdapter itemListBuyersAdapter;
-    //private List<ResponseAllBuyers> responseAllBuyersList;
     RecyclerView recyclerViewBuyers;
 
     @Override

@@ -1,20 +1,16 @@
 package com.example.maximus09.spfsupply;
 
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maximus09.spfsupply.data.model.ResponseAllBuyers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,7 +34,7 @@ class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemListBuyersAdapter.V
 
     @Override
     public void onBindViewHolder(@NonNull ItemListBuyersAdapter.ViewHolder holder, int position) {
-        holder.company_name.setText((CharSequence) items.get(position).getCompany_name());
+        holder.company_name.setText(items.get(position).getCompany_name());
     }
 
     @Override

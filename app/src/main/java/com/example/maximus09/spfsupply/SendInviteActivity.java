@@ -1,9 +1,14 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.maximus09.spfsupply.data.model.PostInvite;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.lang.ref.Reference;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class SendInviteActivity extends AppCompatActivity {
 
@@ -47,11 +65,81 @@ public class SendInviteActivity extends AppCompatActivity {
         button_send_invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String mail = edit_email.getText().toString().trim();
+                String message = edit_message.getText().toString().trim();
+
+                if (mail.isEmpty()) {
+                    edit_email.setError("Enter email");
+                }
+                if (message.isEmpty()) {
+                    edit_message.setError("Enter invitation text");
+                }
+
+                InviteBuyers inviteBuyers = new InviteBuyers();
+                inviteBuyers.execute(mail, message);
+
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intentSignUp = new Intent(SendInviteActivity.this, BuyersActivity.class);
+                        startActivity(intentSignUp);
+                    }
+                }, 2000);
+
 
             }
         });
 
     }
+
+    @SuppressLint("StaticFieldLeak")
+    private class InviteBuyers extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplication());
+            PostInvite postInvite = new PostInvite(preference.getToken(), strings[0], strings[1]);
+
+            try {
+
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postInvite));
+
+                Request request = new Request.Builder()
+                        .url(INVITE_BUYERS_BY_EMAIL)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("Response Invite", responseBody);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

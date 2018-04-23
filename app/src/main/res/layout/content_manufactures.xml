@@ -27,8 +27,8 @@
         android:searchIcon="@null">
     </SearchView>
 
-    <ListView
-        android:id="@+id/listView_manufacturers"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_manufacturers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="120dp"
@@ -36,6 +36,6 @@
         android:layout_marginStart="9dp"
         android:layout_marginRight="9dp"
         android:layout_marginEnd="9dp">
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.design.widget.CoordinatorLayout>

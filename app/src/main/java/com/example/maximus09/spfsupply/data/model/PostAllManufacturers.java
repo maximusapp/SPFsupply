@@ -2,11 +2,10 @@ package com.example.maximus09.spfsupply.data.model;
 
 
 
-public class PostAllBuyers {
+public class PostAllManufacturers {
     private String token;
 
-    public PostAllBuyers(String token) {
+    public PostAllManufacturers(String token) {
         this.token = token;
     }
-
 }

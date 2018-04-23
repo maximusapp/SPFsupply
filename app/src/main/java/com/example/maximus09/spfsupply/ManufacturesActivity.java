@@ -1,16 +1,22 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,13 +27,29 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maximus09.spfsupply.data.model.PostAllManufacturers;
+import com.example.maximus09.spfsupply.data.model.ResponseAllManufacturers;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class ManufacturesActivity extends AppCompatActivity {
 
-    ListView listView;
+    private static final String GET_ALL_MANUFACTURERS = "http://spf.yobibyte.in.ua/api/manufacturers/get_for_admin/";
 
-    ListView listManufacturers;
+    RecyclerView recyclerView_manufacturers;
+    ItemListManufacturersAdapter itemListManufacturersAdapter;
+
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +83,10 @@ public class ManufacturesActivity extends AppCompatActivity {
 
        //  NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
        // navigationView.setNavigationItemSelectedListener(this);
+
+        //Handle AsyncTask
+        GetAllManufacturerResponse getAllManufacturer = new GetAllManufacturerResponse();
+        getAllManufacturer.execute();
 
         // set ListView in Drawer
         listView = (ListView)findViewById(R.id.drawer_menu_list);
@@ -117,36 +143,73 @@ public class ManufacturesActivity extends AppCompatActivity {
             }
         });
 
+        //Find RecyclerView for All Manufacturers and set adapter
+       recyclerView_manufacturers = (RecyclerView)findViewById(R.id.recycler_manufacturers);
+       recyclerView_manufacturers.setLayoutManager(new LinearLayoutManager(this));
+       itemListManufacturersAdapter = new ItemListManufacturersAdapter(null, this);
+       recyclerView_manufacturers.setAdapter(itemListManufacturersAdapter);
 
-        listManufacturers = (ListView)findViewById(R.id.listView_manufacturers);
-
-        ItemsManufacturers itemsManufacturers1 = new ItemsManufacturers("Manufacturer1");
-        ItemsManufacturers itemsManufacturers2 = new ItemsManufacturers("Manufacturer3");
-        ItemsManufacturers itemsManufacturers3 = new ItemsManufacturers("Manufacturer15");
-        ItemsManufacturers itemsManufacturers4 = new ItemsManufacturers("Manufacturer17");
-
-        final ArrayList<ItemsManufacturers> manufacturers = new ArrayList<>();
-        manufacturers.add(itemsManufacturers1);
-        manufacturers.add(itemsManufacturers2);
-        manufacturers.add(itemsManufacturers3);
-        manufacturers.add(itemsManufacturers4);
-
-        final ItemListManufacturersAdapter itemListManufacturersAdapter = new ItemListManufacturersAdapter(this, R.layout.custom_manufacturers_item_list, manufacturers);
-        listManufacturers.setAdapter(itemListManufacturersAdapter);
-
-        listManufacturers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (position == 0) {
-                    Intent intentManufacturers = new Intent(getApplicationContext(), InformationActivity.class);
-                    startActivity(intentManufacturers);
-                }
-
-            }
-        });
 
     }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetAllManufacturerResponse extends AsyncTask<String, String, ResponseAllManufacturers> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseAllManufacturers doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostAllManufacturers postAllManufacturers = new PostAllManufacturers(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postAllManufacturers));
+
+                Request request = new Request.Builder()
+                        .url(GET_ALL_MANUFACTURERS)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_MANUFACTURER", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAllManufacturers responseAllManufacturers = gsonFromServer.fromJson(responseBody, ResponseAllManufacturers.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllManufacturers;
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseAllManufacturers responseAllManufacturers) {
+            super.onPostExecute(responseAllManufacturers);
+            itemListManufacturersAdapter.updateListManufacturer(responseAllManufacturers.getManufacturers_data());
+        }
+    }
+
+
+
 
     // handling press on button in Drawer Menu
     public void closeDrawer(View view) {
