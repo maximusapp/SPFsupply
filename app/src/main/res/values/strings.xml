@@ -72,7 +72,7 @@
 
     <string name="location_manuf">LOCATION</string>
     <string name="website_manuf">WEBSITE</string>
-    <string name="add_website_manuf">Add company website</string>
+    <string name="add_amount_manuf">Add amount</string>
 
     <string name="text_of_location">3290 Hermosillo Place Washington, DC 20521–3290</string>
     <string name="delivery_address_check_out">3290 Honey Creek Dr. New York, NY 10028 </string>
@@ -81,8 +81,15 @@
     <string name="invoice_order_home_text"><u> Invoice order#1234 </u> </string>
 
 
-    <string name="merchant_id_text">MERCHANT ID</string>
+    //New Manufacturer text
+    <string name="merchant_id_text">ADDITIONAL COSTS</string>
     <string name="add_merchant_id">Add Merchant ID</string>
+    <string name="tax_amount">TAX AMOUNT</string>
+    <string name="shipping_cost">SHIPPING COST</string>
+    <string name="fee">FEE</string>
+    <string name="location">Enter location</string>
+    <string name="website">Add company website</string>
+    <string name="amount">Add amount</string>
 
 
     <string name="action_settings">Settings</string>

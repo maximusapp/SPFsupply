@@ -1,8 +1,6 @@
 package com.example.maximus09.spfsupply.data.model;
 
 
-import java.util.List;
-
 public class GetLogosFromServer {
 
     private Boolean success;

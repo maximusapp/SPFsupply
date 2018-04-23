@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +18,14 @@ public class SendInviteActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    //Server url to invite user to app
+    private static final String INVITE_BUYERS_BY_EMAIL = "http://spf.yobibyte.in.ua/api/buyers/invite_by_email/";
+
+    EditText edit_email;
+    EditText edit_message;
+
+    Button button_send_invite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +39,18 @@ public class SendInviteActivity extends AppCompatActivity {
         TextView tv=(TextView) toolbar.getChildAt(0);
         Typeface typefaceActionBar = Typeface.createFromAsset(this.getAssets(), "fonts/latoregular.ttf");
         tv.setTypeface(typefaceActionBar);
+
+        edit_email = (EditText)findViewById(R.id.edit_text_send_invite);
+        edit_message = (EditText)findViewById(R.id.edit_text_message_invite);
+
+        button_send_invite = (Button)findViewById(R.id.send_invite_button);
+        button_send_invite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     @Override

@@ -13,6 +13,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -21,16 +23,19 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maximus09.spfsupply.data.model.PostAllBuyers;
+import com.example.maximus09.spfsupply.data.model.ResponseAllBuyers;
 import com.example.maximus09.spfsupply.util.Preference;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -41,10 +46,15 @@ public class BuyersActivity extends AppCompatActivity {
 
     private static final String GET_ALL_BUYERS_URL = "http://spf.yobibyte.in.ua/api/buyers/admin/get_all/";
 
-    SharedPreferences sharedPreferences;
+    ImageView image_indicator;
+    ImageView logo;
+    TextView company_name;
 
     ListView listViewBuyers;
-    ListView listBuyersCompany;
+
+    ItemListBuyersAdapter itemListBuyersAdapter;
+    //private List<ResponseAllBuyers> responseAllBuyersList;
+    RecyclerView recyclerViewBuyers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,36 +82,15 @@ public class BuyersActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        GetAllBuyers getAllBuyers = new GetAllBuyers();
+        GetResponseAllBuyers getAllBuyers = new GetResponseAllBuyers();
         getAllBuyers.execute();
 
-        listBuyersCompany = (ListView)findViewById(R.id.listView_buyerss);
 
-        ItemsBuyers itemsBuyers1 = new ItemsBuyers("MyCompany1");
-        ItemsBuyers itemsBuyers3 = new ItemsBuyers("MyCompany3");
-        ItemsBuyers itemsBuyers15 = new ItemsBuyers("MyCompany15");
-        ItemsBuyers itemsBuyers17 = new ItemsBuyers("MyCompany17");
-
-        final ArrayList<ItemsBuyers> buyers = new ArrayList<>();
-        buyers.add(itemsBuyers1);
-        buyers.add(itemsBuyers3);
-        buyers.add(itemsBuyers15);
-        buyers.add(itemsBuyers17);
-
-        final ItemListBuyersAdapter buyersItemListAdapter = new ItemListBuyersAdapter(this, R.layout.custom_buyers_item_list, buyers);
-        listBuyersCompany.setAdapter(buyersItemListAdapter);
-
-        listBuyersCompany.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (position == 0) {
-                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        });
+        //Handle RecyclerView
+        recyclerViewBuyers = (RecyclerView)findViewById(R.id.recyclerView_buyerss);
+        recyclerViewBuyers.setLayoutManager(new LinearLayoutManager(this));
+        itemListBuyersAdapter = new ItemListBuyersAdapter(null, this);
+        recyclerViewBuyers.setAdapter(itemListBuyersAdapter);
 
 
         // set ListView in Drawer
@@ -161,9 +150,8 @@ public class BuyersActivity extends AppCompatActivity {
 
     }
 
-
     @SuppressLint("StaticFieldLeak")
-    private class GetAllBuyers extends AsyncTask<String, String, PostAllBuyers> {
+    private class GetResponseAllBuyers extends AsyncTask<String, String, ResponseAllBuyers> {
 
         @Override
         protected void onPreExecute() {
@@ -171,14 +159,12 @@ public class BuyersActivity extends AppCompatActivity {
         }
 
         @Override
-        protected PostAllBuyers doInBackground(String... strings) {
+        protected ResponseAllBuyers doInBackground(String... strings) {
 
             OkHttpClient okHttpClient = new OkHttpClient();
             Gson gson = new Gson();
 
-
             Preference preference = new Preference(getApplicationContext());
-
             PostAllBuyers postAllBuyers = new PostAllBuyers(preference.getToken());
 
             try{
@@ -196,6 +182,15 @@ public class BuyersActivity extends AppCompatActivity {
                 String responseBody = response.body().string();
                 Log.i("ALL_BUYERS", responseBody);
 
+                Gson gsonFromServer = new Gson();
+                ResponseAllBuyers responseAllBuyers = gsonFromServer.fromJson(responseBody, ResponseAllBuyers.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllBuyers;
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -204,14 +199,11 @@ public class BuyersActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(PostAllBuyers postAllBuyers) {
-            super.onPostExecute(postAllBuyers);
+        protected void onPostExecute(ResponseAllBuyers responseAllBuyers) {
+            super.onPostExecute(responseAllBuyers);
+            itemListBuyersAdapter.updateBuyersList(responseAllBuyers.getBuyers_data());
         }
     }
-
-
-
-
 
 
     @Override

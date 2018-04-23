@@ -44,8 +44,6 @@ public class SignInActivity extends AppCompatActivity {
 
     public static final String LOGIN_URL = "http://spf.yobibyte.in.ua/api/sign_in/";
 
-    SharedPreferences sharedPreferences;
-
     TextView textResetPassword;
 
     private EditText editEmail;
@@ -131,8 +129,6 @@ public class SignInActivity extends AppCompatActivity {
                             .build();
 
                     okhttp3.Response response = okHttpClient.newCall(request).execute();
-                   // Response response = client.newCall(request).execute();
-                  //  int responseCode = response.code();
 
                     @SuppressWarnings("ConstantConditions")
                     String responseBody = response.body().string();
@@ -141,20 +137,9 @@ public class SignInActivity extends AppCompatActivity {
                     Gson gsonFromServer = new Gson();
                     ResponseFromServer responseFromServer = gsonFromServer.fromJson(responseBody, ResponseFromServer.class);
 
-//                    if (responseFromServer != null && "admin".equalsIgnoreCase(responseFromServer.getAccount_type())){
-//                        Intent intentAdmin = new Intent(SignInActivity.this, ManufacturesActivity.class);
-//                        startActivity(intentAdmin);
-//                    } else
-//                        if (responseFromServer != null && "user".equalsIgnoreCase(responseFromServer.getAccount_type())) {
-//                            Intent intentUser = new Intent(SignInActivity.this, HomeActivity.class);
-//                            startActivity(intentUser);
-//                        }
 
                     Preference preference = new Preference(getApplicationContext());
                     preference.setToken(responseFromServer.getToken());
-
-//                    String get_saved_token = sharedPreferences.getString("SIGN_IN_TOKEN", "");
-//                    Log.d("SAVED TOKEN", get_saved_token);
 
                     // added
                     int responseCode = response.code();

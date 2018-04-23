@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,19 @@ public class NewManufacturerActivity extends AppCompatActivity {
     private TextView textCompanyName;
     private EditText textEnterCompany;
     private ImageView imageAddCompany;
+
+    Switch aSwitch;
+
+    TextView text_tax_amount;
+    EditText edit_add_amount;
+    View view;
+
+    TextView text_shipping;
+    EditText edit_shipping;
+    View view1;
+
+    TextView text_fee;
+    EditText edit_add_amount_fee;
 
     public boolean onSupportNavigateUp(){
         onBackPressed();
@@ -44,6 +60,65 @@ public class NewManufacturerActivity extends AppCompatActivity {
         TextView tv=(TextView) toolbar.getChildAt(0);
         Typeface typefaceActionBar = Typeface.createFromAsset(this.getAssets(), "fonts/latoregular.ttf");
         tv.setTypeface(typefaceActionBar);
+
+
+        aSwitch = (Switch)findViewById(R.id.switch_new_manufacturer);
+
+        text_tax_amount = (TextView)findViewById(R.id.text_tax_amount);
+        edit_add_amount = (EditText)findViewById(R.id.edit_add_amount);
+        view = (View)findViewById(R.id.view6);
+
+        text_shipping = (TextView)findViewById(R.id.text_shiping_cost);
+        edit_shipping = (EditText)findViewById(R.id.edit_shiping_cost);
+        view1 = (View)findViewById(R.id.view7);
+
+        text_fee = (TextView)findViewById(R.id.text_fee);
+        edit_add_amount_fee = (EditText)findViewById(R.id.edit_add_amount_fee);
+
+        text_tax_amount.setVisibility(View.INVISIBLE);
+        edit_add_amount.setVisibility(View.INVISIBLE);
+        view.setVisibility(View.INVISIBLE);
+
+        text_shipping.setVisibility(View.INVISIBLE);
+        edit_shipping.setVisibility(View.INVISIBLE);
+        view1.setVisibility(View.INVISIBLE);
+
+        text_fee.setVisibility(View.INVISIBLE);
+        edit_add_amount_fee.setVisibility(View.INVISIBLE);
+
+
+        aSwitch.setChecked(false);
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (aSwitch.isChecked()) {
+                    text_tax_amount.setVisibility(View.VISIBLE);
+                    edit_add_amount.setVisibility(View.VISIBLE);
+                    view.setVisibility(View.VISIBLE);
+
+                    text_shipping.setVisibility(View.VISIBLE);
+                    edit_shipping.setVisibility(View.VISIBLE);
+                    view1.setVisibility(View.VISIBLE);
+
+                    text_fee.setVisibility(View.VISIBLE);
+                    edit_add_amount_fee.setVisibility(View.VISIBLE);
+                } else {
+                    text_tax_amount.setVisibility(View.INVISIBLE);
+                    edit_add_amount.setVisibility(View.INVISIBLE);
+                    view.setVisibility(View.INVISIBLE);
+
+                    text_shipping.setVisibility(View.INVISIBLE);
+                    edit_shipping.setVisibility(View.INVISIBLE);
+                    view1.setVisibility(View.INVISIBLE);
+
+                    text_fee.setVisibility(View.INVISIBLE);
+                    edit_add_amount_fee.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+
+
 
         imageAddCompany = (ImageView)findViewById(R.id.icon_new_manuf);
         textCompanyName = (TextView)findViewById(R.id.text_company_name);

@@ -37,7 +37,6 @@ public class WelcomeActivity extends AppCompatActivity {
     Button signUp;
     Button contactWelcome;
     TestFragmentAdapter testFragmentAdapter;
-    //String n[] = {"http://spf.yobibyte.in.ua/public/manufacturers_logo/Hu2W0yzSM31xxLC6V4NJ8DqiJmdihhnN_1523007140.png", "https://www.frameweb.com/img/loading.jpg", "https://www.frameweb.com/img/loading.jpg"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +45,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         mPager = (KKViewPager) findViewById(R.id.kk_pager);
 
-        GetLogosFromServer getLogosFromServer = new GetLogosFromServer();
-
+        //GetLogosFromServer getLogosFromServer = new GetLogosFromServer();
 
         testFragmentAdapter = new TestFragmentAdapter(getSupportFragmentManager(), this, new String[]{});
         mPager.setAdapter(testFragmentAdapter);
