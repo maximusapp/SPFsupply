@@ -109,7 +109,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.269"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
     <EditText
         android:id="@+id/edit_location"
@@ -131,7 +133,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.33"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
 
 
@@ -167,7 +171,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.47000003"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
     <EditText
         android:id="@+id/edit_text_enter_website"
@@ -190,7 +196,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.529"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
     <View
         android:layout_width="0dp"
@@ -223,7 +231,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.63"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
 
     <Switch
@@ -234,6 +244,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -283,7 +294,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.74"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
     <View
         android:id="@+id/view6"
@@ -342,7 +355,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.86"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
 
     <View
@@ -377,7 +392,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.92"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
     <EditText
         android:id="@+id/edit_add_amount_fee"
@@ -399,7 +416,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.98"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="24dp" />
 
 
 </android.support.constraint.ConstraintLayout>

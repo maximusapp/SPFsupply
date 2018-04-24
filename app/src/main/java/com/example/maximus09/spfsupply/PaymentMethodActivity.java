@@ -76,24 +76,6 @@ public class PaymentMethodActivity extends AppCompatActivity {
         cvc = (EditText)findViewById(R.id.cvc);
 
 
-//        // Get data from 1-t and 2-d Activities
-//        //========== it is work ===========
-//        Intent intentExtras = getIntent();
-//
-//        // From 1-t act
-//        String com_name = intentExtras.getStringExtra("com_name");
-//        String mailta = intentExtras.getStringExtra("mailta");
-//        String owners = intentExtras.getStringExtra("owners");
-//        String pass = intentExtras.getStringExtra("pass");
-//        String conf_pass = intentExtras.getStringExtra("conf");
-//
-//        // From 2-d act
-//        String image_link = intentExtras.getStringExtra("image_link");
-//        String phone = intentExtras.getStringExtra("phone");
-//        String business_adr = intentExtras.getStringExtra("address");
-//        String delivery_address = intentExtras.getStringExtra("delivery_address");
-
-
         textSignInNow = (TextView)findViewById(R.id.text_sign_in_payment_method);
         textSignInNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,15 +90,11 @@ public class PaymentMethodActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                String card_number = card_num.getText().toString().trim();
-//                String expo_month = exp_month.getText().toString().trim();
-//                String expo_year = exp_year.getText().toString().trim();
-//                String cvcc = cvc.getText().toString().trim();
-
                 TascSignUp tascSignUp = new TascSignUp();
                 tascSignUp.execute();
 
-                Toast.makeText(PaymentMethodActivity.this, "Registration success! Wait while admin activated your account", Toast.LENGTH_LONG).show();
+                Toast.makeText(PaymentMethodActivity.this, "Registration success! Wait while admin activated your account",
+                        Toast.LENGTH_LONG).show();
 
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

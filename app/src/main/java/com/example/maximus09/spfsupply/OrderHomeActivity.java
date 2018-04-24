@@ -1,7 +1,9 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -9,7 +11,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,13 +22,29 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.maximus09.spfsupply.data.model.PostAllOrdersUser;
+import com.example.maximus09.spfsupply.data.model.ResponseAllOrdersUser;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class OrderHomeActivity extends AppCompatActivity {
 
+    //Menu of Drawer
     ListView listView;
 
-    ListView listOfOrdersHome;
+    private static final String ORDER_USER_URL = "http://spf.yobibyte.in.ua/api/user/orders/get/";
+
+    RecyclerView recyclerView_user_order;
+    ItemListOrderHomeAdapter itemListOrderHomeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,32 +113,14 @@ public class OrderHomeActivity extends AppCompatActivity {
             }
         });
 
-        listOfOrdersHome = (ListView)findViewById(R.id.listView_orders_home);
 
-        ItemOrdersHome itemsOrdersHome1 = new ItemOrdersHome("Orders#", "Date", "$1232");
-        ItemOrdersHome itemsOrdersHome2 = new ItemOrdersHome("Orders#", "04/02/2018", "$1232");
-        ItemOrdersHome itemsOrdersHome3 = new ItemOrdersHome("Orders#", "04/02/2018", "$1232");
-        ItemOrdersHome itemsOrdersHome4 = new ItemOrdersHome("Orders#", "04/02/2018", "$1232");
+        GetAllOrdersUserResponse getAllOrdersUserResponse = new GetAllOrdersUserResponse();
+        getAllOrdersUserResponse.execute();
 
-        final ArrayList<ItemOrdersHome> itemOrdersHomes = new ArrayList<>();
-        itemOrdersHomes.add(itemsOrdersHome1);
-        itemOrdersHomes.add(itemsOrdersHome2);
-        itemOrdersHomes.add(itemsOrdersHome3);
-        itemOrdersHomes.add(itemsOrdersHome4);
-
-        final ItemListOrderHomeAdapter itemListOrderHomeAdapter = new ItemListOrderHomeAdapter(this, R.layout.custom_order_home_item, itemOrdersHomes);
-        listOfOrdersHome.setAdapter(itemListOrderHomeAdapter);
-
-        listOfOrdersHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    Intent intentOrderNumberHome = new Intent(view.getContext(), OrderNumberHomeActivity.class);
-                    startActivity(intentOrderNumberHome);
-                }
-            }
-        });
-
+        recyclerView_user_order = (RecyclerView)findViewById(R.id.recycler_orders_user);
+        recyclerView_user_order.setLayoutManager(new LinearLayoutManager(this));
+        itemListOrderHomeAdapter = new ItemListOrderHomeAdapter(null, this);
+        recyclerView_user_order.setAdapter(itemListOrderHomeAdapter);
 
 
     }
@@ -137,5 +140,59 @@ public class OrderHomeActivity extends AppCompatActivity {
         startActivity(intentProfileHome);
     }
 
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetAllOrdersUserResponse extends AsyncTask<String, String, ResponseAllOrdersUser> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseAllOrdersUser doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostAllOrdersUser postAllOrdersUser = new PostAllOrdersUser(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postAllOrdersUser));
+
+                Request request = new Request.Builder()
+                        .url(ORDER_USER_URL)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_ORDERS_USER", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAllOrdersUser responseAllOrdersUser = gsonFromServer.fromJson(responseBody, ResponseAllOrdersUser.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllOrdersUser;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseAllOrdersUser responseAllOrdersUser) {
+            super.onPostExecute(responseAllOrdersUser);
+            itemListOrderHomeAdapter.updateListOrdersUser(responseAllOrdersUser.getOrders_data());
+        }
+    }
 
 }

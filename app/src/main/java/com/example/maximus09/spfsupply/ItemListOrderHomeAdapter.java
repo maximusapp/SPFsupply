@@ -2,50 +2,73 @@ package com.example.maximus09.spfsupply;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
+import com.example.maximus09.spfsupply.data.model.ResponseAllOrdersUser;
+
+import java.util.List;
 
 
+public class ItemListOrderHomeAdapter extends RecyclerView.Adapter<ItemListOrderHomeAdapter.ViewHolder> {
 
-public class ItemListOrderHomeAdapter extends ArrayAdapter<ItemOrdersHome> {
+    private List<ResponseAllOrdersUser.OrderDataUser> items;
+    private Context context;
 
-    private Context mContextOrderHome;
-    int mResourceOrderHome;
-
-    public ItemListOrderHomeAdapter(@NonNull Context context, int resource, @NonNull ArrayList<ItemOrdersHome> objects) {
-        super(context, resource, objects);
-        this.mContextOrderHome = context;
-        this.mResourceOrderHome = resource;
+    public ItemListOrderHomeAdapter(List<ResponseAllOrdersUser.OrderDataUser> items, Context context) {
+        this.items = items;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        String itemOrderHome = getItem(position).getOrderHome();
-        String itemDateHome = getItem(position).getDateHome();
-        String itemPriceHome = getItem(position).getPriceHome();
-
-        ItemOrdersHome itemOrdersHome = new ItemOrdersHome(itemOrderHome, itemDateHome, itemPriceHome);
-
-        LayoutInflater inflaterOrderHome = LayoutInflater.from(mContextOrderHome);
-        convertView = inflaterOrderHome.inflate(mResourceOrderHome, parent, false);
-
-        TextView itemsOrderNumberHome = (TextView)convertView.findViewById(R.id.orderNumber_list_orders_home);
-        TextView itemsPriceHome = (TextView)convertView.findViewById(R.id.price_order_home);
-        TextView itemsDateHome = (TextView)convertView.findViewById(R.id.date_orders_home);
-
-        itemsOrderNumberHome.setText(itemOrderHome);
-        itemsPriceHome.setText(itemPriceHome);
-        itemsDateHome.setText(itemDateHome);
-
-
-        return convertView;
+    public ItemListOrderHomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_order_home_item, parent, false);
+        return new ViewHolder(v);
     }
+
+    @Override
+    public void onBindViewHolder(@NonNull ItemListOrderHomeAdapter.ViewHolder holder, int position) {
+        holder.order_price.setText(items.get(position).getTotal_count());
+        holder.order_date.setText(items.get(position).getOrder_date());
+        holder.order_number.setText(items.get(position).getOrder_name());
+
+        Glide.with(context).load(items.get(position).getManufacturers_logo()).into(holder.logo);
+
+    }
+
+    @Override
+    public int getItemCount() {
+        if (items == null) {
+            return 0;
+        }
+        return items.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView logo;
+        public TextView order_number;
+        public TextView order_date;
+        public TextView order_price;
+
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            logo = (ImageView)itemView.findViewById(R.id.image_orders_user);
+            order_number = (TextView)itemView.findViewById(R.id.order_number_user);
+            order_date = (TextView)itemView.findViewById(R.id.date_orders_user);
+            order_price = (TextView)itemView.findViewById(R.id.price_order_user);
+        }
+    }
+
+    public void updateListOrdersUser(List<ResponseAllOrdersUser.OrderDataUser> list){
+        this.items = list;
+        notifyDataSetChanged();
+    }
+
 }

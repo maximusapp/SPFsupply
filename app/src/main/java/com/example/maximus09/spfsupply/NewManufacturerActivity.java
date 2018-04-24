@@ -1,11 +1,23 @@
 package com.example.maximus09.spfsupply;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.media.Image;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +29,35 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maximus09.spfsupply.data.model.PostCreateNewManufacture;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class NewManufacturerActivity extends AppCompatActivity {
 
-    private TextView textCompanyName;
-    private EditText textEnterCompany;
-    private ImageView imageAddCompany;
+    private static final String CREATE_NEW_MANUFACT = "http://spf.yobibyte.in.ua/api/manufacturers/create/";
+
+    private int GALLERY_REQUEST = 1;
+    public File file_path;
+
+    //Edit areas to send on Server
+    ImageView image_logo;
+   public EditText company_name;
+   public EditText location;
+   public EditText website;
 
     Switch aSwitch;
 
@@ -40,6 +76,7 @@ public class NewManufacturerActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +98,24 @@ public class NewManufacturerActivity extends AppCompatActivity {
         Typeface typefaceActionBar = Typeface.createFromAsset(this.getAssets(), "fonts/latoregular.ttf");
         tv.setTypeface(typefaceActionBar);
 
+        image_logo = (ImageView)findViewById(R.id.icon_new_manuf);
+        image_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+
+            }
+        });
+
+
+        company_name = (EditText)findViewById(R.id.text_enter_company);
+        location = (EditText)findViewById(R.id.edit_location);
+        website = (EditText)findViewById(R.id.edit_text_enter_website);
+
+        //Find SWITCH
         aSwitch = (Switch)findViewById(R.id.switch_new_manufacturer);
 
         text_tax_amount = (TextView)findViewById(R.id.text_tax_amount);
@@ -117,15 +171,66 @@ public class NewManufacturerActivity extends AppCompatActivity {
             }
         });
 
+    }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        imageAddCompany = (ImageView)findViewById(R.id.icon_new_manuf);
-        textCompanyName = (TextView)findViewById(R.id.text_company_name);
-        textEnterCompany = (EditText)findViewById(R.id.text_enter_company);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission
+                    .READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                return;
+            }
+        }
+
+        if(resultCode == RESULT_OK && requestCode == GALLERY_REQUEST) {
+
+            try {
+                final Uri imageUri = data.getData();
+                final File file = new File(getRealPathFromURI(this, imageUri));
+                file_path = file;
+
+                Log.d("URI OF IMAGE ", getRealPathFromURI(this, imageUri));
+
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                image_logo.setImageBitmap(selectedImage);
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(NewManufacturerActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+            super.onActivityResult(requestCode, resultCode, data);
+        }
 
 
     }
+
+
+    // We get correct URI path of image in storage of phone
+    public static String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            @SuppressWarnings("ConstantConditions")
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -141,13 +246,95 @@ public class NewManufacturerActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        String companyes_name = company_name.getText().toString().trim();
+        String locations = location.getText().toString().trim();
+        String websites = website.getText().toString().trim();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done_new_manufacturer) {
-              Toast.makeText(this, "Pressed DONE button", Toast.LENGTH_SHORT).show();
+
+            if (companyes_name.isEmpty()) {
+                company_name.setError("Enter company name");
+            } else
+                if (locations.isEmpty()) {
+                location.setError("Enter location");
+                } else
+                    if (websites.isEmpty()) {
+                website.setError("Enter website");
+                    }
+
+            TascCreateNewManufacture tascCreateNewManufacture = new TascCreateNewManufacture();
+            tascCreateNewManufacture.execute(file_path.getAbsolutePath(), companyes_name, locations, websites);
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class TascCreateNewManufacture extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+
+            final MediaType MEDIA_TYPE = MediaType.parse("image/*");
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+           // Gson gson = new Gson();
+
+            String logo_link = file_path.getAbsolutePath();
+
+            String com_name = company_name.getText().toString().trim();
+            String loc = location.getText().toString().trim();
+            String web = website.getText().toString().trim();
+            String amoun = edit_add_amount.getText().toString().trim();
+            String shipp = edit_shipping.getText().toString().trim();
+            String fee = edit_add_amount_fee.getText().toString().trim();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostCreateNewManufacture postCreateNewManufacture = new PostCreateNewManufacture(preference.getToken(),
+                    com_name, loc, web, amoun, shipp, fee, logo_link);
+
+            try {
+
+                //RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postCreateNewManufacture));
+
+                RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                        .addPart(
+                                Headers.of("Content-Disposition", "form-data; name=\"logo\""),
+                                RequestBody.create(MEDIA_TYPE, new File(strings[0]))
+                        ).build();
+
+
+                Request request = new Request.Builder()
+                        .url(CREATE_NEW_MANUFACT)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("DEBUG_CREATE", responseBody);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+    }
+
+
 
 }

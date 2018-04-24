@@ -1,7 +1,9 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -9,7 +11,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,14 +22,29 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.maximus09.spfsupply.data.model.PostAllMessagesForUser;
+import com.example.maximus09.spfsupply.data.model.ResponseAllMessageUser;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class MessagesHomeActivity extends AppCompatActivity {
+
+    private static final String GET_CHAT_USER = "http://spf.yobibyte.in.ua/api/chat/user/get/";
 
     ListView listView;
 
-    ListView listMessagesHome;
+    RecyclerView recyclerView_message;
+    ItemListMessageHomeAdapter itemListMessageHomeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,34 +122,13 @@ public class MessagesHomeActivity extends AppCompatActivity {
             }
         });
 
-        listMessagesHome = (ListView)findViewById(R.id.listView_messages_home);
+        GetAllMessageResponseUser getAllMessageResponseUser = new GetAllMessageResponseUser();
+        getAllMessageResponseUser.execute();
 
-        ItemMessages itemMessages = new ItemMessages("Order#", "Date");
-        ItemMessages itemMessages1 = new ItemMessages("Order#", "02/02/2016");
-        ItemMessages itemMessages2 = new ItemMessages("Order#", "02/02/2016");
-        ItemMessages itemMessages3 = new ItemMessages("Order#", "02/02/2016");
-
-        final ArrayList<ItemMessages> messages = new ArrayList<>();
-        messages.add(itemMessages);
-        messages.add(itemMessages1);
-        messages.add(itemMessages2);
-        messages.add(itemMessages3);
-
-        final ItemListMessageHomeAdapter itemListMessageHomeAdapter = new ItemListMessageHomeAdapter(this, R.layout.custom_message_home_item, messages);
-        listMessagesHome.setAdapter(itemListMessageHomeAdapter);
-
-        listMessagesHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    Intent intentMessageItem = new Intent(view.getContext(), ChatHomeActivity.class);
-                    startActivity(intentMessageItem);
-                    finish();
-                }
-            }
-        });
-
-
+        recyclerView_message = (RecyclerView)findViewById(R.id.recyclerView_messages_home);
+        recyclerView_message.setLayoutManager(new LinearLayoutManager(this));
+        itemListMessageHomeAdapter = new ItemListMessageHomeAdapter(null, this);
+        recyclerView_message.setAdapter(itemListMessageHomeAdapter);
 
     }
 
@@ -149,4 +148,59 @@ public class MessagesHomeActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("StaticFieldLeak")
+    private class GetAllMessageResponseUser extends AsyncTask<String, String, ResponseAllMessageUser> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseAllMessageUser doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostAllMessagesForUser postAllMessagesForUser = new PostAllMessagesForUser(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postAllMessagesForUser));
+
+                Request request = new Request.Builder()
+                        .url(GET_CHAT_USER)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_MESSAGES_USER", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAllMessageUser responseAllMessageUser = gsonFromServer.fromJson(responseBody, ResponseAllMessageUser.class);
+
+
+                int responseCode = response.code();
+                if (responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllMessageUser;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseAllMessageUser responseAllMessageUser) {
+            super.onPostExecute(responseAllMessageUser);
+            itemListMessageHomeAdapter.updateListMessagesAdmin(responseAllMessageUser.getChats_data());
+        }
+
+    }
 }

@@ -54,7 +54,7 @@
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="68dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="110dp"
         android:layout_marginTop="8dp"
         android:background="@null"
         android:ems="10"
@@ -65,13 +65,11 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toEndOf="@+id/icon_new_manuf"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.17000002"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="68dp"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintVertical_bias="0.168"
+        tools:ignore="UnusedAttribute" />
 
     <View
         android:layout_width="0dp"
@@ -94,13 +92,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/latoregular"
         android:text="PRICE ($)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.29000002" />
@@ -111,7 +109,7 @@
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="112dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:background="@null"
         android:ems="10"
@@ -123,12 +121,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/icon_new_manuf"
+
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.337"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="112dp"
-        android:layout_marginLeft="8dp" />
+        tools:ignore="UnusedAttribute" />
 
     <View
         android:id="@+id/view"

@@ -35,8 +35,8 @@
 
     </SearchView>
 
-    <ListView
-        android:id="@+id/listView_orders_home"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_orders_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="120dp"
@@ -46,6 +46,6 @@
         android:layout_marginEnd="9dp"
         >
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>

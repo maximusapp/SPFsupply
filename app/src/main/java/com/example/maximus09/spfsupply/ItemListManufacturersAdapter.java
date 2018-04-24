@@ -70,4 +70,6 @@ public class ItemListManufacturersAdapter extends RecyclerView.Adapter<ItemListM
     }
 
 
+
+
 }
