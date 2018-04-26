@@ -3,50 +3,34 @@ package com.example.maximus09.spfsupply.data.model;
 
 public class PostSignUp {
 
-    private String token;
-    private String company_name;
     private String email;
-    private String manager_name;
     private String password;
-    private String company_logo;
+    private String company_name;
     private String phone_number;
     private String business_address;
     private String delivery_address;
+    private String manager_name;
     private String card_number;
     private String exp_month;
     private String exp_year;
     private String cvc;
+    private String company_logo;
 
-    public PostSignUp(String token, String company_name, String email, String manager_name, String password, String company_logo, String phone_number, String business_address, String delivery_address, String card_number, String exp_month, String exp_year, String cvc) {
-        this.token = token;
-        this.company_name = company_name;
+    public PostSignUp(String email, String password, String company_name, String phone_number,
+                      String business_address, String delivery_address, String manager_name,
+                      String card_number, String exp_month, String exp_year, String cvc, String company_logo) {
         this.email = email;
-        this.manager_name = manager_name;
         this.password = password;
-        this.company_logo = company_logo;
+        this.company_name = company_name;
         this.phone_number = phone_number;
         this.business_address = business_address;
         this.delivery_address = delivery_address;
+        this.manager_name = manager_name;
         this.card_number = card_number;
         this.exp_month = exp_month;
         this.exp_year = exp_year;
         this.cvc = cvc;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getCompany_name() {
-        return company_name;
-    }
-
-    public void setCompany_name(String company_name) {
-        this.company_name = company_name;
+        this.company_logo = company_logo;
     }
 
     public String getEmail() {
@@ -57,14 +41,6 @@ public class PostSignUp {
         this.email = email;
     }
 
-    public String getManager_name() {
-        return manager_name;
-    }
-
-    public void setManager_name(String manager_name) {
-        this.manager_name = manager_name;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -73,12 +49,12 @@ public class PostSignUp {
         this.password = password;
     }
 
-    public String getCompany_logo() {
-        return company_logo;
+    public String getCompany_name() {
+        return company_name;
     }
 
-    public void setCompany_logo(String company_logo) {
-        this.company_logo = company_logo;
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
     }
 
     public String getPhone_number() {
@@ -103,6 +79,14 @@ public class PostSignUp {
 
     public void setDelivery_address(String delivery_address) {
         this.delivery_address = delivery_address;
+    }
+
+    public String getManager_name() {
+        return manager_name;
+    }
+
+    public void setManager_name(String manager_name) {
+        this.manager_name = manager_name;
     }
 
     public String getCard_number() {
@@ -135,5 +119,13 @@ public class PostSignUp {
 
     public void setCvc(String cvc) {
         this.cvc = cvc;
+    }
+
+    public String getCompany_logo() {
+        return company_logo;
+    }
+
+    public void setCompany_logo(String company_logo) {
+        this.company_logo = company_logo;
     }
 }

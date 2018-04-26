@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.maximus09.spfsupply.data.model.ResponseAllBuyers;
 
 import java.util.List;
@@ -35,6 +36,7 @@ class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemListBuyersAdapter.V
     @Override
     public void onBindViewHolder(@NonNull ItemListBuyersAdapter.ViewHolder holder, int position) {
         holder.company_name.setText(items.get(position).getCompany_name());
+        Glide.with(context).load(items.get(position).getCompany_logo()).into(holder.image_logo);
     }
 
     @Override

@@ -89,9 +89,9 @@ public class AdditionalInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String phone = editText_phone.toString();
-                String address = editText_business_address.toString();
-                String delivery = editText_delivery_address.toString();
+                String phone = editText_phone.getText().toString().trim();
+                String address = editText_business_address.getText().toString().trim();
+                String delivery = editText_delivery_address.getText().toString().trim();
 
                 if (phone.isEmpty()) {
                     editText_phone.setError("Enter phone Number");
@@ -130,11 +130,7 @@ public class AdditionalInformationActivity extends AppCompatActivity {
 
                     startActivity(intentProceed);
 
-//                   PostMulti postMulti = new PostMulti();
-//                   postMulti.execute(file_path.getAbsolutePath());
-
                 }
-
             }
 
         });
@@ -209,7 +205,7 @@ public class AdditionalInformationActivity extends AppCompatActivity {
 //                   .build();
 //
 //            Request request = new Request.Builder()
-//                    .url("http://spf.yobibyte.in.ua/api/sign_up")
+//                    .url("http://spf.yobibyte.in.ua/api/sign_up/")
 //                    .post(requestBody)
 //                    .build();
 //

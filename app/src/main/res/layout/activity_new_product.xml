@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,12 +12,11 @@
         layout="@layout/app_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:ignore="MissingConstraints" />
+
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView_add_product_admin"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginBottom="8dp"
@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.127"
+        app:layout_constraintVertical_bias="0.13"
         app:srcCompat="@drawable/icon_plus" />
 
     <TextView
@@ -49,7 +49,7 @@
         app:layout_constraintVertical_bias="0.13" />
 
     <EditText
-        android:id="@+id/text_enter_new_product"
+        android:id="@+id/edit_new_productName"
         android:layout_width="189dp"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
@@ -60,18 +60,19 @@
         android:ems="10"
         android:fontFamily="@font/latoregular"
         android:hint="@string/enter_new_product_title"
+
         android:inputType="textPersonName"
         android:textColor="@color/colorGray"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168"
+        app:layout_constraintVertical_bias="0.18"
         tools:ignore="UnusedAttribute" />
 
     <View
+        android:id="@+id/view5"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginBottom="8dp"
@@ -104,24 +105,26 @@
         app:layout_constraintVertical_bias="0.29000002" />
 
     <EditText
-        android:id="@+id/price_enter_new_product"
+        android:id="@+id/price_newProduct"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="112dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="112dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:background="@null"
         android:ems="10"
         android:fontFamily="@font/latoregular"
         android:hint="@string/enter_new_product_price"
+
         android:inputType="textPersonName"
         android:textColor="@color/colorGray"
-
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.337"
@@ -160,73 +163,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45" />
 
-    <ImageView
-        android:id="@+id/image_attached_new_prod"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_addNewProduct"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55"
-        app:srcCompat="@drawable/delete_image_background_red" />
+        app:layout_constraintVertical_bias="0.57">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/latoregular"
-        android:text="Document 1"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.642" />
+    </android.support.v7.widget.RecyclerView>
 
-    <ImageView
-        android:id="@+id/image_add_new_pros"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.35"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55"
-        app:srcCompat="@drawable/icon_plus" />
-
-    <TextView
-        android:id="@+id/text_add_new"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/latoregular"
-        android:text="Add New"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.36"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.642" />
 
     <View
         android:layout_width="0dp"
@@ -261,7 +215,7 @@
         app:layout_constraintVertical_bias="0.73" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editText_description_product"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

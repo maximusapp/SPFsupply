@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.maximus09.spfsupply.data.model.GetLogosFromServer;
 import com.example.maximus09.spfsupply.data.model.PostImageSlider;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -108,7 +111,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         .post(body)
                         .build();
 
-                okhttp3.Response response = okHttpClient.newCall(request).execute();
+                Response response = okHttpClient.newCall(request).execute();
 
                 @SuppressWarnings("ConstantConditions")
                 String responseBody = response.body().string();
@@ -134,11 +137,17 @@ public class WelcomeActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(GetLogosFromServer getLogosFromServer) {
             super.onPostExecute(getLogosFromServer);
+
             if(isFinishing())
                 return;
-            testFragmentAdapter.update(getLogosFromServer.getLogos());
+
+            if (getLogosFromServer != null) {
+                testFragmentAdapter.update(getLogosFromServer.getLogos());
+            } else {
+                Toast.makeText(WelcomeActivity.this, "Check Internet connection, or it's problem with server", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
-
 
 }

@@ -6,9 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.maximus09.spfsupply.InformationActivity"
-    >
-
+    tools:context="com.example.maximus09.spfsupply.InformationActivity">
 
     <include
         android:id="@+id/includeInformation"
@@ -21,7 +19,7 @@
 
 
     <ImageView
-        android:id="@+id/image_information"
+        android:id="@+id/image_information_admin"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginBottom="8dp"
@@ -36,13 +34,14 @@
         app:layout_constraintVertical_bias="0.120000005"
         app:srcCompat="@drawable/shape_buyers" />
 
+
     <TextView
-        android:id="@+id/textName_information"
+        android:id="@+id/textName_information_admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="105dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/latoregular"
         android:text="MyCompany"
@@ -50,7 +49,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.13999999" />
@@ -76,6 +75,8 @@
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/latoregular"
@@ -90,13 +91,13 @@
 
 
     <TextView
-        android:id="@+id/text_company_location1_edit_info"
+        android:id="@+id/text_company_location_info_admin"
         android:layout_width="270dp"
-        android:layout_height="55dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="180dp"
         android:text="@string/text_of_location"
         android:textColor="@color/colorBlack"
         android:textSize="20sp"
@@ -105,7 +106,7 @@
         app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36"
+        app:layout_constraintVertical_bias="0.01"
         tools:ignore="UnusedAttribute" />
 
     <View
@@ -129,6 +130,8 @@
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/latoregular"
@@ -142,7 +145,7 @@
         tools:ignore="UnusedAttribute" />
 
     <TextView
-        android:id="@+id/web_company_location1_edit"
+        android:id="@+id/web_site_text_admin"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -181,6 +184,8 @@
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/latoregular"
@@ -191,149 +196,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.63"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp" />
-
-
+        tools:ignore="UnusedAttribute" />
 
     <ImageView
-        android:id="@+id/image_add_new_product_information"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.74"
-        app:srcCompat="@drawable/icon_plus" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.87"
-        app:srcCompat="@drawable/shape_buyers" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.089"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/shape_buyers" />
-
-    <TextView
-        android:id="@+id/text_add_new_product_info"
+        android:id="@+id/add_productInformationActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="Add new"
-
-        android:fontFamily="@font/latoregular"
-        android:textSize="12sp"
+        android:src="@drawable/icon_plus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.33"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.72" />
+        app:layout_constraintVertical_bias="0.73" />
 
     <TextView
-        android:id="@+id/prod_title_information"
+        android:id="@+id/add_productInformationActivityText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="8dp"
-        android:text="Product title"
-        android:fontFamily="@font/latoregular"
-        android:textSize="12sp"
+        android:text="Add New"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.33"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.84000003" />
+        app:layout_constraintVertical_bias="0.71000004" />
 
-    <TextView
-        android:id="@+id/prod_title2_information"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/latoregular"
-        android:text="Product title"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.33"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96" />
 
-    <ImageView
-        android:id="@+id/image_delete"
-        android:layout_width="18dp"
-        android:layout_height="23dp"
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_information_admin"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85"
-        app:srcCompat="@drawable/delete_red" />
+        app:layout_constraintVertical_bias="1.0">
 
-    <ImageView
-        android:id="@+id/image_delete2"
-        android:layout_width="18dp"
-        android:layout_height="23dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.96"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96"
-        app:srcCompat="@drawable/delete_red" />
-
+    </android.support.v7.widget.RecyclerView>
 
 
 </android.support.constraint.ConstraintLayout>

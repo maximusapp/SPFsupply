@@ -29,16 +29,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.maximus09.spfsupply.data.model.PostCreateNewManufacture;
 import com.example.maximus09.spfsupply.util.Preference;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -208,7 +205,6 @@ public class NewManufacturerActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-
     }
 
 
@@ -249,6 +245,9 @@ public class NewManufacturerActivity extends AppCompatActivity {
         String companyes_name = company_name.getText().toString().trim();
         String locations = location.getText().toString().trim();
         String websites = website.getText().toString().trim();
+        String taxAmount = edit_add_amount.getText().toString().trim();
+        String shipping = edit_shipping.getText().toString().trim();
+        String addAmountFee = edit_add_amount_fee.getText().toString().trim();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done_new_manufacturer) {
@@ -263,8 +262,12 @@ public class NewManufacturerActivity extends AppCompatActivity {
                 website.setError("Enter website");
                     }
 
+
+            String logo_link = file_path == null ? null : file_path.getAbsolutePath();
+
+            Preference preference = new Preference(getApplicationContext());
             TascCreateNewManufacture tascCreateNewManufacture = new TascCreateNewManufacture();
-            tascCreateNewManufacture.execute(file_path.getAbsolutePath(), companyes_name, locations, websites);
+            tascCreateNewManufacture.execute(logo_link,companyes_name,locations,websites,taxAmount,shipping,addAmountFee,preference.getToken());
 
             return true;
         }
@@ -274,7 +277,7 @@ public class NewManufacturerActivity extends AppCompatActivity {
 
 
     @SuppressLint("StaticFieldLeak")
-    private class TascCreateNewManufacture extends AsyncTask<String, String, Void> {
+    private class TascCreateNewManufacture extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
@@ -282,36 +285,36 @@ public class NewManufacturerActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Void doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
 
             final MediaType MEDIA_TYPE = MediaType.parse("image/*");
 
             OkHttpClient okHttpClient = new OkHttpClient();
-           // Gson gson = new Gson();
 
-            String logo_link = file_path.getAbsolutePath();
-
-            String com_name = company_name.getText().toString().trim();
-            String loc = location.getText().toString().trim();
-            String web = website.getText().toString().trim();
-            String amoun = edit_add_amount.getText().toString().trim();
-            String shipp = edit_shipping.getText().toString().trim();
-            String fee = edit_add_amount_fee.getText().toString().trim();
-
-            Preference preference = new Preference(getApplicationContext());
-            PostCreateNewManufacture postCreateNewManufacture = new PostCreateNewManufacture(preference.getToken(),
-                    com_name, loc, web, amoun, shipp, fee, logo_link);
+            String amoun = strings[4];
+            String shipp = strings[5];
+            String fee = strings[6];
 
             try {
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
 
-                //RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postCreateNewManufacture));
+                        .addFormDataPart("token", strings[7])
+                        .addFormDataPart("company_name", strings[1])
+                        .addFormDataPart("location", strings[2])
+                        .addFormDataPart("website", strings[3]);
 
-                RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                        .addPart(
-                                Headers.of("Content-Disposition", "form-data; name=\"logo\""),
-                                RequestBody.create(MEDIA_TYPE, new File(strings[0]))
-                        ).build();
+                if(strings[0] != null)
+                    builder.addFormDataPart("logo", "logo.png",  RequestBody.create(MEDIA_TYPE, new File(strings[0])));
 
+            if (amoun != null && !amoun.isEmpty()) {
+                builder.addFormDataPart("tax_amount", strings[4]);
+            } if (shipp != null && !shipp.isEmpty()) {
+                builder.addFormDataPart("shipping_cost", strings[5]);
+                } if (fee != null && !fee.isEmpty()) {
+                builder.addFormDataPart("fee", strings[6]);
+                }
+
+                RequestBody requestBody = builder.build();
 
                 Request request = new Request.Builder()
                         .url(CREATE_NEW_MANUFACT)
@@ -332,9 +335,10 @@ public class NewManufacturerActivity extends AppCompatActivity {
             return null;
         }
 
-
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
-
-
 
 }

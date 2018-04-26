@@ -46,6 +46,7 @@ public class ManufacturesActivity extends AppCompatActivity {
 
     private static final String GET_ALL_MANUFACTURERS = "http://spf.yobibyte.in.ua/api/manufacturers/get_for_admin/";
 
+
     RecyclerView recyclerView_manufacturers;
     ItemListManufacturersAdapter itemListManufacturersAdapter;
 
@@ -80,9 +81,6 @@ public class ManufacturesActivity extends AppCompatActivity {
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-       //  NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-       // navigationView.setNavigationItemSelectedListener(this);
 
         //Handle AsyncTask
         GetAllManufacturerResponse getAllManufacturer = new GetAllManufacturerResponse();
@@ -146,10 +144,19 @@ public class ManufacturesActivity extends AppCompatActivity {
         //Find RecyclerView for All Manufacturers and set adapter
        recyclerView_manufacturers = (RecyclerView)findViewById(R.id.recycler_manufacturers);
        recyclerView_manufacturers.setLayoutManager(new LinearLayoutManager(this));
-       itemListManufacturersAdapter = new ItemListManufacturersAdapter(null, this);
+       itemListManufacturersAdapter = new ItemListManufacturersAdapter(null, this){
+           @Override
+           public void Click(ResponseAllManufacturers.ManufacturersData resp) {
+
+               Log.d("ID_OF_MANUF", resp.getId());
+               Intent intentInfo = new Intent(ManufacturesActivity.this, InformationActivity.class);
+               intentInfo.putExtra("manufacturers_id", resp.getId());
+               startActivity(intentInfo);
+           }
+       };
+
        recyclerView_manufacturers.setAdapter(itemListManufacturersAdapter);
     }
-
 
     @SuppressLint("StaticFieldLeak")
     private class GetAllManufacturerResponse extends AsyncTask<String, String, ResponseAllManufacturers> {
@@ -206,9 +213,6 @@ public class ManufacturesActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     // handling press on button in Drawer Menu
     public void closeDrawer(View view) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -244,15 +248,10 @@ public class ManufacturesActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             Intent intentNewManufacturer = new Intent(this, NewManufacturerActivity.class);
             startActivity(intentNewManufacturer);
-
-          //  Toast.makeText(this, "Pressed Plus button", Toast.LENGTH_SHORT).show();
-
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

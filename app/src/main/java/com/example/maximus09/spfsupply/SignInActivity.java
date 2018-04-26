@@ -34,6 +34,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -128,7 +129,7 @@ public class SignInActivity extends AppCompatActivity {
                             .addHeader("Content-Type", "application/json")
                             .build();
 
-                    okhttp3.Response response = okHttpClient.newCall(request).execute();
+                    Response response = okHttpClient.newCall(request).execute();
 
                     @SuppressWarnings("ConstantConditions")
                     String responseBody = response.body().string();

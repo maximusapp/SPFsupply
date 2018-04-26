@@ -2,10 +2,12 @@ package com.example.maximus09.spfsupply;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +17,7 @@ import com.example.maximus09.spfsupply.data.model.ResponseAllManufacturers;
 import java.util.List;
 
 
-public class ItemListManufacturersAdapter extends RecyclerView.Adapter<ItemListManufacturersAdapter.ViewHolder> {
+public abstract class ItemListManufacturersAdapter extends RecyclerView.Adapter<ItemListManufacturersAdapter.ViewHolder> {
 
     private List<ResponseAllManufacturers.ManufacturersData> items;
     private Context context;
@@ -34,13 +36,20 @@ public class ItemListManufacturersAdapter extends RecyclerView.Adapter<ItemListM
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemListManufacturersAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemListManufacturersAdapter.ViewHolder holder, final int position) {
         holder.manufacturer_name.setText(items.get(position).getCompany_name());
         Glide.with(context).load(items.get(position).getLogo()).into(holder.manufacturer_logo);
 
         if (items.get(position).getLogo() == null) {
             Glide.with(context).load(R.drawable.add_order_number).into(holder.manufacturer_logo);
         }
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Click(items.get(position));
+            }
+        });
 
     }
 
@@ -55,12 +64,14 @@ public class ItemListManufacturersAdapter extends RecyclerView.Adapter<ItemListM
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView manufacturer_logo;
         public TextView manufacturer_name;
+        public CardView cardView;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             manufacturer_logo = (ImageView)itemView.findViewById(R.id.logo_manufacturer);
             manufacturer_name = (TextView)itemView.findViewById(R.id.company_name_manufacturer);
+            cardView = (CardView) itemView.findViewById(R.id.card_manuf_admin);
         }
     }
 
@@ -69,7 +80,7 @@ public class ItemListManufacturersAdapter extends RecyclerView.Adapter<ItemListM
         notifyDataSetChanged();
     }
 
-
+    public abstract void Click(ResponseAllManufacturers.ManufacturersData resp);
 
 
 }
