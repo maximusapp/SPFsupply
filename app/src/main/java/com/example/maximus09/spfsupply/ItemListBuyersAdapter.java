@@ -2,6 +2,7 @@ package com.example.maximus09.spfsupply;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import com.example.maximus09.spfsupply.data.model.ResponseAllBuyers;
 import java.util.List;
 
 
-class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemListBuyersAdapter.ViewHolder> {
+public abstract class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemListBuyersAdapter.ViewHolder> {
 
     private List<ResponseAllBuyers.AccountData> items;
     private Context context;
@@ -34,9 +35,17 @@ class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemListBuyersAdapter.V
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemListBuyersAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemListBuyersAdapter.ViewHolder holder, final int position) {
         holder.company_name.setText(items.get(position).getCompany_name());
         Glide.with(context).load(items.get(position).getCompany_logo()).into(holder.image_logo);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClickBuyers(items.get(position));
+            }
+        });
+
     }
 
     @Override
@@ -51,6 +60,7 @@ class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemListBuyersAdapter.V
         public ImageView image_indicator;
         public ImageView image_logo;
         public TextView company_name;
+        public CardView cardView;
 
 
         public ViewHolder(View itemView) {
@@ -58,6 +68,7 @@ class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemListBuyersAdapter.V
             image_indicator = (ImageView)itemView.findViewById(R.id.indicator_buyers);
             image_logo = (ImageView) itemView.findViewById(R.id.logo_buyers);
             company_name = (TextView) itemView.findViewById(R.id.company_name_buyers);
+            cardView = (CardView) itemView.findViewById(R.id.cardView_buyers);
         }
     }
 
@@ -65,5 +76,7 @@ class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemListBuyersAdapter.V
         this.items = list;
         notifyDataSetChanged();
     }
+
+    public abstract void ClickBuyers(ResponseAllBuyers.AccountData accountData);
 
 }

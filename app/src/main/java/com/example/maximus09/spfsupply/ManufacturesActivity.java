@@ -147,7 +147,6 @@ public class ManufacturesActivity extends AppCompatActivity {
        itemListManufacturersAdapter = new ItemListManufacturersAdapter(null, this){
            @Override
            public void Click(ResponseAllManufacturers.ManufacturersData resp) {
-
                Log.d("ID_OF_MANUF", resp.getId());
                Intent intentInfo = new Intent(ManufacturesActivity.this, InformationActivity.class);
                intentInfo.putExtra("manufacturers_id", resp.getId());

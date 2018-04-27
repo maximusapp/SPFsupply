@@ -1,6 +1,7 @@
 package com.example.maximus09.spfsupply;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,9 +28,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maximus09.spfsupply.data.model.ResponseAllManufacturers;
+import com.example.maximus09.spfsupply.util.Preference;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 
 public class NewProductActivity extends AppCompatActivity {
 
@@ -40,10 +48,12 @@ public class NewProductActivity extends AppCompatActivity {
     private static final String CREATE_PRODUCT_URL = "http://spf.yobibyte.in.ua/api/manufacturers/product/create/";
 
     private int GALLERY_REQUEST = 1;
+    private int GALLERY_REQUEST_FILE = 100;
     public File file_path;
 
     RecyclerView recyclerView_addNewProd;
     ItemListAttachNewDocumentAdmin itemListAttachNewDocumentAdmin;
+
 
     ImageView imageView_addProductPhoto;
     EditText editText_productName;
@@ -90,15 +100,18 @@ public class NewProductActivity extends AppCompatActivity {
         itemListAttachNewDocumentAdmin = new ItemListAttachNewDocumentAdmin(this, null){
             @Override
             public void OnAdd() {
-               Toast.makeText(NewProductActivity.this, "Pressed Attached", Toast.LENGTH_LONG).show();
+
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("*/*");
+                startActivityForResult(photoPickerIntent, GALLERY_REQUEST_FILE);
+
+              //Toast.makeText(NewProductActivity.this, "Pressed Attached", Toast.LENGTH_LONG).show();
             }
+
         };
         recyclerView_addNewProd.setAdapter(itemListAttachNewDocumentAdmin);
 
-
-
     }
-
 
 
     @Override
@@ -130,7 +143,6 @@ public class NewProductActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Toast.makeText(NewProductActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
-
 
         }
 
@@ -188,10 +200,44 @@ public class NewProductActivity extends AppCompatActivity {
             }
 
 
+            String logo_link = file_path == null ? null : file_path.getAbsolutePath();
+
+            Intent intentExtras = getIntent();
+            String manufacturers_id = intentExtras.getStringExtra("manufacturers_id");
+
+            Preference preference = new Preference(getApplicationContext());
+            TascCreateNewProduct tascCreateNewProduct = new TascCreateNewProduct();
+            tascCreateNewProduct.execute(productName, productPrice, productDesc, preference.getToken(), manufacturers_id, logo_link);
+
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @SuppressLint("StaticFieldLeak")
+    public class TascCreateNewProduct extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            final MediaType MEDIA_TYPE_IMAGE = MediaType.parse("image/*");
+            final MediaType MEDIA_TYPE_FILE = MediaType.parse("*/*");
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+
+
+            return null;
+        }
+    }
+
 
 }

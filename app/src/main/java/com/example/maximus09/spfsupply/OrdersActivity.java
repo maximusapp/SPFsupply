@@ -117,7 +117,14 @@ public class OrdersActivity extends AppCompatActivity {
 
         recyclerView_list_orders = (RecyclerView)findViewById(R.id.recycler_orders);
         recyclerView_list_orders.setLayoutManager(new LinearLayoutManager(this));
-        itemListOrdersAdapter = new ItemListOrdersAdapter(null, this);
+        itemListOrdersAdapter = new ItemListOrdersAdapter(null, this){
+            @Override
+            public void ClickOrderNumber(ResponseAllOrders.OrdersData ordersData) {
+                Log.d("ID_OF_ORDER", String.valueOf(ordersData.getId()));
+                Intent intentOrderNumber = new Intent(OrdersActivity.this, OrderNumberActivity.class);
+                startActivity(intentOrderNumber);
+            }
+        };
         recyclerView_list_orders.setAdapter(itemListOrdersAdapter);
 
     }
@@ -130,7 +137,6 @@ public class OrdersActivity extends AppCompatActivity {
         }
 
     }
-
 
     @SuppressLint("StaticFieldLeak")
     private class GetAllOrdersResponse extends AsyncTask<String, String, ResponseAllOrders> {

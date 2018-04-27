@@ -32,23 +32,23 @@ public class ResponseAllBuyers {
 
 
     public class AccountData {
-        private Integer id;
+        private String id;
         private String company_name;
         private String company_logo;
         private String is_new;
 
-        public AccountData(Integer id, String company_name, String company_logo, String is_new) {
+        public AccountData(String id, String company_name, String company_logo, String is_new) {
             this.id = id;
             this.company_name = company_name;
             this.company_logo = company_logo;
             this.is_new = is_new;
         }
 
-        public Integer getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(Integer id) {
+        public void setId(String id) {
             this.id = id;
         }
 

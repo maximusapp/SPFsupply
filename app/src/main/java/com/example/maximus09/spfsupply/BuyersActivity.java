@@ -84,7 +84,15 @@ public class BuyersActivity extends AppCompatActivity {
         //Handle RecyclerView
         recyclerViewBuyers = (RecyclerView)findViewById(R.id.recyclerView_buyerss);
         recyclerViewBuyers.setLayoutManager(new LinearLayoutManager(this));
-        itemListBuyersAdapter = new ItemListBuyersAdapter(null, this);
+        itemListBuyersAdapter = new ItemListBuyersAdapter(null, this) {
+            @Override
+            public void ClickBuyers(ResponseAllBuyers.AccountData accountData) {
+                Log.d("ID_OF_MANUF", String.valueOf(accountData.getId()));
+                Intent intentProfile = new Intent(BuyersActivity.this, ProfileActivity.class);
+                intentProfile.putExtra("BUYERS_ID", accountData.getId());
+                startActivity(intentProfile);
+            }
+        };
         recyclerViewBuyers.setAdapter(itemListBuyersAdapter);
 
 
