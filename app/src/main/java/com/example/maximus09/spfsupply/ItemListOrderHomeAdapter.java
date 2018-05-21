@@ -2,6 +2,7 @@ package com.example.maximus09.spfsupply;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.maximus09.spfsupply.data.model.ResponseAllOrders;
 import com.example.maximus09.spfsupply.data.model.ResponseAllOrdersUser;
+import com.example.maximus09.spfsupply.data.model.ResponseOrdersById;
 
 import java.util.List;
 
 
-public class ItemListOrderHomeAdapter extends RecyclerView.Adapter<ItemListOrderHomeAdapter.ViewHolder> {
+public abstract class ItemListOrderHomeAdapter extends RecyclerView.Adapter<ItemListOrderHomeAdapter.ViewHolder> {
 
     private List<ResponseAllOrdersUser.OrderDataUser> items;
     private Context context;
@@ -33,12 +36,19 @@ public class ItemListOrderHomeAdapter extends RecyclerView.Adapter<ItemListOrder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemListOrderHomeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemListOrderHomeAdapter.ViewHolder holder, final int position) {
         holder.order_price.setText(items.get(position).getTotal_count());
         holder.order_date.setText(items.get(position).getOrder_date());
         holder.order_number.setText(items.get(position).getOrder_name());
 
         Glide.with(context).load(items.get(position).getManufacturers_logo()).into(holder.logo);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClickOrderNumHome(items.get(position));
+            }
+        });
 
     }
 
@@ -55,6 +65,7 @@ public class ItemListOrderHomeAdapter extends RecyclerView.Adapter<ItemListOrder
         public TextView order_number;
         public TextView order_date;
         public TextView order_price;
+        public CardView cardView;
 
 
         public ViewHolder(View itemView) {
@@ -63,6 +74,7 @@ public class ItemListOrderHomeAdapter extends RecyclerView.Adapter<ItemListOrder
             order_number = (TextView)itemView.findViewById(R.id.order_number_user);
             order_date = (TextView)itemView.findViewById(R.id.date_orders_user);
             order_price = (TextView)itemView.findViewById(R.id.price_order_user);
+            cardView = (CardView)itemView.findViewById(R.id.cvOrderHomeItem);
         }
     }
 
@@ -70,5 +82,7 @@ public class ItemListOrderHomeAdapter extends RecyclerView.Adapter<ItemListOrder
         this.items = list;
         notifyDataSetChanged();
     }
+
+    public abstract void ClickOrderNumHome(ResponseAllOrdersUser.OrderDataUser ordersData);
 
 }

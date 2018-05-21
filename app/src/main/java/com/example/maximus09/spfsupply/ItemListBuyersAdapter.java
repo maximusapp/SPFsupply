@@ -37,7 +37,20 @@ public abstract class ItemListBuyersAdapter extends RecyclerView.Adapter<ItemLis
     @Override
     public void onBindViewHolder(@NonNull ItemListBuyersAdapter.ViewHolder holder, final int position) {
         holder.company_name.setText(items.get(position).getCompany_name());
-        Glide.with(context).load(items.get(position).getCompany_logo()).into(holder.image_logo);
+        if (items.get(position).getCompany_logo() == null || items.get(position).getCompany_logo().length() == 0) {
+            holder.image_logo.setImageResource(R.drawable.shape_buyers);
+        } else {
+            Glide.with(context).load(items.get(position).getCompany_logo()).into(holder.image_logo);
+        }
+
+
+        if (items.get(position).getIs_new().equals("1")) {
+            holder.image_indicator.setVisibility(View.VISIBLE);
+        } else {
+            holder.image_indicator.setVisibility(View.INVISIBLE);
+        }
+
+        //holder.image_indicator.setVisibility(View.VISIBLE);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

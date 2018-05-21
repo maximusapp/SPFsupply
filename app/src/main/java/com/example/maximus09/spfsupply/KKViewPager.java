@@ -58,7 +58,7 @@ public class KKViewPager extends ViewPager implements ViewPager.PageTransformer 
 
     @Override
     public void transformPage(View page, float position) {
-        if (mPageMargin <= 0|| !animationEnabled)
+        if (mPageMargin <= 0 || !animationEnabled)
             return;
         page.setPadding(mPageMargin / 3, mPageMargin / 3, mPageMargin / 3, mPageMargin / 3);
 

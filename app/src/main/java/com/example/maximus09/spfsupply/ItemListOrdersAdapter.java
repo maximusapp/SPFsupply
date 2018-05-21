@@ -2,20 +2,17 @@ package com.example.maximus09.spfsupply;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.maximus09.spfsupply.data.model.ResponseAllOrders;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,10 +35,21 @@ public abstract class ItemListOrdersAdapter extends RecyclerView.Adapter<ItemLis
 
     @Override
     public void onBindViewHolder(@NonNull ItemListOrdersAdapter.ViewHolder holder, final int position) {
+
         holder.company_name_order.setText(items.get(position).getManufacturers_company_name());
         holder.order_number.setText(items.get(position).getOrder_name());
         holder.price_order.setText(items.get(position).getTotal_count());
         holder.date_order.setText(items.get(position).getOrder_date());
+
+
+        if (items.get(position).getIs_view().equals("0")) {
+            holder.indicator.setVisibility(View.VISIBLE);
+        }else {
+            holder.indicator.setVisibility(View.INVISIBLE);
+
+        }
+
+
         Glide.with(context).load(items.get(position).getManufacturers_logo()).into(holder.logo);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +58,7 @@ public abstract class ItemListOrdersAdapter extends RecyclerView.Adapter<ItemLis
                 ClickOrderNumber(items.get(position));
             }
         });
+
 
 
 
@@ -92,6 +101,5 @@ public abstract class ItemListOrdersAdapter extends RecyclerView.Adapter<ItemLis
     }
 
     public abstract void ClickOrderNumber(ResponseAllOrders.OrdersData ordersData);
-
 
 }

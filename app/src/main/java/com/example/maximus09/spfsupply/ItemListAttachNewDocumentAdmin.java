@@ -2,7 +2,6 @@ package com.example.maximus09.spfsupply;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.List;
@@ -40,11 +41,17 @@ public abstract class ItemListAttachNewDocumentAdmin extends RecyclerView.Adapte
                 @Override
                 public void onClick(View view) {
                     OnAdd();
-
                 }
             });
         } else {
-            holder.imageView_attachedDocument.setImageResource(R.drawable.delete_image_background_red);
+             Glide.with(context).load(files.get(position)).apply(RequestOptions.circleCropTransform()).into(holder.imageView_attachedDocument);
+           // holder.imageView_attachedDocument.setImageResource(R.drawable.delete_image_background_red);
+             holder.imageView_attachedDocument.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View view) {
+                     DeleteProduct(files.get(position));
+                 }
+             });
         }
 
 
@@ -76,5 +83,7 @@ public abstract class ItemListAttachNewDocumentAdmin extends RecyclerView.Adapte
     }
 
     public abstract void OnAdd();
+
+    public abstract void DeleteProduct(File files);
 
 }

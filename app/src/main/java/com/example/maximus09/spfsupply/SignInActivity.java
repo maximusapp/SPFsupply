@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.maximus09.spfsupply.data.model.Post;
 import com.example.maximus09.spfsupply.data.model.ResponseFromServer;
 import com.example.maximus09.spfsupply.util.Preference;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -43,7 +45,7 @@ public class SignInActivity extends AppCompatActivity {
         return true;
     }
 
-    public static final String LOGIN_URL = "http://spf.yobibyte.in.ua/api/sign_in/";
+    public static final String LOGIN_URL = "http://api.spfsupply.com/public/api/sign_in";
 
     TextView textResetPassword;
 
@@ -51,6 +53,8 @@ public class SignInActivity extends AppCompatActivity {
     private EditText editPass;
 
     Button signIn;
+
+    String message_from_server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,13 +116,25 @@ public class SignInActivity extends AppCompatActivity {
         @Override
         protected ResponseFromServer doInBackground(String... strings) {
 
+            InstanceID instanceID = InstanceID.getInstance(SignInActivity.this);
+            String token = null;
+            try {
+                token = instanceID.getToken("641074772817", GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                Log.i("token", " " + token);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
             OkHttpClient okHttpClient = new OkHttpClient();
             Gson gson = new Gson();
 
             String mail = editEmail.getText().toString().trim();
             String pass = editPass.getText().toString().trim();
 
-            Post strPostLogin = new Post(mail, pass);
+
+            Post strPostLogin = new Post(mail, pass, token);
 
                 try {
                     RequestBody body = RequestBody.create(MediaType.parse("application/json"), gson.toJson(strPostLogin));

@@ -13,8 +13,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,10 +36,17 @@ import com.example.maximus09.spfsupply.util.Preference;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class NewProductActivity extends AppCompatActivity {
 
@@ -45,11 +55,13 @@ public class NewProductActivity extends AppCompatActivity {
         return true;
     }
 
-    private static final String CREATE_PRODUCT_URL = "http://spf.yobibyte.in.ua/api/manufacturers/product/create/";
+    private static final String CREATE_PRODUCT_URL = "http://api.spfsupply.com/public/api/manufacturers/product/create";
 
     private int GALLERY_REQUEST = 1;
     private int GALLERY_REQUEST_FILE = 100;
     public File file_path;
+
+    public List<File>listFile;
 
     RecyclerView recyclerView_addNewProd;
     ItemListAttachNewDocumentAdmin itemListAttachNewDocumentAdmin;
@@ -60,6 +72,7 @@ public class NewProductActivity extends AppCompatActivity {
     EditText editText_priceNewProduct;
     EditText editText_descriptionProduct;
 
+    String documentName;
 
 
     @Override
@@ -69,6 +82,8 @@ public class NewProductActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_sec);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        listFile = new ArrayList<>();
 
         //set font style for title ActionBar
         TextView tv=(TextView) toolbar.getChildAt(0);
@@ -96,16 +111,22 @@ public class NewProductActivity extends AppCompatActivity {
 
 
         recyclerView_addNewProd = (RecyclerView)findViewById(R.id.recycler_addNewProduct);
-        recyclerView_addNewProd.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView_addNewProd.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         itemListAttachNewDocumentAdmin = new ItemListAttachNewDocumentAdmin(this, null){
             @Override
             public void OnAdd() {
-
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("*/*");
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST_FILE);
 
-              //Toast.makeText(NewProductActivity.this, "Pressed Attached", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void DeleteProduct(File file) {
+
+                listFile.remove(file);
+                itemListAttachNewDocumentAdmin.updateListOfProducts(listFile);
+
             }
 
         };
@@ -143,12 +164,66 @@ public class NewProductActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Toast.makeText(NewProductActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
-
         }
+
+
+       if (resultCode == RESULT_OK && requestCode == GALLERY_REQUEST_FILE) {
+
+                final Uri fileUri = data.getData();
+                final File file = new File(getRealPathFromURI(this, fileUri));
+
+                listFile.add(file);
+
+                Log.d("URI_OF_FILE ", getRealPathFromURI(this, fileUri));
+
+                ShowDialog();
+
+               // final InputStream fileStream = getContentResolver().openInputStream(fileUri);
+                //final Bitmap selectedFile = BitmapFactory.decodeStream(fileStream);
+
+                itemListAttachNewDocumentAdmin.updateListOfProducts(listFile);
+
+
+       }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void ShowDialog() {
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(NewProductActivity.this);
+        View promptsView = getLayoutInflater().inflate(R.layout.add_name_of_file, null);
+        final EditText docName = (EditText)promptsView.findViewById(R.id.enter_doc_name);
+        Button addDocButton = (Button)promptsView.findViewById(R.id.addDoc);
+
+        mDialogBuilder.setView(promptsView);
+        final AlertDialog alertDialog = mDialogBuilder.create();
+        alertDialog.show();
+
+        addDocButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String logo_link = file_path == null ? null : file_path.getAbsolutePath();
+
+                Intent intentExtras = getIntent();
+                String manufacturers_id = intentExtras.getStringExtra("manufacturers_id");
+
+
+                String productName = editText_productName.getText().toString().trim();
+                String productPrice = editText_priceNewProduct.getText().toString().trim();
+                String productDesc = editText_descriptionProduct.getText().toString().trim();
+
+                if (file_path != null){
+                    documentName = docName.getText().toString();
+                    Preference preference = new Preference(getApplicationContext());
+                    TascCreateNewProduct tascCreateNewProduct = new TascCreateNewProduct();
+                    tascCreateNewProduct.execute(productName, productPrice, productDesc, preference.getToken(), manufacturers_id, logo_link);
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+    }
 
 
     // We get correct URI path of image in storage of phone
@@ -199,7 +274,6 @@ public class NewProductActivity extends AppCompatActivity {
                 editText_descriptionProduct.setError("Enter description");
             }
 
-
             String logo_link = file_path == null ? null : file_path.getAbsolutePath();
 
             Intent intentExtras = getIntent();
@@ -209,6 +283,17 @@ public class NewProductActivity extends AppCompatActivity {
             TascCreateNewProduct tascCreateNewProduct = new TascCreateNewProduct();
             tascCreateNewProduct.execute(productName, productPrice, productDesc, preference.getToken(), manufacturers_id, logo_link);
 
+            Toast.makeText(NewProductActivity.this, "Product created success", Toast.LENGTH_LONG).show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intentCreate = new Intent(NewProductActivity.this, ManufacturesActivity.class);
+                    startActivity(intentCreate);
+                    finish();
+                }
+            }, 3000);
 
             return true;
         }
@@ -231,11 +316,51 @@ public class NewProductActivity extends AppCompatActivity {
             final MediaType MEDIA_TYPE_IMAGE = MediaType.parse("image/*");
             final MediaType MEDIA_TYPE_FILE = MediaType.parse("*/*");
 
+
             OkHttpClient okHttpClient = new OkHttpClient();
 
+            try {
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                        .addFormDataPart("title", strings[0])
+                        .addFormDataPart("price", strings[1])
+                        .addFormDataPart("description", strings[2])
+                        .addFormDataPart("token", strings[3])
+                        .addFormDataPart("manufacturers_id", strings[4]);
+
+
+                if (strings[5] != null) {
+                    builder.addFormDataPart("logo", "logo.png", RequestBody.create(MEDIA_TYPE_IMAGE, new File(strings[5])));
+                }
+
+                for (int i = 0; i < listFile.size(); i++) {
+                    builder.addFormDataPart("attachments", documentName, RequestBody.create(MEDIA_TYPE_FILE, listFile.get(i)));
+                }
+
+                RequestBody requestBody = builder.build();
+
+                Request request = new Request.Builder()
+                        .url(CREATE_PRODUCT_URL)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("DEBUG_CREATE_PRODUCT", responseBody);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
         }
     }
 

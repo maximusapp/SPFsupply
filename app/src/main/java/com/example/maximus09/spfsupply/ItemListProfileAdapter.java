@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.maximus09.spfsupply.data.model.ResponseBuyersInformation;
@@ -20,6 +21,7 @@ public class ItemListProfileAdapter extends RecyclerView.Adapter<ItemListProfile
 
    private List<ResponseBuyersInformation.Permissions> items;
     public Context context;
+
 
     public ItemListProfileAdapter(List<ResponseBuyersInformation.Permissions> items, Context context) {
         this.items = items;
@@ -34,12 +36,41 @@ public class ItemListProfileAdapter extends RecyclerView.Adapter<ItemListProfile
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemListProfileAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ItemListProfileAdapter.ViewHolder holder, final int position) {
 
         Glide.with(context).load(items.get(position).getLogo()).into(holder.image_logo);
         holder.company_name.setText(items.get(position).getCompany_name());
 
+        if (items.get(position).getChecked().equals("0")) {
+            holder.imageView.setImageResource(R.drawable.uncheckes);
+        } else {
+            holder.imageView.setImageResource(R.drawable.checkes);
+        }
+
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (items.get(position).getChecked().equals("1")) {
+                    items.get(position).setChecked("0");
+                    holder.imageView.setImageResource(R.drawable.uncheckes);
+                } else {
+                    holder.imageView.setImageResource(R.drawable.checkes);
+                    items.get(position).setChecked("1");
+                }
+
+                notifyDataSetChanged();
+            }
+        });
+
     }
+
+
+    public List<ResponseBuyersInformation.Permissions> getPermissList(){
+        return items;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -53,14 +84,14 @@ public class ItemListProfileAdapter extends RecyclerView.Adapter<ItemListProfile
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image_logo;
         public TextView company_name;
-        public CheckBox checkBox;
+        public ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             image_logo = (ImageView) itemView.findViewById(R.id.imageView5);
             company_name = (TextView) itemView.findViewById(R.id.companyName_list_profile);
-            checkBox = (CheckBox)itemView.findViewById(R.id.checkBox_profile);
+            imageView = (ImageView) itemView.findViewById(R.id.ivCheck_profile);
 
         }
     }

@@ -6,8 +6,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,38 +17,47 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.maximus09.spfsupply.data.model.PostAllManufacturers;
+import com.example.maximus09.spfsupply.data.model.PostNewForAdmin;
 import com.example.maximus09.spfsupply.data.model.ResponseAllManufacturers;
+import com.example.maximus09.spfsupply.data.model.ResponseAllNewAdmin;
 import com.example.maximus09.spfsupply.util.Preference;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class ManufacturesActivity extends AppCompatActivity {
 
-    private static final String GET_ALL_MANUFACTURERS = "http://spf.yobibyte.in.ua/api/manufacturers/get_for_admin/";
+    private static final String GET_ALL_MANUFACTURERS = "http://api.spfsupply.com/public/api/manufacturers/get_for_admin";
+    private static final String GET_COUNT_OF_NEW_ADMIN = "http://api.spfsupply.com/public/api/admin/get_count_of_new";
 
+    SearchView searchView;
+    List<ResponseAllManufacturers.ManufacturersData> respons;
 
     RecyclerView recyclerView_manufacturers;
     ItemListManufacturersAdapter itemListManufacturersAdapter;
 
-    ListView listView;
+
+    RecyclerView rvDrawerItem;
+    ArrayList<ItemsDrawer> listItems;
+    ItemListAdapter itemListAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,64 +89,79 @@ public class ManufacturesActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
+        searchView = (SearchView)findViewById(R.id.search_manufacturers);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filter(s.toString());
+                return false;
+            }
+        });
+
+
         //Handle AsyncTask
         GetAllManufacturerResponse getAllManufacturer = new GetAllManufacturerResponse();
         getAllManufacturer.execute();
 
-        // set ListView in Drawer
-        listView = (ListView)findViewById(R.id.drawer_menu_list);
-        ItemsDrawer itemsManufacturers = new ItemsDrawer("Manufacturers", "1");
-        ItemsDrawer itemsBueyrs = new ItemsDrawer("Buyers", "1");
-        ItemsDrawer itemsOrders = new ItemsDrawer("Orders", "1");
-        ItemsDrawer itemsMessages = new ItemsDrawer("Messages", "1");
-        ItemsDrawer itemsSlider = new ItemsDrawer("Slider", "1");
+        //Get count of new
+        GetCountOfNew getCountOfNew = new GetCountOfNew();
+        getCountOfNew.execute();
 
-        final ArrayList<ItemsDrawer> itemsDrawer = new ArrayList<>();
-        itemsDrawer.add(itemsManufacturers);
-        itemsDrawer.add(itemsBueyrs);
-        itemsDrawer.add(itemsOrders);
-        itemsDrawer.add(itemsMessages);
-        itemsDrawer.add(itemsSlider);
 
-        final ItemListAdapter itemListAdapter = new ItemListAdapter(this, R.layout.custom_drawer_menu_item, itemsDrawer);
-        listView.setAdapter(itemListAdapter);
+        listItems = new ArrayList<>();
+        rvDrawerItem = (RecyclerView)findViewById(R.id.drawer_menu_list);
+        rvDrawerItem.setHasFixedSize(true);
+        rvDrawerItem.setLayoutManager(new LinearLayoutManager(this));
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        listItems.add(new ItemsDrawer("Manufacturers", ""));
+        listItems.add(new ItemsDrawer("Buyers", "1"));
+        listItems.add(new ItemsDrawer("Orders", ""));
+        listItems.add(new ItemsDrawer("Messages", ""));
+        listItems.add(new ItemsDrawer("Slider", ""));
+
+        itemListAdapter = new ItemListAdapter(listItems, this){
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void Click(int itemsDrawer) {
+                switch (itemsDrawer) {
+                    case 0:
+                        Intent intent = new Intent(getApplicationContext(), ManufacturesActivity.class );
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case 1:
+                        Intent intentBuyers = new Intent(getApplicationContext(), BuyersActivity.class);
+                        startActivity(intentBuyers);
+                        finish();
+                        break;
+                    case 2:
+                        Intent intentOrders = new Intent(getApplicationContext(), OrdersActivity.class);
+                        startActivity(intentOrders);
+                        finish();
+                        break;
+                    case 3:
+                        Intent intentMessages = new Intent(getApplicationContext(), MessagesActivity.class);
+                        startActivity(intentMessages);
+                        finish();
+                        break;
+                    case 4:
+                        Intent intentSlider = new Intent(getApplicationContext(), SliderActivity.class);
+                        startActivity(intentSlider);
+                        finish();
+                        break;
 
-                if (position == 0) {
-                    Intent intentFirst = new Intent(view.getContext(), ManufacturesActivity.class);
-                    startActivity(intentFirst);
-                    finish();
+
                 }
-
-                if(position == 1) {
-                    Intent intentBuyers = new Intent(view.getContext(), BuyersActivity.class);
-                    startActivity(intentBuyers);
-                    finish();
-                }
-
-                if (position == 2) {
-                    Intent intentOrders = new Intent(view.getContext(), OrdersActivity.class);
-                    startActivity(intentOrders);
-                    finish();
-                }
-
-                if (position == 3) {
-                    Intent intentMessages = new Intent(view.getContext(), MessagesActivity.class);
-                    startActivity(intentMessages);
-                    finish();
-                }
-
-                if (position == 4) {
-                    Intent intentSlider = new Intent(view.getContext(), SliderActivity.class);
-                    startActivity(intentSlider);
-                    finish();
-                }
-
             }
-        });
+        };
+        rvDrawerItem.setAdapter(itemListAdapter);
+
 
         //Find RecyclerView for All Manufacturers and set adapter
        recyclerView_manufacturers = (RecyclerView)findViewById(R.id.recycler_manufacturers);
@@ -156,6 +178,20 @@ public class ManufacturesActivity extends AppCompatActivity {
 
        recyclerView_manufacturers.setAdapter(itemListManufacturersAdapter);
     }
+
+    //Find in searchView
+    private void filter(String s) {
+        List<ResponseAllManufacturers.ManufacturersData> temp = new ArrayList<>();
+        for (int i = 0; i < respons.size(); i++) {
+            if (respons.get(i).getCompany_name().toLowerCase().startsWith(s.toLowerCase())) {
+                temp.add(respons.get(i));
+            }
+        }
+
+        itemListManufacturersAdapter.updateListManufacturer(temp);
+
+    }
+
 
     @SuppressLint("StaticFieldLeak")
     private class GetAllManufacturerResponse extends AsyncTask<String, String, ResponseAllManufacturers> {
@@ -208,7 +244,10 @@ public class ManufacturesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ResponseAllManufacturers responseAllManufacturers) {
             super.onPostExecute(responseAllManufacturers);
-            itemListManufacturersAdapter.updateListManufacturer(responseAllManufacturers.getManufacturers_data());
+
+            respons = responseAllManufacturers.getManufacturers_data();
+
+            itemListManufacturersAdapter.updateListManufacturer(respons);
         }
     }
 
@@ -253,5 +292,79 @@ public class ManufacturesActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetCountOfNew extends AsyncTask<String, String,ResponseAllNewAdmin> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseAllNewAdmin doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostNewForAdmin postNewForAdmin = new PostNewForAdmin(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postNewForAdmin));
+
+                Request request = new Request.Builder()
+                        .url(GET_COUNT_OF_NEW_ADMIN)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_NEW", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAllNewAdmin responseAllNewAdmin = gsonFromServer.fromJson(responseBody, ResponseAllNewAdmin.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllNewAdmin;
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseAllNewAdmin responseAllNewAdmin) {
+            super.onPostExecute(responseAllNewAdmin);
+
+            listItems.clear();
+
+            listItems.add(new ItemsDrawer("Manufacturers", ""));
+            listItems.add(new ItemsDrawer("Buyers", responseAllNewAdmin.getNew_buyers_count()));
+            listItems.add(new ItemsDrawer("Orders", responseAllNewAdmin.getNew_orders_count()));
+            listItems.add(new ItemsDrawer("Messages", responseAllNewAdmin.getNew_message_count()));
+            listItems.add(new ItemsDrawer("Slider", ""));
+
+            itemListAdapter.updateOrderProductUser(listItems);
+
+        }
+    }
+
+
+
+
+
 
 }

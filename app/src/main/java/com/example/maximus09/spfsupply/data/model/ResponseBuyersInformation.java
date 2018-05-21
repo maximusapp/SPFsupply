@@ -44,9 +44,9 @@ public class ResponseBuyersInformation {
         public String company_name;
         public String logo;
         public String id;
-        public Integer checked;
+        public String checked;
 
-        public Permissions(String company_name, String logo, String id, Integer checked) {
+        public Permissions(String company_name, String logo, String id, String checked) {
             this.company_name = company_name;
             this.logo = logo;
             this.id = id;
@@ -77,11 +77,11 @@ public class ResponseBuyersInformation {
             this.id = id;
         }
 
-        public Integer getChecked() {
+        public String getChecked() {
             return checked;
         }
 
-        public void setChecked(Integer checked) {
+        public void setChecked(String checked) {
             this.checked = checked;
         }
     }

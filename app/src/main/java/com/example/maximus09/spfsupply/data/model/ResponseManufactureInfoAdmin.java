@@ -32,6 +32,7 @@ public class ResponseManufactureInfoAdmin {
     }
 
     public class ManufacturersData {
+        public String id;
         public String admins_id;
         public String company_name;
         public String logo;
@@ -45,9 +46,8 @@ public class ResponseManufactureInfoAdmin {
         public List<ProductListInfoManufactureAdmin> products;
 
 
-        public ManufacturersData(String admins_id, String company_name, String logo, String location,
-                                 String merchant_id, String website, String is_active, String is_slider,
-                                 String created_at, String updated_at, List<ProductListInfoManufactureAdmin> products) {
+        public ManufacturersData(String id, String admins_id, String company_name, String logo, String location, String merchant_id, String website, String is_active, String is_slider, String created_at, String updated_at, List<ProductListInfoManufactureAdmin> products) {
+            this.id = id;
             this.admins_id = admins_id;
             this.company_name = company_name;
             this.logo = logo;
@@ -59,6 +59,14 @@ public class ResponseManufactureInfoAdmin {
             this.created_at = created_at;
             this.updated_at = updated_at;
             this.products = products;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
 
         public String getAdmins_id() {

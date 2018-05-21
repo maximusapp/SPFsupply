@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -45,7 +46,7 @@ import okhttp3.Response;
 
 public class NewManufacturerActivity extends AppCompatActivity {
 
-    private static final String CREATE_NEW_MANUFACT = "http://spf.yobibyte.in.ua/api/manufacturers/create/";
+    private static final String CREATE_NEW_MANUFACT = "http://api.spfsupply.com/public/api/manufacturers/create";
 
     private int GALLERY_REQUEST = 1;
     public File file_path;
@@ -268,6 +269,18 @@ public class NewManufacturerActivity extends AppCompatActivity {
             Preference preference = new Preference(getApplicationContext());
             TascCreateNewManufacture tascCreateNewManufacture = new TascCreateNewManufacture();
             tascCreateNewManufacture.execute(logo_link,companyes_name,locations,websites,taxAmount,shipping,addAmountFee,preference.getToken());
+
+            Toast.makeText(NewManufacturerActivity.this, "Manufacture created success", Toast.LENGTH_LONG).show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intentCreate = new Intent(NewManufacturerActivity.this, ManufacturesActivity.class);
+                    startActivity(intentCreate);
+                    finish();
+                }
+            }, 2000);
 
             return true;
         }

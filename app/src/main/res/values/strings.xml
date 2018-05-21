@@ -44,7 +44,7 @@
     <string name="delivery_address_title">DELIVERY ADDRESS</string>
     <string name="delivery_address_edit_text">your address</string>
     <string name="button_text">Proceed</string>
-    <string name="phone_number_hint">320-697-8644</string>
+    <string name="phone_number_hint">3206978644</string>
 
     //Payment method text
     <string name="card_number">Enter your card number</string>
@@ -60,6 +60,7 @@
     <string name="orders_number_home">Order#1234</string>
     <string name="orders_number_chat_home">Order#</string>
     <string name="details_home">Details</string>
+    <string name="add_payment_method">Payment Method</string>
 
     //Welcome Back page
     <string name="reset_text"> <u>Reset</u> </string>
@@ -95,11 +96,12 @@
     <string name="action_settings">Settings</string>
     <string name="action_mail_buyers">Mail</string>
     <string name="action_new_manufacturer">Done</string>
-    <string name="action_details">Add to Card</string>
+    <string name="action_details">Add to Cart</string>
     <string name="action_send_invite"><u> Invite with SMS </u> </string>
-    <string name="order_number_text_underline"> <u> Invoice order#1234 </u> </string>
+    <string name="order_number_text_underline"> <u> Document name </u> </string>
 
     <string name="buyer_information">Buyer Information</string>
+    <string name="buyer_permissions">Permissions</string>
     <string name="welcome_to_spf_supply">Welcome to SPFsupply</string>
 
     <string name="button_sign_in">Sign In</string>
@@ -110,5 +112,35 @@
     <string name="loren_ipsum">Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do ei. </string>
 
     <string name="google_maps_api_key">AIzaSyAPE7hm_slNLDgf8ACeno10p_ts4UB6sR8</string>
+
+    // In chat.
+    <string name="write">Write</string>
+    <string name="mycompany">MyCompany</string>
+    <string name="todo">TODO</string>
+    <string name="change_password">Change password</string>
+    <string name="your_email">YOUR EMAIL</string>
+    <string name="owner_manager_name">OWNER/MANAGER NAME</string>
+    <string name="name_domain_com">name@domain.com</string>
+    <string name="your_phone">YOUR PHONE</string>
+    <string name="business_address">BUSINESS ADDRESS</string>
+    <string name="delivery_address">DELIVERY ADDRESS</string>
+    <string name="payment_method">PAYMENT METHOD</string>
+    <string name="account_ending_in_3423">Account ending in 3423</string>
+    <string name="add_another_payment_method">Add another payment method</string>
+    <string name="_1_320_697_8644">+1 320 -697-8644</string>
+    <string name="peter_preston">Peter Preston</string>
+
+    // String for invite.
+    <string name="invite_text">
+        Hello from SPFsupply! \n
+       \n We\'d like to invite you to join our growing network of insulation contractors who desire a better
+        overall buying experience. Gain access to exclusive pricing on parts and materials directly
+        from your mobile device. Join us today by searching SPFsupply in your app store. Sign-up is free!
+        \n
+        \n
+        Support
+        978.798.0379
+        contact@spfsupply.com
+    </string>
 
 </resources>

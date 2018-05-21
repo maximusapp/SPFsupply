@@ -45,6 +45,14 @@ public class PermissionsFragment extends android.support.v4.app.Fragment {
         return  view;
     }
 
+
+
+    public List<ResponseBuyersInformation.Permissions> getPermissFromAdapter(){
+
+        return itemListProfileAdapter.getPermissList();
+    }
+
+
     @Override
     public void onDestroyView() {
         try {
@@ -60,6 +68,7 @@ public class PermissionsFragment extends android.support.v4.app.Fragment {
         public void onReceive(Context context, Intent intent) {
 
             try {
+
                 String command = intent.getStringExtra("cmd");
                 final String dataPermiss = "data";
                 switch (command){
@@ -70,6 +79,7 @@ public class PermissionsFragment extends android.support.v4.app.Fragment {
                         ResponseBuyersInformation responseBuyersInformation = gsonFromServerPerm.fromJson(jsonPermiss, ResponseBuyersInformation.class);
 
                         itemListProfileAdapter.updatePermissionsList(responseBuyersInformation.getPermissions());
+
 
                         Log.d("PERMISS", String.valueOf(responseBuyersInformation.getPermissions()));
 

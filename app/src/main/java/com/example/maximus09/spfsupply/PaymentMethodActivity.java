@@ -23,12 +23,15 @@ import com.example.maximus09.spfsupply.data.model.ResponseAfterSignUp;
 import com.example.maximus09.spfsupply.data.model.ResponseFromServer;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class PaymentMethodActivity extends AppCompatActivity {
 
@@ -37,12 +40,12 @@ public class PaymentMethodActivity extends AppCompatActivity {
         return true;
     }
 
-    private static final String SIGN_UP_URL = "http://spf.yobibyte.in.ua/api/sign_up/";
+    private static final String SIGN_UP_URL = "http://api.spfsupply.com/public/api/sign_up";
 
     EditText card_num;
-    EditText exp_month;
-    EditText exp_year;
-    EditText cvc;
+    EditText expo_month;
+    EditText expo_year;
+    EditText cvcc;
 
     private static final int card_num_length = 16;
 
@@ -71,27 +74,10 @@ public class PaymentMethodActivity extends AppCompatActivity {
 
 
         card_num = (EditText)findViewById(R.id.card_numb_edit_text);
-        exp_month = (EditText)findViewById(R.id.exp_month);
-        exp_year = (EditText)findViewById(R.id.exp_year);
-        cvc = (EditText)findViewById(R.id.cvc);
+        expo_month = (EditText)findViewById(R.id.exp_month);
+        expo_year = (EditText)findViewById(R.id.exp_year);
+        cvcc = (EditText)findViewById(R.id.cvc);
 
-
-//        // Get data from 1-t and 2-d Activities
-//        //========== it is work ===========
-//        Intent intentExtras = getIntent();
-//
-//        // From 1-t act
-//        String com_name = intentExtras.getStringExtra("com_name");
-//        String mailta = intentExtras.getStringExtra("mailta");
-//        String owners = intentExtras.getStringExtra("owners");
-//        String pass = intentExtras.getStringExtra("pass");
-//        String conf_pass = intentExtras.getStringExtra("conf");
-//
-//        // From 2-d act
-//        String image_link = intentExtras.getStringExtra("image_link");
-//        String phone = intentExtras.getStringExtra("phone");
-//        String business_adr = intentExtras.getStringExtra("address");
-//        String delivery_address = intentExtras.getStringExtra("delivery_address");
 
 
         textSignInNow = (TextView)findViewById(R.id.text_sign_in_payment_method);
@@ -108,15 +94,39 @@ public class PaymentMethodActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                String card_number = card_num.getText().toString().trim();
-//                String expo_month = exp_month.getText().toString().trim();
-//                String expo_year = exp_year.getText().toString().trim();
-//                String cvcc = cvc.getText().toString().trim();
+
+                // For Multipart registration.
+
+                // Get data from 1-t and 2-d Activities
+                //========== it is work ===========
+                Intent intentExtras = getIntent();
+
+                // From 1-t act
+                String com_name = intentExtras.getStringExtra("com_name");
+                String mailta = intentExtras.getStringExtra("mailta");
+                String owners = intentExtras.getStringExtra("owners");
+                String pass = intentExtras.getStringExtra("pass");
+                String conf_pass = intentExtras.getStringExtra("conf");
+
+                // From 2-d act
+                String image_link = intentExtras.getStringExtra("image_link");
+                String phone = intentExtras.getStringExtra("phone");
+                String business_adr = intentExtras.getStringExtra("address");
+                String delivery_address = intentExtras.getStringExtra("delivery_address");
+
+                String card_number = card_num.getText().toString().trim();
+                String exp_month = expo_month.getText().toString().trim();
+                String exp_year = expo_year.getText().toString().trim();
+                String cvc = cvcc.getText().toString().trim();
 
                 TascSignUp tascSignUp = new TascSignUp();
-                tascSignUp.execute();
+                tascSignUp.execute( mailta,  pass, com_name,  phone,  business_adr,  delivery_address,
+                        owners, card_number, exp_month, exp_year, cvc,image_link);
 
-                Toast.makeText(PaymentMethodActivity.this, "Registration success! Wait while admin activated your account", Toast.LENGTH_LONG).show();
+                // End part for multipart registration.
+
+
+               // Toast.makeText(PaymentMethodActivity.this, "Registration success! Wait while admin activated your account", Toast.LENGTH_LONG).show();
 
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -145,7 +155,11 @@ public class PaymentMethodActivity extends AppCompatActivity {
         protected ResponseAfterSignUp doInBackground(String... strings) {
 
             OkHttpClient okHttpClient = new OkHttpClient();
-            Gson gson = new Gson();
+            //Gson gson = new Gson();
+
+            /*
+            *
+            *
 
             // Get data from 1-t and 2-d Activities
             //========== it is work ===========
@@ -165,28 +179,78 @@ public class PaymentMethodActivity extends AppCompatActivity {
             String delivery_address = intentExtras.getStringExtra("delivery_address");
 
             String card_number = card_num.getText().toString().trim();
-            String expo_month = exp_month.getText().toString().trim();
-            String expo_year = exp_year.getText().toString().trim();
-            String cvcc = cvc.getText().toString().trim();
+            String exp_month = expo_month.getText().toString().trim();
+            String exp_year = expo_year.getText().toString().trim();
+            String cvc = cvcc.getText().toString().trim();
 
             PostSignUp postSignUp = new PostSignUp( mailta,  pass, com_name,  phone,  business_adr,  delivery_address,
-                    owners, image_link, card_number, expo_month, expo_year, cvcc);
+                    owners, card_number, exp_month, exp_year, cvc,image_link);
+
+                    *
+                    */
+
 
             try{
 
-                RequestBody body = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postSignUp));
+               // RequestBody body = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postSignUp));
+
+                final MediaType MEDIA_TYPE = MediaType.parse("image/*");
+
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                        .addFormDataPart("email", strings[0])
+                        .addFormDataPart("password", strings[1])
+                        .addFormDataPart("company_name", strings[2])
+                        .addFormDataPart("phone_number", strings[3])
+                        .addFormDataPart("business_address", strings[4])
+                        .addFormDataPart("delivery_address", strings[5])
+                        .addFormDataPart("manager_name", strings[6]);
+
+                String cardNumber = strings[7];
+                String expMonth = strings[8];
+                String expYear = strings[9];
+                String cvc = strings[10];
+                //String imageLink = strings[11];
+
+                if (cardNumber != null && !cardNumber.isEmpty()) {
+                    builder.addFormDataPart("card_number", strings[7]);
+                }
+                if (expMonth != null && !expMonth.isEmpty()) {
+                    builder.addFormDataPart("exp_month", strings[8]);
+                }
+                if (expYear != null && !expYear.isEmpty()) {
+                    builder.addFormDataPart("exp_year", strings[9]);
+                }
+                if (cvc != null && !cvc.isEmpty()) {
+                    builder.addFormDataPart("cvc", strings[10]);
+                }
+
+                if (strings[11] != null) {
+                    builder.addFormDataPart("company_logo", "logo.png",  RequestBody.create(MEDIA_TYPE, new File(strings[11])));
+                }
+
+                RequestBody requestBody = builder.build();
+
 
                 Request request = new Request.Builder()
                         .url(SIGN_UP_URL)
-                        .post(body)
-                        .addHeader("Content-Type", "application/json")
+                        .post(requestBody)
+                       // .addHeader("Content-Type", "application/json")
                         .build();
 
-                okhttp3.Response response = okHttpClient.newCall(request).execute();
+                Response response = okHttpClient.newCall(request).execute();
 
                 @SuppressWarnings("ConstantConditions")
                 String responseBody = response.body().string();
                 Log.i("DEBUG_REGISTER_DATA ", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAfterSignUp responseAfterSignUp = gsonFromServer.fromJson(responseBody, ResponseAfterSignUp.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAfterSignUp;
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -199,6 +263,14 @@ public class PaymentMethodActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ResponseAfterSignUp responseAfterSignUp) {
             super.onPostExecute(responseAfterSignUp);
+
+                String message = responseAfterSignUp.getMessage();
+
+            if (message != null) {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+
+
         }
     }
 }

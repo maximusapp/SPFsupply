@@ -1,7 +1,9 @@
 package com.example.maximus09.spfsupply;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -9,7 +11,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,20 +22,55 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.maximus09.spfsupply.data.model.GetSlidersData;
+import com.example.maximus09.spfsupply.data.model.PostNewForAdmin;
+import com.example.maximus09.spfsupply.data.model.ResponseAllManufacturers;
+import com.example.maximus09.spfsupply.data.model.ResponseAllNewAdmin;
+import com.example.maximus09.spfsupply.data.model.ResponseSlidersData;
+import com.example.maximus09.spfsupply.util.Preference;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class SliderActivity extends AppCompatActivity {
+
+    private static final String SET_SLIDER_URL = "http://api.spfsupply.com/public/api/manufacturers/slider/set";
+    private static final String GET_SLIDERS_DATA_URL = "http://api.spfsupply.com/public/api/manufacturers/slider/get";
+    private static final String GET_COUNT_OF_NEW_ADMIN = "http://api.spfsupply.com/public/api/admin/get_count_of_new";
 
     ListView listViewBuyers;
 
-    ListView listViewSlider;
+    SearchView searchView;
+    List<ResponseSlidersData.SlidersData> sliderData;
+    ArrayList<ResponseSlidersData.SlidersData> permissionsArrayList = new ArrayList<>();
 
-    static CheckBox checkBox;
-    CheckBox customCheckBox;
+    RecyclerView rvSlider;
+    ItemListSliderAdapter itemListSliderAdapter;
+
+    RecyclerView rvDrawerItem;
+    ArrayList<ItemsDrawer> listItems;
+    ItemListAdapter itemListAdapter;
+
+    //components in bottom of activity
+   // static CheckBox checkBox;
+    ImageView ivCheckAll;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +79,33 @@ public class SliderActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        GetSliderData getSliderData = new GetSliderData();
+        getSliderData.execute();
+
         //set font style for title ActionBar
         TextView tv = (TextView) toolbar.getChildAt(0);
         Typeface typefaceActionBar = Typeface.createFromAsset(this.getAssets(), "fonts/latoregular.ttf");
         tv.setTypeface(typefaceActionBar);
+
+        searchView = (SearchView)findViewById(R.id.search_sliders);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filter(s.toString());
+                return false;
+            }
+        });
+
+
+        //Get count of new
+        GetCountOfNew getCountOfNew = new GetCountOfNew();
+        getCountOfNew.execute();
+
 
         // set statusBar color
         Window window = this.getWindow();
@@ -63,105 +126,291 @@ public class SliderActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // set ListView in Drawer
-        listViewBuyers = (ListView) findViewById(R.id.drawer_buyers_menu_list);
-        ItemsDrawer itemsManufacturers = new ItemsDrawer("Manufacturers", "1");
-        ItemsDrawer itemsBueyrs = new ItemsDrawer("Buyers", "1");
-        ItemsDrawer itemsOrders = new ItemsDrawer("Orders", "1");
-        ItemsDrawer itemsMessages = new ItemsDrawer("Messages", "1");
-        ItemsDrawer itemsSlider = new ItemsDrawer("Slider", "1");
 
-        final ArrayList<ItemsDrawer> itemsDrawer = new ArrayList<>();
-        itemsDrawer.add(itemsManufacturers);
-        itemsDrawer.add(itemsBueyrs);
-        itemsDrawer.add(itemsOrders);
-        itemsDrawer.add(itemsMessages);
-        itemsDrawer.add(itemsSlider);
+        listItems = new ArrayList<>();
+        rvDrawerItem = (RecyclerView)findViewById(R.id.drawer_buyers_menu_list);
+        rvDrawerItem.setHasFixedSize(true);
+        rvDrawerItem.setLayoutManager(new LinearLayoutManager(this));
 
-        final ItemListAdapter itemListAdapter = new ItemListAdapter(this, R.layout.custom_drawer_menu_item, itemsDrawer);
-        listViewBuyers.setAdapter(itemListAdapter);
-        listViewBuyers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listItems.add(new ItemsDrawer("Manufacturers", ""));
+        listItems.add(new ItemsDrawer("Buyers", "1"));
+        listItems.add(new ItemsDrawer("Orders", ""));
+        listItems.add(new ItemsDrawer("Messages", ""));
+        listItems.add(new ItemsDrawer("Slider", ""));
+
+        itemListAdapter = new ItemListAdapter(listItems, this){
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void Click(int itemsDrawer) {
+                switch (itemsDrawer) {
+                    case 0:
+                        Intent intent = new Intent(getApplicationContext(), ManufacturesActivity.class );
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case 1:
+                        Intent intentBuyers = new Intent(getApplicationContext(), BuyersActivity.class);
+                        startActivity(intentBuyers);
+                        finish();
+                        break;
+                    case 2:
+                        Intent intentOrders = new Intent(getApplicationContext(), OrdersActivity.class);
+                        startActivity(intentOrders);
+                        finish();
+                        break;
+                    case 3:
+                        Intent intentMessages = new Intent(getApplicationContext(), MessagesActivity.class);
+                        startActivity(intentMessages);
+                        finish();
+                        break;
+                    case 4:
+                        Intent intentSlider = new Intent(getApplicationContext(), SliderActivity.class);
+                        startActivity(intentSlider);
+                        finish();
+                        break;
 
-                if (position == 0) {
-                    Intent intentFirst = new Intent(view.getContext(), ManufacturesActivity.class);
-                    startActivity(intentFirst);
                 }
+            }
+        };
+        rvDrawerItem.setAdapter(itemListAdapter);
 
-                if (position == 1) {
-                    Intent intentSec = new Intent(view.getContext(), BuyersActivity.class);
-                    startActivity(intentSec);
-                    finish();
-                }
 
-                if (position == 2) {
-                    Intent intentOrders = new Intent(view.getContext(), OrdersActivity.class);
-                    startActivity(intentOrders);
-                    finish();
-                }
+        rvSlider = (RecyclerView)findViewById(R.id.recyclerSlider);
+        rvSlider.setLayoutManager(new LinearLayoutManager(this));
+        itemListSliderAdapter = new ItemListSliderAdapter(null, this){
+            @Override
+            public void ClickSlider(ResponseSlidersData.SlidersData sliderActiveData) {
 
-                if (position == 3) {
-                    Intent intentMessages = new Intent(view.getContext(), MessagesActivity.class);
-                    startActivity(intentMessages);
-                    finish();
-                }
+                sliderData = itemListSliderAdapter.getSlidersData();
 
-                if (position == 4) {
-                    Intent intentSlider = new Intent(view.getContext(), SliderActivity.class);
-                    startActivity(intentSlider);
-                    finish();
-                }
+               SetSliderStatus setSliderStatus = new SetSliderStatus();
+               setSliderStatus.execute();
 
             }
-        });
+        };
 
+        rvSlider.setAdapter(itemListSliderAdapter);
 
+        ivCheckAll = (ImageView)findViewById(R.id.bottom_checkbox_slider);
+        ivCheckAll.setImageResource(R.drawable.uncheckes);
 
-
-        listViewSlider = (ListView) findViewById(R.id.listSlider);
-
-
-        ItemSlider itemSlider1 = new ItemSlider(R.drawable.ses_company_image, customCheckBox);
-        ItemSlider itemSlider2 = new ItemSlider(R.drawable.image_home_demilec, customCheckBox);
-        ItemSlider itemSlider3 = new ItemSlider(R.drawable.ses_company_image, customCheckBox);
-
-        final ArrayList<ItemSlider> sliders = new ArrayList<>();
-        sliders.add(itemSlider1);
-        sliders.add(itemSlider2);
-       // sliders.add(itemSlider3);
-
-        final ItemListSliderAdapter itemListSliderAdapter = new ItemListSliderAdapter(this, R.layout.custom_slider_list_item, sliders);
-        listViewSlider.setAdapter(itemListSliderAdapter);
-
-
-        checkBox = (CheckBox) findViewById(R.id.bottom_checkbox_slider);
-
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        ivCheckAll.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                customCheckBox = (CheckBox)findViewById(R.id.checkbox_custom_item_slider);
-                for (int i = 0; i<=listViewSlider.getAdapter().getCount(); i++){
-                    if (!customCheckBox.isChecked()) {
-                        customCheckBox.setChecked(true);
-                    }
-                    else {
-                        customCheckBox.setChecked(false);
-                    }
-                }
-
+            public void onClick(View view) {
+                ivCheckAll.setImageResource(R.drawable.checkes);
             }
         });
-
 
     }
 
-    // handling press on button in Drawer Menu
+
+    // Find in searchView.
+    private void filter(String s) {
+        List<ResponseSlidersData.SlidersData> temp = new ArrayList<>();
+        for (int i = 0; i < sliderData.size(); i++) {
+            if (sliderData.get(i).getCompany_name().toLowerCase().startsWith(s.toLowerCase())) {
+                temp.add(sliderData.get(i));
+            }
+        }
+
+        itemListSliderAdapter.updateSliderList(temp);
+
+    }
+
+
+    // Handling press on button in Drawer Menu.
     public void closeDrawer(View view) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_buyers);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
     }
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetSliderData extends AsyncTask<String, String, ResponseSlidersData> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseSlidersData doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            GetSlidersData getSlidersData = new GetSlidersData(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(getSlidersData));
+
+                Request request = new Request.Builder()
+                        .url(GET_SLIDERS_DATA_URL)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("DATA_OF_SLIDER ", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseSlidersData responseSlidersData = gsonFromServer.fromJson(responseBody, ResponseSlidersData.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseSlidersData;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseSlidersData responseSlidersData) {
+            super.onPostExecute(responseSlidersData);
+
+            sliderData = responseSlidersData.getSliders_data();
+
+            itemListSliderAdapter.updateSliderList(sliderData);
+
+        }
+    }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetCountOfNew extends AsyncTask<String, String,ResponseAllNewAdmin> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ResponseAllNewAdmin doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostNewForAdmin postNewForAdmin = new PostNewForAdmin(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postNewForAdmin));
+
+                Request request = new Request.Builder()
+                        .url(GET_COUNT_OF_NEW_ADMIN)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_NEW", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAllNewAdmin responseAllNewAdmin = gsonFromServer.fromJson(responseBody, ResponseAllNewAdmin.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllNewAdmin;
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseAllNewAdmin responseAllNewAdmin) {
+            super.onPostExecute(responseAllNewAdmin);
+
+            listItems.clear();
+
+            listItems.add(new ItemsDrawer("Manufacturers", ""));
+            listItems.add(new ItemsDrawer("Buyers", responseAllNewAdmin.getNew_buyers_count()));
+            listItems.add(new ItemsDrawer("Orders", responseAllNewAdmin.getNew_orders_count()));
+            listItems.add(new ItemsDrawer("Messages", responseAllNewAdmin.getNew_message_count()));
+            listItems.add(new ItemsDrawer("Slider", ""));
+
+            itemListAdapter.updateOrderProductUser(listItems);
+
+        }
+    }
+
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class SetSliderStatus extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            Preference preference = new Preference(getApplicationContext());
+
+            try {
+                JSONObject obj = new JSONObject();
+                obj.put("token", preference.getToken());
+
+
+                JSONObject jsonObject = new JSONObject();
+
+                for (int i = 0; i < sliderData.size(); i++) {
+                    jsonObject.put(sliderData.get(i).getId(), sliderData.get(i).getIs_slider());
+                }
+
+                obj.put("manufacturers_data" , jsonObject);
+
+
+                //noinspection ResultOfMethodCallIgnored
+                obj.toString();
+                Log.d("In_Json", String.valueOf(obj));
+
+                RequestBody body = RequestBody.create(MediaType.parse("application/json"), String.valueOf(obj));
+
+                Request request = new Request.Builder()
+                        .url(SET_SLIDER_URL)
+                        .post(body)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("RESPONSE_SLIDE_DATA", responseBody);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+
 
 }

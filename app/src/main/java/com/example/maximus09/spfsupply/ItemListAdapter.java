@@ -2,46 +2,86 @@ package com.example.maximus09.spfsupply;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 
-public class ItemListAdapter extends ArrayAdapter<ItemsDrawer> {
+public abstract class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHolder> {
 
-    private Context mContext;
-    int mResourses;
+    private ArrayList<ItemsDrawer> items;
 
-    public ItemListAdapter(Context context, int resource, ArrayList<ItemsDrawer> objects) {
-        super(context, resource, objects);
-        this.mContext = context;
-        this.mResourses = resource;
+    private Context context;
+
+    public ItemListAdapter(ArrayList<ItemsDrawer> items, Context context) {
+        this.items = items;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public ItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(context).inflate(R.layout.custom_drawer_menu_admin,parent, false);
+        return new ViewHolder(v);
+    }
 
-        String itemName = getItem(position).getMenuItem();
-        String countMess = getItem(position).getCount();
+    @Override
+    public void onBindViewHolder(@NonNull final ItemListAdapter.ViewHolder holder, final int position) {
 
-        ItemsDrawer itemsDrawer = new ItemsDrawer(itemName, countMess);
 
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResourses, parent, false);
+        holder.tvMenuItem.setText(items.get(position).getMenuItem());
+        holder.tvNewCount.setText(items.get(position).getCount());
 
-        TextView itemText = (TextView)convertView.findViewById(R.id.menu_item_text);
-        TextView itemCount = (TextView)convertView.findViewById(R.id.menu_item_numb);
+        holder.tvNewCount.setVisibility(items.get(position).getCount().length() == 0 || items.get(position).getCount().equals("0")? View.GONE:View.VISIBLE);
 
-        itemText.setText(itemName);
-        itemCount.setText(countMess);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Click(holder.getAdapterPosition() );
+            }
+        });
 
-        return convertView;
+
 
     }
+
+    @Override
+    public int getItemCount() {
+        if (items == null) {
+            return 0;
+        }
+        return items.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView tvMenuItem;
+        public TextView tvNewCount;
+        public CardView cardView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            tvMenuItem = (TextView)itemView.findViewById(R.id.drawer_menu_text);
+            tvNewCount = (TextView)itemView.findViewById(R.id.drawer_menu_count);
+            cardView = (CardView)itemView.findViewById(R.id.cardView_drawer_menu);
+
+        }
+
 }
+
+    public void updateOrderProductUser(ArrayList<ItemsDrawer> list){
+        this.items = list;
+        notifyDataSetChanged();
+    }
+
+    public abstract void Click(int position);
+
+
+}
+
+

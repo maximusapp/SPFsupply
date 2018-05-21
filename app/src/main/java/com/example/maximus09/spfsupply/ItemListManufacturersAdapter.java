@@ -38,7 +38,13 @@ public abstract class ItemListManufacturersAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(@NonNull ItemListManufacturersAdapter.ViewHolder holder, final int position) {
         holder.manufacturer_name.setText(items.get(position).getCompany_name());
-        Glide.with(context).load(items.get(position).getLogo()).into(holder.manufacturer_logo);
+
+        if (items.get(position).getLogo() == null || items.get(position).getLogo().length() == 0) {
+            holder.manufacturer_logo.setImageResource(R.drawable.shape_buyers);
+        } else {
+            Glide.with(context).load(items.get(position).getLogo()).into(holder.manufacturer_logo);
+        }
+
 
         if (items.get(position).getLogo() == null) {
             Glide.with(context).load(R.drawable.add_order_number).into(holder.manufacturer_logo);
@@ -60,6 +66,8 @@ public abstract class ItemListManufacturersAdapter extends RecyclerView.Adapter<
         }
         return items.size();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView manufacturer_logo;

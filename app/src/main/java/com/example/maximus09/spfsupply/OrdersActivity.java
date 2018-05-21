@@ -16,15 +16,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.maximus09.spfsupply.data.model.PostAllOrders;
+import com.example.maximus09.spfsupply.data.model.PostNewForAdmin;
+import com.example.maximus09.spfsupply.data.model.ResponseAllBuyers;
+import com.example.maximus09.spfsupply.data.model.ResponseAllNewAdmin;
 import com.example.maximus09.spfsupply.data.model.ResponseAllOrders;
 import com.example.maximus09.spfsupply.util.Preference;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -34,12 +39,20 @@ import okhttp3.Response;
 
 public class OrdersActivity extends AppCompatActivity {
 
-    private static final String GET_ALL_ORDERS = "http://spf.yobibyte.in.ua/api/admin/orders/get/";
+    private static final String GET_ALL_ORDERS = "http://api.spfsupply.com/public/api/admin/orders/get";
+    private static final String GET_COUNT_OF_NEW_ADMIN = "http://api.spfsupply.com/public/api/admin/get_count_of_new";
 
     ListView listViewOrders;
 
     RecyclerView recyclerView_list_orders;
     ItemListOrdersAdapter itemListOrdersAdapter;
+
+    SearchView searchView;
+    List<ResponseAllOrders.OrdersData> response;
+
+    RecyclerView rvDrawerItem;
+    ArrayList<ItemsDrawer> listItems;
+    ItemListAdapter itemListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,58 +72,72 @@ public class OrdersActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // set ListView in Drawer
-        listViewOrders = (ListView)findViewById(R.id.drawer_orders_menu_list);
-        ItemsDrawer itemsManufacturers = new ItemsDrawer("Manufacturers", "1");
-        ItemsDrawer itemsBueyrs = new ItemsDrawer("Buyers", "1");
-        ItemsDrawer itemsOrders = new ItemsDrawer("Orders", "1");
-        ItemsDrawer itemsMessages = new ItemsDrawer("Messages", "1");
-        ItemsDrawer itemsSlider = new ItemsDrawer("Slider", "1");
+        //Get count of new
+        GetCountOfNew getCountOfNew = new GetCountOfNew();
+        getCountOfNew.execute();
 
-        final ArrayList<ItemsDrawer> itemsDrawer = new ArrayList<>();
-        itemsDrawer.add(itemsManufacturers);
-        itemsDrawer.add(itemsBueyrs);
-        itemsDrawer.add(itemsOrders);
-        itemsDrawer.add(itemsMessages);
-        itemsDrawer.add(itemsSlider);
 
-        final ItemListAdapter itemListAdapter = new ItemListAdapter(this, R.layout.custom_drawer_menu_item, itemsDrawer);
-        listViewOrders.setAdapter(itemListAdapter);
-        listViewOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        searchView = (SearchView)findViewById(R.id.search_orders);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
 
-                if (position == 0) {
-                    Intent intentFirst = new Intent(view.getContext(), ManufacturesActivity.class);
-                    startActivity(intentFirst);
-                }
-
-                if(position == 1) {
-                    Intent intentSec = new Intent(view.getContext(), BuyersActivity.class);
-                    startActivity(intentSec);
-                    finish();
-                }
-
-                if (position == 2) {
-                    Intent intentOrders = new Intent(view.getContext(), OrdersActivity.class);
-                    startActivity(intentOrders);
-                    finish();
-                }
-
-                if (position == 3) {
-                    Intent intentMessages = new Intent(view.getContext(), MessagesActivity.class);
-                    startActivity(intentMessages);
-                    finish();
-                }
-
-                if (position == 4) {
-                    Intent intentSlider = new Intent(view.getContext(), SliderActivity.class);
-                    startActivity(intentSlider);
-                    finish();
-                }
-
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filter(s.toString());
+                return false;
             }
         });
+
+
+        listItems = new ArrayList<>();
+        rvDrawerItem = (RecyclerView)findViewById(R.id.drawer_orders_menu_list);
+        rvDrawerItem.setHasFixedSize(true);
+        rvDrawerItem.setLayoutManager(new LinearLayoutManager(this));
+
+        listItems.add(new ItemsDrawer("Manufacturers", ""));
+        listItems.add(new ItemsDrawer("Buyers", "1"));
+        listItems.add(new ItemsDrawer("Orders", ""));
+        listItems.add(new ItemsDrawer("Messages", ""));
+        listItems.add(new ItemsDrawer("Slider", ""));
+
+        itemListAdapter = new ItemListAdapter(listItems, this){
+            @Override
+            public void Click(int itemsDrawer) {
+                switch (itemsDrawer) {
+                    case 0:
+                        Intent intent = new Intent(getApplicationContext(), ManufacturesActivity.class );
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case 1:
+                        Intent intentBuyers = new Intent(getApplicationContext(), BuyersActivity.class);
+                        startActivity(intentBuyers);
+                        finish();
+                        break;
+                    case 2:
+                        Intent intentOrders = new Intent(getApplicationContext(), OrdersActivity.class);
+                        startActivity(intentOrders);
+                        finish();
+                        break;
+                    case 3:
+                        Intent intentMessages = new Intent(getApplicationContext(), MessagesActivity.class);
+                        startActivity(intentMessages);
+                        finish();
+                        break;
+                    case 4:
+                        Intent intentSlider = new Intent(getApplicationContext(), SliderActivity.class);
+                        startActivity(intentSlider);
+                        finish();
+                        break;
+
+
+                }
+            }
+        };
+        rvDrawerItem.setAdapter(itemListAdapter);
 
         GetAllOrdersResponse getAllOrdersResponse = new GetAllOrdersResponse();
         getAllOrdersResponse.execute();
@@ -122,10 +149,25 @@ public class OrdersActivity extends AppCompatActivity {
             public void ClickOrderNumber(ResponseAllOrders.OrdersData ordersData) {
                 Log.d("ID_OF_ORDER", String.valueOf(ordersData.getId()));
                 Intent intentOrderNumber = new Intent(OrdersActivity.this, OrderNumberActivity.class);
+                intentOrderNumber.putExtra("orders_id", ordersData.getId());
                 startActivity(intentOrderNumber);
+                finish();
             }
         };
         recyclerView_list_orders.setAdapter(itemListOrdersAdapter);
+
+    }
+
+    //Find in searchView
+    private void filter(String s) {
+        List<ResponseAllOrders.OrdersData> temp = new ArrayList<>();
+        for (int i = 0; i < response.size(); i++) {
+            if (response.get(i).getManufacturers_company_name().toLowerCase().startsWith(s.toLowerCase())) {
+                temp.add(response.get(i));
+            }
+        }
+
+        itemListOrdersAdapter.updateListOrders(temp);
 
     }
 
@@ -189,10 +231,74 @@ public class OrdersActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ResponseAllOrders responseAllOrders) {
             super.onPostExecute(responseAllOrders);
-            itemListOrdersAdapter.updateListOrders(responseAllOrders.getOrders_data());
+
+            response = responseAllOrders.getOrders_data();
+            itemListOrdersAdapter.updateListOrders(response);
+
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private class GetCountOfNew extends AsyncTask<String, String,ResponseAllNewAdmin> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
+        @Override
+        protected ResponseAllNewAdmin doInBackground(String... strings) {
 
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Gson gson = new Gson();
+
+            Preference preference = new Preference(getApplicationContext());
+            PostNewForAdmin postNewForAdmin = new PostNewForAdmin(preference.getToken());
+
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), gson.toJson(postNewForAdmin));
+
+                Request request = new Request.Builder()
+                        .url(GET_COUNT_OF_NEW_ADMIN)
+                        .post(requestBody)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = okHttpClient.newCall(request).execute();
+
+                @SuppressWarnings("ConstantConditions")
+                String responseBody = response.body().string();
+                Log.i("ALL_NEW", responseBody);
+
+                Gson gsonFromServer = new Gson();
+                ResponseAllNewAdmin responseAllNewAdmin = gsonFromServer.fromJson(responseBody, ResponseAllNewAdmin.class);
+
+                // added
+                int responseCode = response.code();
+                if(responseCode == 200 && responseBody.length() != 0) {
+                    return responseAllNewAdmin;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ResponseAllNewAdmin responseAllNewAdmin) {
+            super.onPostExecute(responseAllNewAdmin);
+
+            listItems.clear();
+
+            listItems.add(new ItemsDrawer("Manufacturers", ""));
+            listItems.add(new ItemsDrawer("Buyers", responseAllNewAdmin.getNew_buyers_count()));
+            listItems.add(new ItemsDrawer("Orders", responseAllNewAdmin.getNew_orders_count()));
+            listItems.add(new ItemsDrawer("Messages", responseAllNewAdmin.getNew_message_count()));
+            listItems.add(new ItemsDrawer("Slider", ""));
+
+            itemListAdapter.updateOrderProductUser(listItems);
+
+        }
+    }
 }

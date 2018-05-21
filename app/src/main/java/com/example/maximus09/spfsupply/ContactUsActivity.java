@@ -58,7 +58,7 @@ public class ContactUsActivity extends AppCompatActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Add a marker in Sydney and move the camera
-        LatLng TutorialsPoint = new LatLng(43.20671790000001,  -70.868583);
+        LatLng TutorialsPoint = new LatLng(42.3380893,  -71.1541083);
         mMap.addMarker(new
                 MarkerOptions().position(TutorialsPoint).title("Tutorialspoint.com"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(TutorialsPoint));

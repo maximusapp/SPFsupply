@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,11 +26,10 @@
         android:layout_marginTop="65dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.40"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.019"
-        app:srcCompat="@drawable/spf_logo" />
+        app:layout_constraintVertical_bias="0.060000002"
+        app:srcCompat="@drawable/spf_logos" />
 
     <TextView
         android:id="@+id/textView_welcomeBack"
@@ -129,7 +129,7 @@
         android:ems="10"
         android:fontFamily="@font/latoregular"
         android:hint="Min 8 symbols"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:textColor="@color/colorGray"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

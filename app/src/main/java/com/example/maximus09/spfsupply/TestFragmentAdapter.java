@@ -1,6 +1,7 @@
 package com.example.maximus09.spfsupply;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -61,4 +62,7 @@ public class TestFragmentAdapter extends FragmentStatePagerAdapter {
         this.content = sd0;
         notifyDataSetChanged();
     }
+
+
+
 }

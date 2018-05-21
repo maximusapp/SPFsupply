@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,7 +39,7 @@ public class SendInviteActivity extends AppCompatActivity {
     }
 
     //Server url to invite user to app
-    private static final String INVITE_BUYERS_BY_EMAIL = "http://spf.yobibyte.in.ua/api/buyers/invite_by_email/";
+    private static final String INVITE_BUYERS_BY_EMAIL = "http://api.spfsupply.com/public/api/buyers/invite_by_email";
 
     EditText edit_email;
     EditText edit_message;
@@ -144,6 +145,7 @@ public class SendInviteActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.send_invite_menu, menu);
+        menu.findItem(R.id.action_send_invite_with_sms).setTitle((Html.fromHtml("<font color='#2196f3'><u>Invite with SMS</u></font>")));
         return true;
     }
 
@@ -154,8 +156,11 @@ public class SendInviteActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_send_invite_with_sms) {
+
             Toast.makeText(this, "Pressed SMS button", Toast.LENGTH_SHORT).show();
             return true;
         }

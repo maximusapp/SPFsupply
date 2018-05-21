@@ -36,7 +36,7 @@ public class PasswordResetActivity extends AppCompatActivity {
         return true;
     }
 
-    private static final String RECOVER_PASS_URL = "http://spf.yobibyte.in.ua/api/recovery_password/";
+    private static final String RECOVER_PASS_URL = "http://api.spfsupply.com/public/api/recovery_password";
 
     EditText email_to_reset;
     Button passReset;

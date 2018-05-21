@@ -24,22 +24,21 @@ public class ResponseAllOrders {
         return orders_data;
     }
 
-    public void setOrders_data(List<OrdersData> orders_data) {
-        this.orders_data = orders_data;
-    }
 
     public class OrdersData {
         private String total_count;
         private String id;
+        private String is_view;
         private String order_date;
         private String manufacturers_company_name;
         private String manufacturers_logo;
         private String order_name;
         private String is_paid;
 
-        public OrdersData(String total_count, String id, String order_date, String manufacturers_company_name, String manufacturers_logo, String order_name, String is_paid) {
+        public OrdersData(String total_count, String id, String is_view, String order_date, String manufacturers_company_name, String manufacturers_logo, String order_name, String is_paid) {
             this.total_count = total_count;
             this.id = id;
+            this.is_view = is_view;
             this.order_date = order_date;
             this.manufacturers_company_name = manufacturers_company_name;
             this.manufacturers_logo = manufacturers_logo;
@@ -61,6 +60,14 @@ public class ResponseAllOrders {
 
         public void setId(String id) {
             this.id = id;
+        }
+
+        public String getIs_view() {
+            return is_view;
+        }
+
+        public void setIs_view(String is_view) {
+            this.is_view = is_view;
         }
 
         public String getOrder_date() {
@@ -102,6 +109,73 @@ public class ResponseAllOrders {
         public void setIs_paid(String is_paid) {
             this.is_paid = is_paid;
         }
+
+        //        public OrdersData(String total_count, String id, String order_date, String manufacturers_company_name, String manufacturers_logo, String order_name, String is_paid) {
+//            this.total_count = total_count;
+//            this.id = id;
+//            this.order_date = order_date;
+//            this.manufacturers_company_name = manufacturers_company_name;
+//            this.manufacturers_logo = manufacturers_logo;
+//            this.order_name = order_name;
+//            this.is_paid = is_paid;
+//        }
+//
+//        public String getTotal_count() {
+//            return total_count;
+//        }
+//
+//        public void setTotal_count(String total_count) {
+//            this.total_count = total_count;
+//        }
+//
+//        public String getId() {
+//            return id;
+//        }
+//
+//        public void setId(String id) {
+//            this.id = id;
+//        }
+//
+//        public String getOrder_date() {
+//            return order_date;
+//        }
+//
+//        public void setOrder_date(String order_date) {
+//            this.order_date = order_date;
+//        }
+//
+//        public String getManufacturers_company_name() {
+//            return manufacturers_company_name;
+//        }
+//
+//        public void setManufacturers_company_name(String manufacturers_company_name) {
+//            this.manufacturers_company_name = manufacturers_company_name;
+//        }
+//
+//        public String getManufacturers_logo() {
+//            return manufacturers_logo;
+//        }
+//
+//        public void setManufacturers_logo(String manufacturers_logo) {
+//            this.manufacturers_logo = manufacturers_logo;
+//        }
+//
+//        public String getOrder_name() {
+//            return order_name;
+//        }
+//
+//        public void setOrder_name(String order_name) {
+//            this.order_name = order_name;
+//        }
+//
+//        public String getIs_paid() {
+//            return is_paid;
+//        }
+//
+//        public void setIs_paid(String is_paid) {
+//            this.is_paid = is_paid;
+//        }
+
     }
 
 }
