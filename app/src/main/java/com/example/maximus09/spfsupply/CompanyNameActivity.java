@@ -176,8 +176,8 @@ public class CompanyNameActivity extends AppCompatActivity {
             final File file = new File(getRealPathFromURI(this, fileUri));
             file_path = file;
 
-
             Log.d("URI_OF_FILE", getRealPathFromURI(this, fileUri));
+
 
             // final InputStream imageStream = getContentResolver().openInputStream(fileUri);
             //final Bitmap selectedFile = BitmapFactory.decodeStream(imageStream);
@@ -335,7 +335,8 @@ public class CompanyNameActivity extends AppCompatActivity {
         protected ResponseMessageSend doInBackground(String... strings) {
 
             OkHttpClient okHttpClient = new OkHttpClient();
-            final MediaType MEDIA_TYPE_FILE = MediaType.parse("*/*");
+            final MediaType MEDIA_TYPE_FILE = MediaType.parse("image/*");
+
 
             try {
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)

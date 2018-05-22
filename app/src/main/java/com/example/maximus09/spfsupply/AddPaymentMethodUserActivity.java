@@ -1,6 +1,7 @@
 package com.example.maximus09.spfsupply;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -70,12 +71,26 @@ public class AddPaymentMethodUserActivity extends AppCompatActivity {
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 firstName = etFirstName.getText().toString();
                 lastName = etLastName.getText().toString();
                 cardNumber = etCardNumber.getText().toString();
                 expMonth = etExpMonth.getText().toString();
                 expYear = etExpYear.getText().toString();
                 secureCode = etSecureCode.getText().toString();
+
+                if (cardNumber.isEmpty()) {
+                    etCardNumber.setError("Enter card number");
+                }
+                if (expMonth.isEmpty()) {
+                    etExpMonth.setError("Enter expiration month");
+                }
+                if (expYear.isEmpty()) {
+                    etExpYear.setError("Enter expiration year");
+                }
+                if (secureCode.isEmpty()) {
+                    etSecureCode.setError("Enter secure code");
+                }
 
                 AddPaymentMethod addPaymentMethod = new AddPaymentMethod();
                 addPaymentMethod.execute();
@@ -88,14 +103,14 @@ public class AddPaymentMethodUserActivity extends AppCompatActivity {
 
 
     @SuppressLint("StaticFieldLeak")
-    private class AddPaymentMethod extends AsyncTask<String, String, ResponseAddedCard> {
+    private class AddPaymentMethod extends AsyncTask<String, String, Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected ResponseAddedCard doInBackground(String... strings) {
+        protected Boolean doInBackground(String... strings) {
 
             OkHttpClient okHttpClient = new OkHttpClient();
             Gson gson = new Gson();
@@ -123,32 +138,38 @@ public class AddPaymentMethodUserActivity extends AppCompatActivity {
                 Gson gsonFromServer = new Gson();
                 ResponseAddedCard responseAddedCard = gsonFromServer.fromJson(responseBody, ResponseAddedCard.class);
 
-                // added
-                int responseCode = response.code();
-                if(responseCode == 200 && responseBody.length() != 0) {
-                    return responseAddedCard;
+                if (responseAddedCard.getSuccess()) {
+                    return true;
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-
-            return null;
+            return false;
         }
 
         @Override
-        protected void onPostExecute(ResponseAddedCard responseAddedCard) {
+        protected void onPostExecute(Boolean responseAddedCard) {
             super.onPostExecute(responseAddedCard);
 
             if (isFinishing()) {
                 return;
             }
 
-            String message = responseAddedCard.getMessage();
+            if (responseAddedCard) {
+                Intent intent = new Intent(AddPaymentMethodUserActivity.this, ProfileHomeActivity.class);
+                startActivity(intent);
+                Toast.makeText(AddPaymentMethodUserActivity.this, "Card added", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(AddPaymentMethodUserActivity.this, "Something wrong with your card," +
+                        "or card already exist", Toast.LENGTH_LONG).show();
+            }
 
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
         }
+
+
+
     }
 }

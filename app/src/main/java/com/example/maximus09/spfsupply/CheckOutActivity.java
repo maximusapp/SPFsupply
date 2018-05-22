@@ -337,8 +337,6 @@ public class CheckOutActivity extends AppCompatActivity {
                     return responseCheckOutProduct;
                 }
 
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

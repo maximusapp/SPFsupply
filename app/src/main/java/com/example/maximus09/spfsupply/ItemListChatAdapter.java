@@ -10,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maximus09.spfsupply.data.model.Message;
-import com.example.maximus09.spfsupply.data.model.PostGetMessage;
-import com.example.maximus09.spfsupply.data.model.ResponseMessage;
 
 import java.util.List;
 
@@ -74,14 +72,30 @@ public class ItemListChatAdapter extends RecyclerView.Adapter<ItemListChatAdapte
 
 
     private void itemConfigAdmin(Message messages, ViewHolderFrom viewHolderFrom){
+
         viewHolderFrom.tvMessageFrom.setText(messages.getMessage());
         messages.setMessage(messages.getMessage());
+
     }
 
     private void itemConfigUser(Message messages, ViewHolderTo viewHolderTo) {
 
+        // работает, но не кликается, и имя файла херовое выводится.
+//        String name = messages.getMessage().substring(messages.getMessage().lastIndexOf("/")+1);
+//
+//        if (messages.getType_message().equals("file")) {
+//            viewHolderTo.tvMessage.setText(name);
+//            messages.setMessage(messages.getMessage());
+//        } else {
+//            viewHolderTo.tvMessage.setText(messages.getMessage());
+//            messages.setMessage(messages.getMessage());
+//        }
+//
+
             viewHolderTo.tvMessage.setText(messages.getMessage());
             messages.setMessage(messages.getMessage());
+
+
     }
 
 

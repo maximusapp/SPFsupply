@@ -30,6 +30,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Cache;
 import okhttp3.MediaType;
@@ -80,6 +82,17 @@ public class SignInActivity extends AppCompatActivity {
                 String mail = editEmail.getText().toString().trim();
                 String pass = editPass.getText().toString().trim();
 
+                String expression ="^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+                if (mail.matches(expression)) {
+                    Toast.makeText(getApplicationContext(), "Email and Password correct", Toast.LENGTH_SHORT).show();
+                }
+
+                if (!mail.matches(expression)) {
+                    Toast.makeText(getApplicationContext(), "Email or Password incorrect", Toast.LENGTH_LONG).show();
+                }
+
+
                 if (mail.isEmpty()) {
                     editEmail.setHint("Enter email");
                     editEmail.setHintTextColor(getResources().getColor(R.color.colorAccent));
@@ -90,7 +103,6 @@ public class SignInActivity extends AppCompatActivity {
                 }
                     TaskLogin taskLogin = new TaskLogin();
                     taskLogin.execute();
-
             }
         });
 
@@ -126,13 +138,11 @@ public class SignInActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-
             OkHttpClient okHttpClient = new OkHttpClient();
             Gson gson = new Gson();
 
             String mail = editEmail.getText().toString().trim();
             String pass = editPass.getText().toString().trim();
-
 
             Post strPostLogin = new Post(mail, pass, token);
 

@@ -61,6 +61,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="First name"
+                android:inputType="textPersonName"
                 />
 
             <TextView
@@ -83,6 +84,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="Last name"
+                android:inputType="textPersonName"
                 />
 
             <TextView
@@ -94,6 +96,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/latoregular"
+
                 />
 
             <EditText
@@ -105,6 +108,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="1234 5678 9012 3456"
+                android:inputType="number"
                 />
 
             <TextView
@@ -127,6 +131,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="07"
+                android:inputType="number"
                 />
 
             <TextView
@@ -138,6 +143,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/latoregular"
+
                 />
 
             <EditText
@@ -149,6 +155,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="2021"
+                android:inputType="number"
                 />
 
             <TextView
@@ -171,6 +178,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="3 digits on the back"
+                android:inputType="number"
                 />
 
             <Button

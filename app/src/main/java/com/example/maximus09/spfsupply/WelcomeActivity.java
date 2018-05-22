@@ -26,6 +26,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 public class WelcomeActivity extends AppCompatActivity {
 
     private static final String WELCOMEPAGE_IMAGE_URL = "http://api.spfsupply.com/public/api/slider/get_manufacturers_logos";
@@ -42,6 +45,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_welcome);
 
         mPager = (KKViewPager)findViewById(R.id.kk_pager);
