@@ -38,6 +38,11 @@ public class ResponseManufactureInfoAdmin {
         public String logo;
         public String location;
         public String merchant_id;
+
+        public String tax_amount;
+        public String shipping_cost;
+        public String fee;
+
         public String website;
         public String is_active;
         public String is_slider;
@@ -46,13 +51,16 @@ public class ResponseManufactureInfoAdmin {
         public List<ProductListInfoManufactureAdmin> products;
 
 
-        public ManufacturersData(String id, String admins_id, String company_name, String logo, String location, String merchant_id, String website, String is_active, String is_slider, String created_at, String updated_at, List<ProductListInfoManufactureAdmin> products) {
+        public ManufacturersData(String id, String admins_id, String company_name, String logo, String location, String merchant_id, String tax_amount, String shipping_cost, String fee, String website, String is_active, String is_slider, String created_at, String updated_at, List<ProductListInfoManufactureAdmin> products) {
             this.id = id;
             this.admins_id = admins_id;
             this.company_name = company_name;
             this.logo = logo;
             this.location = location;
             this.merchant_id = merchant_id;
+            this.tax_amount = tax_amount;
+            this.shipping_cost = shipping_cost;
+            this.fee = fee;
             this.website = website;
             this.is_active = is_active;
             this.is_slider = is_slider;
@@ -107,6 +115,30 @@ public class ResponseManufactureInfoAdmin {
 
         public void setMerchant_id(String merchant_id) {
             this.merchant_id = merchant_id;
+        }
+
+        public String getTax_amount() {
+            return tax_amount;
+        }
+
+        public void setTax_amount(String tax_amount) {
+            this.tax_amount = tax_amount;
+        }
+
+        public String getShipping_cost() {
+            return shipping_cost;
+        }
+
+        public void setShipping_cost(String shipping_cost) {
+            this.shipping_cost = shipping_cost;
+        }
+
+        public String getFee() {
+            return fee;
+        }
+
+        public void setFee(String fee) {
+            this.fee = fee;
         }
 
         public String getWebsite() {

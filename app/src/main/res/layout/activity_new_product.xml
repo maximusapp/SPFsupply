@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,89 +9,96 @@
     android:background="@color/colorWhite"
     tools:context="com.example.maximus09.spfsupply.NewProductActivity">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"/>
+
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorWhite">
 
-            <ImageView
-                android:id="@+id/imageView_add_product_admin"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="60dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/icon_plus" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/title_new_product"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="65dp"
-                android:fontFamily="@font/latoregular"
-                android:text="TITLE"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edit_new_productName"
-                android:layout_width="189dp"
-                android:layout_height="30dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="68dp"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="90dp"
-                android:background="@null"
-                android:ems="10"
-                android:fontFamily="@font/latoregular"
-                android:hint="@string/enter_new_product_title"
+                    <ImageView
+                        android:id="@+id/imageView_add_product_admin"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="15dp"
+                        app:srcCompat="@drawable/icon_plus"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="16dp" />
 
-                android:inputType="textPersonName"
-                android:textColor="@color/colorGray"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="UnusedAttribute" />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/title_new_product"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/latoregular"
+                            android:text="TITLE"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginLeft="10dp" />
+
+                        <EditText
+                            android:id="@+id/edit_new_productName"
+                            android:layout_width="189dp"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="1dp"
+                            android:background="@null"
+                            android:ems="10"
+                            android:fontFamily="@font/latoregular"
+                            android:hint="@string/enter_new_product_title"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/colorGray"
+                            tools:ignore="UnusedAttribute" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/view5"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="140dp"
-                android:background="@color/colorDivider"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.55"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                android:layout_marginTop="10dp"
+                android:background="@color/colorDivider" />
 
             <TextView
                 android:id="@+id/title_price_new_product"
@@ -99,15 +107,11 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="160dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/latoregular"
                 android:text="PRICE ($)"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
 
             <EditText
                 android:id="@+id/price_newProduct"
@@ -116,38 +120,26 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="112dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="5dp"
                 android:background="@null"
                 android:ems="10"
                 android:fontFamily="@font/latoregular"
                 android:hint="@string/enter_new_product_price"
-
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 android:textColor="@color/colorGray"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="UnusedAttribute" />
+                tools:ignore="UnusedAttribute"
+                android:layout_marginRight="112dp"
+                android:layout_marginLeft="24dp" />
 
             <View
                 android:id="@+id/view"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="220dp"
-                android:background="@color/colorDivider"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.55"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                android:layout_marginTop="10dp"
+                android:background="@color/colorDivider" />
 
             <TextView
                 android:id="@+id/attachment_new_product"
@@ -156,51 +148,33 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="240dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/latoregular"
                 android:text="ATTACHMENTS"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="24dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_addNewProduct"
                 android:layout_width="match_parent"
-                android:layout_height="88dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="265dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
 
             </android.support.v7.widget.RecyclerView>
 
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="370dp"
-                android:background="@color/colorDivider"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.55"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                android:layout_marginTop="10dp"
+                android:background="@color/colorDivider" />
 
             <TextView
                 android:id="@+id/description_new_product"
@@ -209,50 +183,30 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="380dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/latoregular"
                 android:text="DESCRIPTION"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
 
             <EditText
                 android:id="@+id/editText_description_product"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:ems="10"
-                android:inputType="textMultiLine"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description_new_product"
-                app:layout_constraintVertical_bias="0.0" />
+                android:inputType="textMultiLine" />
 
 
 
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
 
 
     </ScrollView>
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"/>
 
 
-
-
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

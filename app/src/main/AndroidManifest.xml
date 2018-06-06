@@ -85,6 +85,7 @@
         <activity
             android:name=".NewProductActivity"
             android:label="@string/newproduct"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

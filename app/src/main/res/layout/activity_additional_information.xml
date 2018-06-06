@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,223 +12,214 @@
         android:id="@+id/include"
         layout="@layout/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
-    <TextView
-        android:id="@+id/logo_additional"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:fontFamily="@font/latoregular"
-        android:text="@string/company_logo_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/add_company_logo"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.241"
-        app:srcCompat="@drawable/icon_plus" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/your_phone_additional"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:fontFamily="@font/latoregular"
-        android:text="@string/your_phone_hint"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.31"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp" />
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
 
-    <TextView
-        android:id="@+id/phone_additional"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:fontFamily="@font/latoregular"
-        android:text="USA +1"
-        android:textColor="@color/colorBlack"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp" />
+                <TextView
+                    android:id="@+id/logo_additional"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginLeft="24dp"
+                    android:fontFamily="@font/latoregular"
+                    android:text="@string/company_logo_title"
+                    tools:ignore="UnusedAttribute"
+                    />
 
-    <EditText
-        android:id="@+id/phon_edit_text_signup"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        android:ems="10"
-        android:fontFamily="@font/latoregular"
-        android:hint="@string/phone_number_hint"
-        android:inputType="textPersonName"
-        android:textColor="@color/colorBlack"
-        android:textColorHint="@color/colorGrayLight"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp" />
+                <ImageView
+                    android:id="@+id/add_company_logo"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    app:srcCompat="@drawable/icon_plus"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="24dp" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/business_adress_title_additional"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:fontFamily="@font/latoregular"
-        android:text="@string/business_address_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48000002"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp" />
+            <TextView
+                android:id="@+id/your_phone_additional"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/latoregular"
+                android:text="@string/your_phone_hint"
+                tools:ignore="UnusedAttribute"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
 
-    <EditText
-        android:id="@+id/business_address_edit_signup"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        android:ems="10"
-        android:fontFamily="@font/latoregular"
-        android:hint="@string/business_address_edit_text"
-        android:inputType="textMultiLine"
-        android:textColor="@color/colorBlack"
-        android:textColorHint="@color/colorGrayLight"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.63"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp"/>
 
-    <TextView
-        android:id="@+id/delivery_adress_title_additional"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:fontFamily="@font/latoregular"
-        android:text="@string/delivery_address_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/edit_delivery_adress"
-        android:layout_width="200dp"
-        android:layout_height="34dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        android:ems="10"
-        android:fontFamily="@font/latoregular"
-        android:hint="@string/delivery_address_edit_text"
-        android:inputType="textPersonName"
-        android:textColor="@color/colorBlack"
-        android:textColorHint="@color/colorGrayLight"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.81"
-        tools:ignore="UnusedAttribute"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="24dp" />
 
-    <Button
-        android:id="@+id/button_proceed_additional"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button_background"
-        android:fontFamily="@font/latoregular"
-        android:text="@string/button_text"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+                <TextView
+                    android:id="@+id/phone_additional"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/latoregular"
+                    android:text="USA +1"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
+                    tools:ignore="UnusedAttribute"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="24dp" />
+
+                <EditText
+                    android:id="@+id/phon_edit_text_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:fontFamily="@font/latoregular"
+                    android:hint="@string/phone_number_hint"
+                    android:inputType="number"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/colorGrayLight"
+                    tools:ignore="UnusedAttribute"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="24dp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/business_adress_title_additional"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/latoregular"
+                android:text="@string/business_address_title"
+                tools:ignore="UnusedAttribute"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
+
+            <EditText
+                android:id="@+id/business_address_edit_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:ems="10"
+                android:fontFamily="@font/latoregular"
+                android:hint="@string/business_address_edit_text"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorBlack"
+                android:textColorHint="@color/colorGrayLight"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp"/>
+
+            <TextView
+                android:id="@+id/delivery_adress_title_additional"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/latoregular"
+                android:text="@string/delivery_address_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.7"
+                tools:ignore="UnusedAttribute"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
+
+            <EditText
+                android:id="@+id/edit_delivery_adress"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:ems="10"
+                android:fontFamily="@font/latoregular"
+                android:hint="@string/delivery_address_edit_text"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorBlack"
+                android:textColorHint="@color/colorGrayLight"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.81"
+                tools:ignore="UnusedAttribute"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="24dp" />
+
+            <Button
+                android:id="@+id/button_proceed_additional"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/latoregular"
+                android:text="@string/button_text"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                />
 
 
 
-</android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+
+
+
+</LinearLayout>

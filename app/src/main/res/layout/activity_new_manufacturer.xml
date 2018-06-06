@@ -133,7 +133,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.33"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="24dp" />
 
 
 
@@ -194,7 +196,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.529"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="24dp" />
 
     <View
         android:layout_width="0dp"

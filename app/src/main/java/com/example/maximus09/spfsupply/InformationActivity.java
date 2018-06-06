@@ -84,6 +84,10 @@ public class InformationActivity extends AppCompatActivity {
     EditText textView_location;
     EditText textView_webSite;
 
+    EditText editText_tax_amoutn;
+    EditText editText_shiping_cost;
+    EditText editText_fee;
+
     RecyclerView recyclerView;
     ItemListInformationAdminItemAdapter itemListInformationAdminItemAdapter;
 
@@ -151,6 +155,10 @@ public class InformationActivity extends AppCompatActivity {
         textView_companyName = (EditText)findViewById(R.id.companyName_information_admin);
         textView_location = (EditText)findViewById(R.id.text_company_location_info_admin);
         textView_webSite = (EditText)findViewById(R.id.web_site_text_admin);
+
+        editText_tax_amoutn = (EditText)findViewById(R.id.info_edit_add_amount);
+        editText_shiping_cost = (EditText)findViewById(R.id.info_edit_shiping_cost);
+        editText_fee = (EditText)findViewById(R.id.info_edit_add_amount_fee);
 
         imageView_logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,12 +262,16 @@ public class InformationActivity extends AppCompatActivity {
             String location = textView_location.getText().toString();
             String webSite = textView_webSite.getText().toString();
 
+            String tax_amount = editText_tax_amoutn.getText().toString();
+            String shipping_cost = editText_shiping_cost.getText().toString();
+            String fee = editText_fee.getText().toString();
+
             String logo_link = file_path == null ? null : file_path.getAbsolutePath();
 
             Preference preference = new Preference(getApplicationContext());
 
             EditManufacturer editManufacturer = new EditManufacturer();
-            editManufacturer.execute(preference.getToken(), manufId, compName, location, webSite, logo_link);
+            editManufacturer.execute(preference.getToken(), manufId, compName, location, webSite, tax_amount, shipping_cost, fee, logo_link);
 
             Toast.makeText(InformationActivity.this, "Manufacture edited success", Toast.LENGTH_LONG).show();
 
@@ -393,6 +405,18 @@ public class InformationActivity extends AppCompatActivity {
             textView_companyName.setText(responseManufactureInfoAdmin.getManufacturers_data().getCompany_name());
             textView_location.setText(responseManufactureInfoAdmin.getManufacturers_data().getLocation());
             textView_webSite.setText(responseManufactureInfoAdmin.getManufacturers_data().getWebsite());
+
+            if (responseManufactureInfoAdmin.getManufacturers_data().getTax_amount() != null) {
+                editText_tax_amoutn.setText(responseManufactureInfoAdmin.getManufacturers_data().getTax_amount());
+            }
+
+            if (responseManufactureInfoAdmin.getManufacturers_data().getShipping_cost() != null) {
+                editText_shiping_cost.setText(responseManufactureInfoAdmin.getManufacturers_data().getShipping_cost());
+            }
+
+            if (responseManufactureInfoAdmin.getManufacturers_data().getFee() != null) {
+                editText_fee.setText(responseManufactureInfoAdmin.getManufacturers_data().getFee());
+            }
 
         }
     }
@@ -544,7 +568,20 @@ public class InformationActivity extends AppCompatActivity {
                 if (strings[4] != null) {
                     builder.addFormDataPart("website", strings[4]);
                 }
+
                 if (strings[5] != null) {
+                    builder.addFormDataPart("tax_amount", strings[5]);
+                }
+
+                if (strings[6] != null) {
+                    builder.addFormDataPart("shipping_cost", strings[6]);
+                }
+
+                if (strings[7] != null) {
+                    builder.addFormDataPart("fee", strings[7]);
+                }
+
+                if (strings[8] != null) {
                     builder.addFormDataPart("logo", "logo.png",  RequestBody.create(MEDIA_TYPE_IMAGE, new File(strings[5])));
                 }
 

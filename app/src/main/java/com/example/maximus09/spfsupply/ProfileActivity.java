@@ -19,19 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maximus09.spfsupply.data.model.GetBuyersById;
-import com.example.maximus09.spfsupply.data.model.PostBuyersEdit;
 import com.example.maximus09.spfsupply.data.model.PostDeleteBuyers;
 import com.example.maximus09.spfsupply.data.model.ResponseBuyersInformation;
 import com.example.maximus09.spfsupply.util.Preference;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     List<ResponseBuyersInformation.Permissions> permissionsList;
-
 
     AlertDialog.Builder alert;
 
@@ -432,45 +427,3 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 }
-
-
-
-//            try{
-//                infoClass.put("companyName", strings[0]);
-//                infoClass.put("companyMail", strings[1]);
-//                infoClass.put("companyOwner", strings[2]);
-//                infoClass.put("companyPhone", strings[3]);
-//                infoClass.put("companyBusAddr", strings[4]);
-//                infoClass.put("companyDelAddr", strings[5]);
-//                infoClass.put("companyPayMeth", strings[6]);
-//
-//
-//                for (int i = 0; i < permissionsList.size(); i++) {
-//                    JSONObject jsonObject = new JSONObject();
-//                    jsonObject.put(permissionsList.get(i).getId(), permissionsList.get(i).getChecked());
-//                    permissArray.put(jsonObject);
-//                }
-//
-//                infoClass.put("permissions_data", permissArray);
-//                infoClass.put("token",preference.getToken());
-//                infoClass.put("buyers_id", buyerId);
-//
-//                json = infoClass.toString();
-//                Log.d("classInJson", json);
-//
-//
-//                RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
-//
-//                Request request = new Request.Builder()
-//                        .url(BUYERS_EDIT)
-//                        .post(body)
-//                        .addHeader("Content-Type", "application/json")
-//                        .build();
-//
-//                okhttp3.Response response = okHttpClient.newCall(request).execute();
-//
-//                @SuppressWarnings("ConstantConditions")
-//                String responseBody = response.body().string();
-//                Log.i("RESPONSE_EDIT_DATA ", responseBody);
-//
-//

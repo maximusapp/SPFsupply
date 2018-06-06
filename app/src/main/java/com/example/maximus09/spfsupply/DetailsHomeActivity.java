@@ -56,7 +56,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
     TextView tvQuantity;
     ImageView ivMinus;
     ImageView ivPlus;
-    int counter = 0;
+    int counter = 1;
 
     ResponseProductInfo responseProductInfo;
 

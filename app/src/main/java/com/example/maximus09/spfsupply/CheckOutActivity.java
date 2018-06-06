@@ -359,23 +359,27 @@ public class CheckOutActivity extends AppCompatActivity {
             tvDeliver_address.setText(responseCheckOutProduct.getDelivery_address());
 
 
-            cardID = responseCheckOutProduct.getCards().get(0).getId();
+            if (responseCheckOutProduct.getCards() != null && responseCheckOutProduct.getCards().size() != 0) {
+                cardID = responseCheckOutProduct.getCards().get(0).getId();
+
+            } else {
+                Toast.makeText(getApplicationContext(), "You have not card for pay", Toast.LENGTH_SHORT).show();
+            }
+
            // Log.d("CARD_ID", cardID);
-            Log.d("CARD_ID", cardID);
+           // Log.d("CARD_ID", cardID);
             // If card_id is null or not null.
             if (cardID != null) {
                 buttonPay.setVisibility(View.VISIBLE);
             } else {
                 buttonPay.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), "You have not card for pay", Toast.LENGTH_LONG).show();
-
             }
 
             // If in basket no product.
             if (responseCheckOutProduct.getBaskets_data().size() == 0) {
                 buttonPay.setVisibility(View.INVISIBLE);
             }
-
 
         }
     }
